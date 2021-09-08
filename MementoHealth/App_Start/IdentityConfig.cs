@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using System.Web;
+﻿using MementoHealth.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
-using MementoHealth.Models;
+using SendGrid;
+using SendGrid.Helpers.Mail;
+using System;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace MementoHealth
 {
@@ -18,8 +16,20 @@ namespace MementoHealth
     {
         public Task SendAsync(IdentityMessage message)
         {
-            // Plug in your email service here to send an email.
-            return Task.FromResult(0);
+            if (SendAsync(message.Destination, message.Subject, message.Body).Result)
+                return Task.FromResult(0);
+            return Task.FromResult(-1);
+        }
+
+        public static async Task<bool> SendAsync(string destination, string subject, string body)
+        {
+            string apiKey = Environment.GetEnvironmentVariable("MEMENTO_SENDGRID_KEY");
+            SendGridClient client = new SendGridClient(apiKey);
+            EmailAddress from = new EmailAddress("memento@yman.dev", "Memento");
+            EmailAddress to = new EmailAddress(destination);
+            SendGridMessage msg = MailHelper.CreateSingleEmail(from, to, subject, body, body);
+            Response response = await client.SendEmailAsync(msg);
+            return response.IsSuccessStatusCode;
         }
     }
 
@@ -40,7 +50,7 @@ namespace MementoHealth
         {
         }
 
-        public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context) 
+        public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context)
         {
             var manager = new ApplicationUserManager(new UserStore<ApplicationUser>(context.Get<ApplicationDbContext>()));
             // Configure validation logic for usernames
@@ -81,7 +91,7 @@ namespace MementoHealth
             var dataProtectionProvider = options.DataProtectionProvider;
             if (dataProtectionProvider != null)
             {
-                manager.UserTokenProvider = 
+                manager.UserTokenProvider =
                     new DataProtectorTokenProvider<ApplicationUser>(dataProtectionProvider.Create("ASP.NET Identity"));
             }
             return manager;
