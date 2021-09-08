@@ -1,4 +1,4 @@
-# Memento-Health
+# Memento Health
 
 *Oakland University - CSI 4999 - Senior Project - Fall 2021*
 
