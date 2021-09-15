@@ -173,6 +173,7 @@ namespace MementoHealth.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    UserManager.AddToRole(user.Id, "SiteAdmin");
                     await SendEmailConfiramtion(user);
                     return View("RegisterSuccess");
                 }
