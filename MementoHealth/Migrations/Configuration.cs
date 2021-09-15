@@ -1,6 +1,7 @@
 namespace MementoHealth.Migrations
 {
     using MementoHealth.Models;
+    using Microsoft.AspNet.Identity.EntityFramework;
     using System.Data.Entity.Migrations;
 
     internal sealed class Configuration : DbMigrationsConfiguration<ApplicationDbContext>
@@ -25,6 +26,11 @@ namespace MementoHealth.Migrations
             //      new Person { FullName = "Rowan Miller" }
             //    );
             //
+            context.Roles.AddOrUpdate(r => r.Name,
+                new IdentityRole("SysAdmin"),
+                new IdentityRole("SiteAdmin"),
+                new IdentityRole("Doctor"),
+                new IdentityRole("Assistant"));
         }
     }
 }
