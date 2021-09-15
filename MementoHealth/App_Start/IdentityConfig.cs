@@ -31,7 +31,7 @@ namespace MementoHealth
                 Credentials = new NetworkCredential("apikey", apiKey),
                 EnableSsl = true
             };
-            mail.From = new MailAddress("Memento <memento@yman.dev>");
+            mail.From = new MailAddress("Memento Health <memento@yman.dev>");
             mail.To.Add(destination);
             mail.Subject = subject;
             mail.Body = body;
