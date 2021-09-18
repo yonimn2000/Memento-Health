@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using MementoHealth.Migrations;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -36,7 +38,10 @@ namespace MementoHealth.Models
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
-        public ApplicationDbContext() : base("DefaultConnection", throwIfV1Schema: false) { }
+        public ApplicationDbContext() : base("DefaultConnection", throwIfV1Schema: false)
+        {
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<ApplicationDbContext, Configuration>());
+        }
 
         public static ApplicationDbContext Create() => new ApplicationDbContext();
     }
