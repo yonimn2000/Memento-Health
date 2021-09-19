@@ -1,31 +1,249 @@
-﻿@{
-    ViewBag.Title = "Home Page";
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="with=device-width, initial-scale=1.0">
+    <title>Memento Homepage</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</head>
+<body>
+    <section class="header">
+
+        <div class="text-box">
+            <h1>Something Catchy!</h1>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididun</p>
+            <a href="~/Account/Register" class="hero-btn">Register Now</a>
+        </div>
+    </section>
+
+    <section class="features">
+        <h1>Features</h1>
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="features-column">
+                    <i class="fa fa-check-circle" style="font-size: 40px" aria-hidden="true"></i>
+                    <h3>Intuitive</h3>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
+                        et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+                        aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                        cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+                        culpa qui officia deserunt mollit anim id est laborum.
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="features-column">
+                    <i class="fa fa-puzzle-piece" style="font-size: 40px" aria-hidden="true"></i>
+                    <h3>Customizable</h3>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
+                        et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+                        aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                        cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+                        culpa qui officia deserunt mollit anim id est laborum.
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="features-column">
+                    <i class="fa fa-lock" style="font-size: 40px" aria-hidden="true"></i>
+                    <h3>Secure</h3>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
+                        et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+                        aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                        cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+                        culpa qui officia deserunt mollit anim id est laborum.
+                    </p>
+                </div>
+            </div>
+        </div>
+</section>
+
+    <section class="clients">
+        <h1>Client Testimonials</h1>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-md-3">
+                        <img src="~/Images/yonatan.jpg" class="rounded-circle">
+
+                    </div>
+                    <div class="col-md-9">
+                        <blockquote>
+                            <i class="fa fa-quote-left fa-fw" style="font-size: 24px; color: #4b0eff" aria-hidden="true"></i>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore 
+                            et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut 
+                            aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse 
+                            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in 
+                            culpa qui officia deserunt mollit anim id est laborum.
+                            <hr color="#4b0eff">
+                            <cite>&#8212; Yonatan, Clinic Manager</cite>
+                        </blockquote>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-md-3">
+                        <img src="~/Images/camron.png" class="rounded-circle">
+
+                    </div>
+                    <div class="col-md-9">
+                        <blockquote>
+                            <i class="fa fa-quote-left fa-fw" style="font-size: 24px; color: #4b0eff" aria-hidden="true"></i>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
+                            et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+                            aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+                            culpa qui officia deserunt mollit anim id est laborum.
+                            <hr color="#4b0eff">
+                            <cite>&#8212; Camron, Doctor</cite>
+                        </blockquote>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </section>
+</body>
+</html>
+
+
+@section styles
+{
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+    .header{
+        min-height: 100vh;
+        width: 100%;
+        background-image: linear-gradient(rgba(4,9,30,0.7),rgba(4,9,40,0.7)),url('../../Images/waiting_room2.svg');
+        background-position: center;
+        background-size: cover;
+        position: relative;
+        padding-left: -15px;
+        padding-right: -15px;
+    }
+
+    .text-box{
+        width: 90%;
+        color: #ffffff;
+        position: absolute;
+        top: 30%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        text-align: center;
+    }
+    .text-box h1{
+        font-size: 62px;
+        font-weight: 600;
+    }
+    .text-box p{
+        margin: 20px 0 40px;
+        font-size: 14px;
+        color: #ffffff;
+    }
+    .hero-btn{
+        display: inline-block;
+        text-decoration: none;
+        color: #ffffff;
+        border: 1px solid #ffffff;
+        padding: 12px 34px;
+        font-size: 13px;
+        background: transparent;
+        position: relative;
+        cursor: pointer;
+    }
+    .hero-btn:hover{
+        border: 1px solid #0094ff;
+        color: #ffffff;
+        text-decoration: none;
+        background: #0094ff;
+        transition: 1s;
+    }
+    .features{
+        width: 80%;
+        margin: auto;
+        text-align: center;
+        padding-top: 100px;
+    }
+    .features h1{
+        font-size: 36px;
+        font-weight: 600;
+    }
+        .features h1::after {
+            content: '';
+            width: 5%;
+            height: 3px;
+            background: #4800ff;
+            display: block;
+            margin: auto;
+            margin-top: 25px;
+            position: center;
+        }
+
+    .row{
+        margin-top: 5%;
+        display: flex;
+        justify-content: space-between;
+    }
+    .features-column{
+        flex-basis: 31%;
+        border-radius: 15px;
+        background-color: rgb(75 14 255 / 0.08);
+        margin-bottom: 5%;
+        padding: 20px 12px;
+        box-sizing: border-box;
+        transition: 0.5s;
+    }
+    .features-column:hover{
+        box-shadow: 0 0 20px 0px rgba(0,0,0,0.5);
+
+    }
+    .features-column h3 {
+            font-size: 18px;
+            font-weight: 600;
+            padding: 10px;
+            text-align: center;
+        }
+ 
+    .features-column p{
+        color: #777;
+        font-size: 14px;
+        font-weight: 300;
+        line-height: 22px;
+        padding: 10px;
+    }
+    .clients{
+        width: 80%;
+        margin: auto;
+        text-align: center;
+        padding-top: 100px;
+        padding-bottom: 100px;
+    }
+
+   
+    .clients h1 {
+            font-size: 36px;
+            font-weight: 600;
+        }
+        .clients h1::after {
+            content: '';
+            width: 5%;
+            height: 3px;
+            background: #4800ff;
+            display: block;
+            margin: auto;
+            margin-top: 25px;
+            position: center;
+        }
+
+    </style>
 }
-
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
-</div>
-
-<div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-primary" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-primary" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-primary" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-    </div>
-</div>
