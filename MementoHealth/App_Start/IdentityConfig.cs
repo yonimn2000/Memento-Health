@@ -4,9 +4,10 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
-using SendGrid;
-using SendGrid.Helpers.Mail;
 using System;
+using System.Diagnostics;
+using System.Net;
+using System.Net.Mail;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -24,12 +25,27 @@ namespace MementoHealth
         public static async Task<bool> SendAsync(string destination, string subject, string body)
         {
             string apiKey = Environment.GetEnvironmentVariable("MEMENTO_SENDGRID_KEY");
-            SendGridClient client = new SendGridClient(apiKey);
-            EmailAddress from = new EmailAddress("memento@yman.dev", "Memento");
-            EmailAddress to = new EmailAddress(destination);
-            SendGridMessage msg = MailHelper.CreateSingleEmail(from, to, subject, body, body);
-            Response response = await client.SendEmailAsync(msg);
-            return response.IsSuccessStatusCode;
+            MailMessage mail = new MailMessage();
+            SmtpClient SmtpServer = new SmtpClient("smtp.sendgrid.net", 587)
+            {
+                Credentials = new NetworkCredential("apikey", apiKey),
+                EnableSsl = true
+            };
+            mail.From = new MailAddress("Memento Health <memento@yman.dev>");
+            mail.To.Add(destination);
+            mail.Subject = subject;
+            mail.Body = body;
+            mail.IsBodyHtml = true;
+            try
+            {
+                SmtpServer.Send(mail);
+                return true;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return false;
+            }
         }
     }
 
@@ -63,7 +79,7 @@ namespace MementoHealth
             // Configure validation logic for passwords
             manager.PasswordValidator = new PasswordValidator
             {
-                RequiredLength = 6,
+                RequiredLength = 8,
                 RequireNonLetterOrDigit = true,
                 RequireDigit = true,
                 RequireLowercase = true,
@@ -77,10 +93,10 @@ namespace MementoHealth
 
             // Register two factor authentication providers. This application uses Phone and Emails as a step of receiving a code for verifying the user
             // You can write your own provider and plug it in here.
-            manager.RegisterTwoFactorProvider("Phone Code", new PhoneNumberTokenProvider<ApplicationUser>
+            /*manager.RegisterTwoFactorProvider("Phone Code", new PhoneNumberTokenProvider<ApplicationUser>
             {
                 MessageFormat = "Your security code is {0}"
-            });
+            });*/
             manager.RegisterTwoFactorProvider("Email Code", new EmailTokenProvider<ApplicationUser>
             {
                 Subject = "Security Code",
@@ -92,7 +108,10 @@ namespace MementoHealth
             if (dataProtectionProvider != null)
             {
                 manager.UserTokenProvider =
-                    new DataProtectorTokenProvider<ApplicationUser>(dataProtectionProvider.Create("ASP.NET Identity"));
+                    new DataProtectorTokenProvider<ApplicationUser>(dataProtectionProvider.Create("ASP.NET Identity"))
+                    {
+                        TokenLifespan = TimeSpan.FromHours(3)
+                    };
             }
             return manager;
         }
