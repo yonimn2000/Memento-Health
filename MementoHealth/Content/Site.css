@@ -21,3 +21,9 @@ select,
 textarea {
     max-width: 280px;
 }
+
+#logo-img {
+    height: 50px;
+    top: -3px;
+    position: relative;
+}

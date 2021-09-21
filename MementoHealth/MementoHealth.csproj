@@ -209,6 +209,10 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Images\camron.png" />
+    <Content Include="Images\Memento Health-logos_transparent.svg" />
+    <Content Include="Images\waiting_room.svg" />
+    <Content Include="Images\yonatan.jpg" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
