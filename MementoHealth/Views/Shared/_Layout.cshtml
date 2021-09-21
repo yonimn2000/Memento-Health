@@ -1,4 +1,9 @@
-﻿<!DOCTYPE html>
+﻿@{
+    bool isFullScreen = ViewBag.UseFullScreenWidth != null && ViewBag.UseFullScreenWidth;
+    string containerClass = "container" + (isFullScreen ? "-fluid" : "");
+}
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -10,10 +15,10 @@
 </head>
 <body>
     <nav class="navbar navbar-expand-lg bg-light navbar-light">
-        <div class="container">
+        <div class="@containerClass">
             <div class="navbar-header">
                 <a href="@Url.Action("Index", "Home")" class="navbar-brand">
-            <img src="~/Images/Memento Health-logos_transparent.png" id="logo-img" title="title" alt="additional title" />
+            <img src="~/Images/Memento Health-logos_transparent.svg" id="logo-img" title="title" alt="additional title" />
         </a>
                 
             </div>
@@ -34,10 +39,10 @@
             </div>
         </div>
     </nav>
-    <div class="container body-content mt-3">
+    <div class="@containerClass body-content mt-3">
         @RenderBody()
         <hr />
-        <footer>
+        <footer class="@(isFullScreen ? "ml-3" : "")">
             <p>&copy; @DateTime.Now.Year - Memento Health</p>
         </footer>
     </div>
