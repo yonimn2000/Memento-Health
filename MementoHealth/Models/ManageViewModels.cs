@@ -58,6 +58,25 @@ namespace MementoHealth.Models
         public string ConfirmPassword { get; set; }
     }
 
+    public class ChangePinViewModel
+    {
+        [Required]
+        [DataType(DataType.Password)]
+        [Display(Name = "Current password")]
+        public string Password { get; set; }
+
+        [Required]
+        [StringLength(ApplicationUserManager.MaxPinLength, ErrorMessage = "The {0} must be between {2} and {1} digits long.", MinimumLength = ApplicationUserManager.MinPinLength)]
+        [DataType(DataType.Password)]
+        [Display(Name = "New PIN")]
+        public string NewPin { get; set; }
+
+        [DataType(DataType.Password)]
+        [Display(Name = "Confirm new PIN")]
+        [Compare("NewPin", ErrorMessage = "The new PIN and confirmation PIN do not match.")]
+        public string ConfirmPin { get; set; }
+    }
+
     public class AddPhoneNumberViewModel
     {
         [Required]
