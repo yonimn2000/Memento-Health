@@ -2,6 +2,7 @@
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -14,7 +15,7 @@ namespace MementoHealth.Controllers
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
-        public ManageController()        {        }
+        public ManageController() { }
 
         public ManageController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
@@ -151,13 +152,18 @@ namespace MementoHealth.Controllers
             if (!ModelState.IsValid)
                 return View(model);
 
-            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-            if (await UserManager.CheckPasswordAsync(user, model.Password))
+            if (!model.NewPin.All(char.IsDigit))
+                ModelState.AddModelError("", "PIN must contain digits only.");
+            else
             {
-                await UserManager.SetPinAsync(user.Id, model.NewPin);
-                return RedirectToAction("Index", new { Message = ManageMessageId.ChangePinSuccess });
+                var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+                if (await UserManager.CheckPasswordAsync(user, model.Password))
+                {
+                    await UserManager.SetPinAsync(user.Id, model.NewPin);
+                    return RedirectToAction("Index", new { Message = ManageMessageId.ChangePinSuccess });
+                }
+                ModelState.AddModelError("", "Incorrect password");
             }
-            ModelState.AddModelError("", "Incorrect password");
             return View(model);
         }
 
@@ -204,7 +210,7 @@ namespace MementoHealth.Controllers
             base.Dispose(disposing);
         }
 
-#region Helpers
+        #region Helpers
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
 
@@ -256,6 +262,6 @@ namespace MementoHealth.Controllers
             Error
         }
 
-#endregion
+        #endregion
     }
 }
