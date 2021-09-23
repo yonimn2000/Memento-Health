@@ -1,11 +1,15 @@
-﻿using MementoHealth.Models;
+﻿using MementoHealth.Classes;
+using MementoHealth.Exceptions;
+using MementoHealth.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using System;
+using System.Data.Entity;
 using System.Diagnostics;
+using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.Security.Claims;
@@ -61,10 +65,11 @@ namespace MementoHealth
     // Configure the application user manager used in this application. UserManager is defined in ASP.NET Identity and is used by the application.
     public class ApplicationUserManager : UserManager<ApplicationUser>
     {
-        public ApplicationUserManager(IUserStore<ApplicationUser> store)
-            : base(store)
-        {
-        }
+        public const int MinPinLength = 4;
+        public const int MaxPinLength = 8;
+        public const int MaxPinAccessFailedCount = 3;
+
+        public ApplicationUserManager(IUserStore<ApplicationUser> store) : base(store) { }
 
         public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context)
         {
@@ -115,6 +120,36 @@ namespace MementoHealth
             }
             return manager;
         }
+
+        public async Task SetPinAsync(string userId, string pin)
+        {
+            if (!pin.All(char.IsDigit))
+                throw new ArgumentException("PIN code must contain digits only.");
+
+            if (pin.Length < MinPinLength || pin.Length > MaxPinLength)
+                throw new ArgumentOutOfRangeException($"PIN code length must be between {MinPinLength} and {MaxPinLength} digits long. {pin.Length} digits given.");
+
+            ApplicationUser user = await FindByIdAsync(userId);
+            user.PinAccessFailedCount = 0;
+            user.PinHash = SecurePasswordHasher.Hash(pin);
+            await UpdateAsync(user);
+        }
+
+        public async Task<bool> VerifyPinAsync(string userId, string pin)
+        {
+            ApplicationUser user = await FindByIdAsync(userId);
+            bool pinCorrect = SecurePasswordHasher.Verify(pin, user.PinHash);
+            if (!pinCorrect)
+            {
+                user.PinAccessFailedCount++;
+                await UpdateAsync(user);
+                throw new ExceededPinAccessFailedCountException(MaxPinAccessFailedCount);
+            }
+            user.PinAccessFailedCount = 0;
+            return pinCorrect;
+        }
+
+        public async Task<bool> HasPinAsync(string userId) => !string.IsNullOrEmpty((await FindByIdAsync(userId)).PinHash);
     }
 
     // Configure the application sign-in manager which is used in this application.

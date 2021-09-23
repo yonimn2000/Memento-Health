@@ -1,14 +1,13 @@
 ﻿using MementoHealth.Models;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using System;
-using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using System.Web.Security;
 
 namespace MementoHealth.Controllers
 {
@@ -137,13 +136,20 @@ namespace MementoHealth.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(EditUserViewModel model)
         {
+            // Do not let the current user edit themselves.
+            if (model.Id.Equals(User.Identity.GetUserId()))
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
             ApplicationUser applicationUser = Db.Users.Find(model.Id);
             if (ModelState.IsValid)
             {
                 applicationUser.FullName = model.FullName;
                 applicationUser.PhoneNumber = model.Phone;
                 applicationUser.Roles.Clear();
-                UserManager.AddToRole(applicationUser.Id, model.Role);
+                applicationUser.Roles.Add(new IdentityUserRole
+                {
+                    RoleId = Db.Roles.Where(r => r.Name.Equals(model.Role)).Single().Id
+                });
                 Db.SaveChanges();
                 TempData.Add("StatusMessage", "User edited successfully.");
                 return RedirectToAction("Index");
