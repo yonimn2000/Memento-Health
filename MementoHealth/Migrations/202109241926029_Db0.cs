@@ -8,27 +8,16 @@ namespace MementoHealth.Migrations
         public override void Up()
         {
             CreateTable(
-                "dbo.Providers",
+                "dbo.FormQuestionConditions",
                 c => new
                     {
-                        ProviderId = c.Int(nullable: false, identity: true),
-                        Name = c.String(nullable: false),
-                        Address = c.String(nullable: false),
-                        Email = c.String(nullable: false),
+                        ConditionId = c.Int(nullable: false, identity: true),
+                        JsonCondition = c.String(nullable: false),
+                        QuestionId = c.Int(nullable: false),
                     })
-                .PrimaryKey(t => t.ProviderId);
-            
-            CreateTable(
-                "dbo.Forms",
-                c => new
-                    {
-                        FormId = c.Int(nullable: false, identity: true),
-                        Name = c.String(nullable: false),
-                        ProviderId = c.Int(nullable: false),
-                    })
-                .PrimaryKey(t => t.FormId)
-                .ForeignKey("dbo.Providers", t => t.ProviderId, cascadeDelete: true)
-                .Index(t => t.ProviderId);
+                .PrimaryKey(t => t.ConditionId)
+                .ForeignKey("dbo.FormQuestions", t => t.QuestionId, cascadeDelete: true)
+                .Index(t => t.QuestionId);
             
             CreateTable(
                 "dbo.FormQuestions",
@@ -77,6 +66,30 @@ namespace MementoHealth.Migrations
                 .Index(t => t.FormId);
             
             CreateTable(
+                "dbo.Forms",
+                c => new
+                    {
+                        FormId = c.Int(nullable: false, identity: true),
+                        Name = c.String(nullable: false),
+                        ProviderId = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => t.FormId)
+                .ForeignKey("dbo.Providers", t => t.ProviderId, cascadeDelete: true)
+                .Index(t => t.ProviderId);
+            
+            CreateTable(
+                "dbo.Providers",
+                c => new
+                    {
+                        ProviderId = c.Int(nullable: false, identity: true),
+                        Name = c.String(nullable: false),
+                        Phone = c.String(nullable: false),
+                        Address = c.String(nullable: false),
+                        Email = c.String(nullable: false),
+                    })
+                .PrimaryKey(t => t.ProviderId);
+            
+            CreateTable(
                 "dbo.Patients",
                 c => new
                     {
@@ -90,18 +103,6 @@ namespace MementoHealth.Migrations
                 .ForeignKey("dbo.Providers", t => t.ProviderId, cascadeDelete: true)
                 .Index(t => t.ProviderId);
             
-            CreateTable(
-                "dbo.FormQuestionConditions",
-                c => new
-                    {
-                        ConditionId = c.Int(nullable: false, identity: true),
-                        JsonCondition = c.String(nullable: false),
-                        QuestionId = c.Int(nullable: false),
-                    })
-                .PrimaryKey(t => t.ConditionId)
-                .ForeignKey("dbo.FormQuestions", t => t.QuestionId, cascadeDelete: true)
-                .Index(t => t.QuestionId);
-            
             AddColumn("dbo.AspNetUsers", "ProviderId", c => c.Int());
             CreateIndex("dbo.AspNetUsers", "ProviderId");
             AddForeignKey("dbo.AspNetUsers", "ProviderId", "dbo.Providers", "ProviderId");
@@ -109,34 +110,34 @@ namespace MementoHealth.Migrations
         
         public override void Down()
         {
-            DropForeignKey("dbo.AspNetUsers", "ProviderId", "dbo.Providers");
+            DropForeignKey("dbo.FormQuestionConditions", "QuestionId", "dbo.FormQuestions");
             DropForeignKey("dbo.FormQuestions", "NextQuestionId", "dbo.FormQuestions");
             DropForeignKey("dbo.FormQuestions", "FormId", "dbo.Forms");
-            DropForeignKey("dbo.FormQuestionConditions", "QuestionId", "dbo.FormQuestions");
             DropForeignKey("dbo.FormQuestionAnswers", "QuestionId", "dbo.FormQuestions");
             DropForeignKey("dbo.FormQuestionAnswers", "SubmissionId", "dbo.FormSubmissions");
             DropForeignKey("dbo.FormSubmissions", "PatientId", "dbo.Patients");
-            DropForeignKey("dbo.Patients", "ProviderId", "dbo.Providers");
             DropForeignKey("dbo.FormSubmissions", "FormId", "dbo.Forms");
             DropForeignKey("dbo.Forms", "ProviderId", "dbo.Providers");
-            DropIndex("dbo.FormQuestionConditions", new[] { "QuestionId" });
+            DropForeignKey("dbo.AspNetUsers", "ProviderId", "dbo.Providers");
+            DropForeignKey("dbo.Patients", "ProviderId", "dbo.Providers");
+            DropIndex("dbo.AspNetUsers", new[] { "ProviderId" });
             DropIndex("dbo.Patients", new[] { "ProviderId" });
+            DropIndex("dbo.Forms", new[] { "ProviderId" });
             DropIndex("dbo.FormSubmissions", new[] { "FormId" });
             DropIndex("dbo.FormSubmissions", new[] { "PatientId" });
             DropIndex("dbo.FormQuestionAnswers", new[] { "QuestionId" });
             DropIndex("dbo.FormQuestionAnswers", new[] { "SubmissionId" });
             DropIndex("dbo.FormQuestions", new[] { "NextQuestionId" });
             DropIndex("dbo.FormQuestions", new[] { "FormId" });
-            DropIndex("dbo.Forms", new[] { "ProviderId" });
-            DropIndex("dbo.AspNetUsers", new[] { "ProviderId" });
+            DropIndex("dbo.FormQuestionConditions", new[] { "QuestionId" });
             DropColumn("dbo.AspNetUsers", "ProviderId");
-            DropTable("dbo.FormQuestionConditions");
             DropTable("dbo.Patients");
+            DropTable("dbo.Providers");
+            DropTable("dbo.Forms");
             DropTable("dbo.FormSubmissions");
             DropTable("dbo.FormQuestionAnswers");
             DropTable("dbo.FormQuestions");
-            DropTable("dbo.Forms");
-            DropTable("dbo.Providers");
+            DropTable("dbo.FormQuestionConditions");
         }
     }
 }
