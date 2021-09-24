@@ -1,4 +1,5 @@
-﻿using MementoHealth.Migrations;
+﻿using MementoHealth.Entities;
+using MementoHealth.Migrations;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.ComponentModel;
@@ -14,6 +15,10 @@ namespace MementoHealth.Models
     {
         public string PinHash { get; set; }
         public int PinAccessFailedCount { get; set; }
+
+        [ForeignKey("Provider")]
+        public int? ProviderId { get; set; }
+        public virtual Provider Provider { get; set; }
 
         [Required]
         [DisplayName("Full Name")]
@@ -38,6 +43,14 @@ namespace MementoHealth.Models
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+        public DbSet<Provider> Providers { get; set; }
+        public DbSet<Patient> Patients { get; set; }
+        public DbSet<Form> Forms { get; set; }
+        public DbSet<FormSubmission> FormSubmissions { get; set; }
+        public DbSet<FormQuestion> FormQuestions { get; set; }
+        public DbSet<FormQuestionAnswer> FormQuestionsAnswers { get; set; }
+        public DbSet<FormQuestionCondition> FormQuestionConditions { get; set; }
+
         public ApplicationDbContext() : base("DefaultConnection", throwIfV1Schema: false)
         {
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<ApplicationDbContext, Configuration>());
