@@ -1,4 +1,5 @@
-﻿using MementoHealth.Models;
+﻿using MementoHealth.Entities;
+using MementoHealth.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
@@ -16,9 +17,7 @@ namespace MementoHealth.Controllers
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
-        public AccountController()
-        {
-        }
+        public AccountController() { }
 
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
@@ -28,26 +27,14 @@ namespace MementoHealth.Controllers
 
         public ApplicationSignInManager SignInManager
         {
-            get
-            {
-                return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
-            }
-            private set
-            {
-                _signInManager = value;
-            }
+            get => _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
+            private set => _signInManager = value;
         }
 
         public ApplicationUserManager UserManager
         {
-            get
-            {
-                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
-            }
-            private set
-            {
-                _userManager = value;
-            }
+            get => _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            private set => _userManager = value;
         }
 
         //
@@ -163,17 +150,27 @@ namespace MementoHealth.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser
+                Provider provider = new Provider
                 {
-                    UserName = model.Email,
-                    Email = model.Email,
-                    FullName = model.FullName,
-                    PhoneNumber = model.Phone
+                    Email = model.ProviderEmail,
+                    Address = model.ProviderAddress,
+                    Name = model.ProviderName,
+                    Phone = model.ProviderPhone,
                 };
-                var result = await UserManager.CreateAsync(user, model.Password);
+
+                ApplicationUser user = new ApplicationUser
+                {
+                    UserName = model.AdminEmail,
+                    Email = model.AdminEmail,
+                    FullName = model.AdminFullName,
+                    PhoneNumber = model.AdminPhone,
+                    Provider = provider
+                };
+
+                var result = await UserManager.CreateAsync(user, model.AdminPassword);
                 if (result.Succeeded)
                 {
-                    UserManager.AddToRole(user.Id, "SiteAdmin");
+                    UserManager.AddToRole(user.Id, "ProviderAdmin");
                     await SendEmailConfiramtion(user);
                     return View("RegisterSuccess");
                 }
