@@ -180,6 +180,13 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
+    <Compile Include="Entities\Form.cs" />
+    <Compile Include="Entities\FormQuestion.cs" />
+    <Compile Include="Entities\FormQuestionAnswer.cs" />
+    <Compile Include="Entities\FormQuestionCondition.cs" />
+    <Compile Include="Entities\FormSubmission.cs" />
+    <Compile Include="Entities\Patient.cs" />
+    <Compile Include="Entities\Provider.cs" />
     <Compile Include="Exceptions\ExceededPinAccessFailedCountException.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -191,6 +198,10 @@
     <Compile Include="Migrations\202109132245234_User.cs" />
     <Compile Include="Migrations\202109132245234_User.Designer.cs">
       <DependentUpon>202109132245234_User.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202109241926029_Db0.cs" />
+    <Compile Include="Migrations\202109241926029_Db0.Designer.cs">
+      <DependentUpon>202109241926029_Db0.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -391,6 +402,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202109132245234_User.resx">
       <DependentUpon>202109132245234_User.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202109241926029_Db0.resx">
+      <DependentUpon>202109241926029_Db0.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
