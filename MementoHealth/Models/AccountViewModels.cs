@@ -62,6 +62,16 @@ namespace MementoHealth.Models
         public bool RememberMe { get; set; }
     }
 
+    public class PinUnlockViewModel
+    {
+        [Required]
+        [DataType(DataType.Password)]
+        [Display(Name = "PIN")]
+        public string Pin { get; set; }
+
+        public string ReturnUrl { get; set; }
+    }
+
     public class RegisterViewModel
     {
         // Provider

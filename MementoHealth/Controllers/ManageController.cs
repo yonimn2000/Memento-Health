@@ -1,4 +1,6 @@
-﻿using MementoHealth.Models;
+﻿using MementoHealth.Attributes;
+using MementoHealth.Filters;
+using MementoHealth.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
@@ -53,6 +55,7 @@ namespace MementoHealth.Controllers
             var model = new IndexViewModel
             {
                 HasPassword = HasPassword(),
+                HasPin = await UserManager.HasPinAsync(userId),
                 PhoneNumber = await UserManager.GetPhoneNumberAsync(userId),
                 TwoFactor = await UserManager.GetTwoFactorEnabledAsync(userId),
                 Logins = await UserManager.GetLoginsAsync(userId),
@@ -138,14 +141,20 @@ namespace MementoHealth.Controllers
         }
 
         // GET: /Manage/ChangePin
-        public ActionResult ChangePin()
+        [AllowThroughPinLock]
+        public ActionResult ChangePin(string returnUrl, bool lockAfterChangingPin = false)
         {
-            return View();
+            return View(new ChangePinViewModel
+            {
+                ReturnUrl = returnUrl,
+                LockAfterChangingPin = lockAfterChangingPin
+            });
         }
 
         //
         // POST: /Manage/ChangePin
         [HttpPost]
+        [AllowThroughPinLock]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ChangePin(ChangePinViewModel model)
         {
@@ -160,7 +169,15 @@ namespace MementoHealth.Controllers
                 if (await UserManager.CheckPasswordAsync(user, model.Password))
                 {
                     await UserManager.SetPinAsync(user.Id, model.NewPin);
-                    return RedirectToAction("Index", new { Message = ManageMessageId.ChangePinSuccess });
+                    if (model.LockAfterChangingPin)
+                    {
+                        PinLockFilter.Enabled = true;
+                        return RedirectToAction("PinUnlock", "Account", new { returnUrl = model.ReturnUrl });
+                    }
+                    PinLockFilter.Enabled = false;
+                    if (string.IsNullOrWhiteSpace(model.ReturnUrl))
+                        return RedirectToAction("Index", new { Message = ManageMessageId.ChangePinSuccess });
+                    return RedirectToLocal(model.ReturnUrl);
                 }
                 ModelState.AddModelError("", "Incorrect password");
             }
@@ -248,6 +265,13 @@ namespace MementoHealth.Controllers
                 return user.PhoneNumber != null;
             }
             return false;
+        }
+
+        private ActionResult RedirectToLocal(string returnUrl)
+        {
+            if (Url.IsLocalUrl(returnUrl))
+                return Redirect(returnUrl);
+            return RedirectToAction("Index", "Home");
         }
 
         public enum ManageMessageId

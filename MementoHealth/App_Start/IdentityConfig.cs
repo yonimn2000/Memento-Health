@@ -138,15 +138,28 @@ namespace MementoHealth
         public async Task<bool> VerifyPinAsync(string userId, string pin)
         {
             ApplicationUser user = await FindByIdAsync(userId);
-            bool pinCorrect = SecurePasswordHasher.Verify(pin, user.PinHash);
-            if (!pinCorrect)
-            {
-                user.PinAccessFailedCount++;
-                await UpdateAsync(user);
-                throw new ExceededPinAccessFailedCountException(MaxPinAccessFailedCount);
-            }
+
+            if (SecurePasswordHasher.Verify(pin, user.PinHash))
+                return true;
+
+            if (user.PinAccessFailedCount >= MaxPinAccessFailedCount)
+                throw new ExceededMaxPinAccessFailedCountException(MaxPinAccessFailedCount);
+
+            return false;
+        }
+
+        public async Task PinAccessFailedAsync(string userId)
+        {
+            ApplicationUser user = await FindByIdAsync(userId);
+            user.PinAccessFailedCount++;
+            await UpdateAsync(user);
+        }
+
+        public async Task ResetPinAccessFailedCountAsync(string userId)
+        {
+            ApplicationUser user = await FindByIdAsync(userId);
             user.PinAccessFailedCount = 0;
-            return pinCorrect;
+            await UpdateAsync(user);
         }
 
         public async Task<bool> HasPinAsync(string userId) => !string.IsNullOrEmpty((await FindByIdAsync(userId)).PinHash);

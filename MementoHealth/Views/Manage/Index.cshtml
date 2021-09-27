@@ -27,7 +27,7 @@
         <dt>PIN Code:</dt>
         <dd>
             [
-            @Html.ActionLink("Change your PIN code", "ChangePin")
+            @Html.ActionLink(Model.HasPin ? "Change your PIN code" : "Add PIN code", "ChangePin")
             ]
         </dd>
 
