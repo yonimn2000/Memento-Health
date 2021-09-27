@@ -175,6 +175,7 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Attributes\AllowThroughPinLockAttribute.cs" />
     <Compile Include="Classes\SecurePasswordHasher.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -187,7 +188,8 @@
     <Compile Include="Entities\FormSubmission.cs" />
     <Compile Include="Entities\Patient.cs" />
     <Compile Include="Entities\Provider.cs" />
-    <Compile Include="Exceptions\ExceededPinAccessFailedCountException.cs" />
+    <Compile Include="Exceptions\ExceededMaxPinAccessFailedCountException.cs" />
+    <Compile Include="Filters\PinLockFilter.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -381,6 +383,7 @@
     <Content Include="Views\Users\Edit.cshtml" />
     <Content Include="Views\Users\Index.cshtml" />
     <Content Include="Views\Manage\ChangePin.cshtml" />
+    <Content Include="Views\Account\PinUnlock.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

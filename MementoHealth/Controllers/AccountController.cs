@@ -1,4 +1,7 @@
-﻿using MementoHealth.Entities;
+﻿using MementoHealth.Attributes;
+using MementoHealth.Entities;
+using MementoHealth.Exceptions;
+using MementoHealth.Filters;
 using MementoHealth.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
@@ -74,7 +77,9 @@ namespace MementoHealth.Controllers
                     if (!await UserManager.GetTwoFactorEnabledAsync(userId))
                         UserManager.SetTwoFactorEnabled(userId, true);
 
+                    await UserManager.ResetPinAccessFailedCountAsync(userId);
                     return RedirectToLocal(returnUrl);
+
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
@@ -320,12 +325,71 @@ namespace MementoHealth.Controllers
             return RedirectToAction("VerifyCode", new { Provider = model.SelectedProvider, ReturnUrl = model.ReturnUrl, RememberMe = model.RememberMe });
         }
 
+        // POST: /Account/PinLock
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> PinLock(string returnUrl)
+        {
+            if (await UserManager.HasPinAsync(User.Identity.GetUserId()))
+            {
+                PinLockFilter.Enabled = true;
+                return RedirectToAction("PinUnlock", "Account", new { returnUrl });
+            }
+            return RedirectToAction("ChangePin", "Manage", new { returnUrl, lockAfterChangingPin = true });
+        }
+
+        //
+        // GET: /Account/PinUnlock
+        [AllowThroughPinLock]
+        public ActionResult PinUnlock(string returnUrl)
+        {
+            if (!PinLockFilter.Enabled)
+                return RedirectToLocal(returnUrl);
+
+            return View(new PinUnlockViewModel
+            {
+                ReturnUrl = returnUrl
+            });
+        }
+
+        // POST: /Account/PinUnlock
+        [HttpPost]
+        [AllowThroughPinLock]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> PinUnlock(PinUnlockViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    string userId = User.Identity.GetUserId();
+                    if (await UserManager.VerifyPinAsync(userId, model.Pin))
+                    {
+                        PinLockFilter.Enabled = false;
+                        await UserManager.ResetPinAccessFailedCountAsync(userId);
+                        return RedirectToLocal(model.ReturnUrl);
+                    }
+                    await UserManager.PinAccessFailedAsync(userId);
+                }
+                catch (ExceededMaxPinAccessFailedCountException)
+                {
+                    Session.Abandon();
+                    AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+                    return RedirectToAction("Login", "Account");
+                }
+                ModelState.AddModelError("", "Incorrect PIN");
+            }
+            return View(model);
+        }
+
         //
         // POST: /Account/LogOff
         [HttpPost]
+        [AllowThroughPinLock]
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
+            Session.Abandon();
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             return RedirectToAction("Index", "Home");
         }
@@ -381,9 +445,7 @@ namespace MementoHealth.Controllers
         private ActionResult RedirectToLocal(string returnUrl)
         {
             if (Url.IsLocalUrl(returnUrl))
-            {
                 return Redirect(returnUrl);
-            }
             return RedirectToAction("Index", "Home");
         }
 
