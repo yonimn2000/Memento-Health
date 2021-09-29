@@ -385,7 +385,6 @@
     <Content Include="Views\Users\Index.cshtml" />
     <Content Include="Views\Manage\ChangePin.cshtml" />
     <Content Include="Views\Account\PinUnlock.cshtml" />
-    <Content Include="Views\Providers\Create.cshtml" />
     <Content Include="Views\Providers\Delete.cshtml" />
     <Content Include="Views\Providers\Details.cshtml" />
     <Content Include="Views\Providers\Edit.cshtml" />

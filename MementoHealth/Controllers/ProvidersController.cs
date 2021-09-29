@@ -36,29 +36,6 @@ namespace MementoHealth.Controllers
             return View(provider);
         }
 
-        // GET: Providers/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Providers/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ProviderId,Name,Phone,Address,Email")] Provider provider)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Providers.Add(provider);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            return View(provider);
-        }
-
         // GET: Providers/Edit/5
         public ActionResult Edit(int? id)
         {
