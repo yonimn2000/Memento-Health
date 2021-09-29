@@ -33,29 +33,35 @@
             <td>@item.Role</td>
             <td>@item.LockOutStatus @(item.EmailConfirmed ? "" : " + Email not confirmed")</td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Details", "Details", new { id = item.Id })
-                @if (!item.EmailConfirmed)
+                @if (User.Identity.Name.ToLower().Equals(item.Email.ToLower()))
                 {
-                    <text>|</text>
-                    using (Html.BeginForm("ResendEmailConfirmation", "Users", new { id = item.Id }, FormMethod.Post, new { @class = "d-inline" }))
-                    {
-                        @Html.AntiForgeryToken()
-                        <a href="#" onclick="this.closest('form').submit();return false;">Resend Email Confirmation</a>
-                    }
+                    <text>@Html.ActionLink("Manage current user", "Index", "Manage")</text>
                 }
-                @if (!User.Identity.Name.ToLower().Equals(item.Email.ToLower()))
-                { // Prevent removing or locking the current user.
-                    <text>|</text>
-                    using (Html.BeginForm("LockUnlock", "Users", new { id = item.Id, lockOut = !item.LockedOut }))
-                    {
-                        @Html.AntiForgeryToken()
-                        <a href="#" onclick="this.closest('form').submit();return false;">@(item.LockedOut ? "Unlock" : "Lock")</a>
-                    }
-                    <text> | @Html.ActionLink("Delete", "Delete", new { id = item.Id }) </text>
+                else
+                { // Hide actions for the current user.
+                    <text>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.Id })
+                        @if (!item.EmailConfirmed)
+                        {
+                            <text>|</text>
+                            using (Html.BeginForm("ResendEmailConfirmation", "Users", new { id = item.Id }, FormMethod.Post, new { @class = "d-inline" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                <a href="#" onclick="this.closest('form').submit();return false;">Resend Email Confirmation</a>
+                            }
+                        }
+                        <text>|</text>
+                        @using (Html.BeginForm("LockUnlock", "Users", new { id = item.Id, lockOut = !item.LockedOut }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <a href="#" onclick="this.closest('form').submit();return false;">@(item.LockedOut ? "Unlock" : "Lock")</a>
+                        }
+                        |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                    </text>
                 }
             </td>
         </tr>
     }
-
 </table>
