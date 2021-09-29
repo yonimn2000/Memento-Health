@@ -91,25 +91,6 @@ namespace MementoHealth.Controllers
         }
 
         //
-        // POST: /Manage/RemovePhoneNumber
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> RemovePhoneNumber()
-        {
-            var result = await UserManager.SetPhoneNumberAsync(User.Identity.GetUserId(), null);
-            if (!result.Succeeded)
-            {
-                return RedirectToAction("Index", new { Message = ManageMessageId.Error });
-            }
-            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-            if (user != null)
-            {
-                await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-            }
-            return RedirectToAction("Index", new { Message = ManageMessageId.RemovePhoneSuccess });
-        }
-
-        //
         // GET: /Manage/ChangePassword
         public ActionResult ChangePassword()
         {
@@ -184,38 +165,6 @@ namespace MementoHealth.Controllers
             return View(model);
         }
 
-        //
-        // GET: /Manage/SetPassword
-        public ActionResult SetPassword()
-        {
-            return View();
-        }
-
-        //
-        // POST: /Manage/SetPassword
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> SetPassword(SetPasswordViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var result = await UserManager.AddPasswordAsync(User.Identity.GetUserId(), model.NewPassword);
-                if (result.Succeeded)
-                {
-                    var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-                    if (user != null)
-                    {
-                        await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-                    }
-                    return RedirectToAction("Index", new { Message = ManageMessageId.SetPasswordSuccess });
-                }
-                AddErrors(result);
-            }
-
-            // If we got this far, something failed, redisplay form
-            return View(model);
-        }
-
         protected override void Dispose(bool disposing)
         {
             if (disposing && _userManager != null)
@@ -231,29 +180,19 @@ namespace MementoHealth.Controllers
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
 
-        private IAuthenticationManager AuthenticationManager
-        {
-            get
-            {
-                return HttpContext.GetOwinContext().Authentication;
-            }
-        }
+        private IAuthenticationManager AuthenticationManager => HttpContext.GetOwinContext().Authentication;
 
         private void AddErrors(IdentityResult result)
         {
             foreach (var error in result.Errors)
-            {
                 ModelState.AddModelError("", error);
-            }
         }
 
         private bool HasPassword()
         {
             var user = UserManager.FindById(User.Identity.GetUserId());
             if (user != null)
-            {
                 return user.PasswordHash != null;
-            }
             return false;
         }
 
@@ -261,9 +200,7 @@ namespace MementoHealth.Controllers
         {
             var user = UserManager.FindById(User.Identity.GetUserId());
             if (user != null)
-            {
                 return user.PhoneNumber != null;
-            }
             return false;
         }
 
