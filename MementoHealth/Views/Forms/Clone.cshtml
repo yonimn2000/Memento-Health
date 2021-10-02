@@ -4,7 +4,7 @@
     ViewBag.Title = "Clone";
 }
 
-<h2>Delete</h2>
+<h2>@ViewBag.Title</h2>
 
 <h3>Are you sure you want to clone this?</h3>
 <div>
@@ -34,7 +34,7 @@
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
-            <input type="submit" value="Clone" class="btn btn-default" /> |
+            <input type="submit" value="Clone" class="btn btn-primary" /> |
             @Html.ActionLink("Back to List", "Index")
         </div>
     }
