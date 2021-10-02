@@ -16,7 +16,6 @@ namespace MementoHealth.Models
 
 
         [Required]
-        [DisplayName("Name")]
         public string Name { get; set; }
     }
 
@@ -27,7 +26,6 @@ namespace MementoHealth.Models
 
 
         [Required]
-        [DisplayName("Name")]
         public string Name { get; set; }
     }
 }

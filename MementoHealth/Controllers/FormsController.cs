@@ -135,11 +135,28 @@ namespace MementoHealth.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult Clone()
+        public ActionResult Clone(int? id)
         {
-            ViewBag.Message = "Are you sure you wish to clone this form?";
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Form form = db.Forms.Find(id);
+            if (form == null)
+            {
+                return HttpNotFound();
+            }
+            return View(form);
+        }
 
-            return View();
+        // TODO: Implement
+        [HttpPost, ActionName("Clone")]
+        [ValidateAntiForgeryToken]
+        public ActionResult CloneConfirmed(int id)
+        {
+            Form form = db.Forms.Find(id);
+            db.SaveChanges();
+            return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)
