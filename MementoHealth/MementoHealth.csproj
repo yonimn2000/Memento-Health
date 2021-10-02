@@ -181,6 +181,7 @@
     <Compile Include="Controllers\FormsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\ProvidersController.cs" />
     <Compile Include="Controllers\PatientsController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Entities\Form.cs" />
@@ -380,6 +381,10 @@
     <Content Include="Views\Users\Index.cshtml" />
     <Content Include="Views\Manage\ChangePin.cshtml" />
     <Content Include="Views\Account\PinUnlock.cshtml" />
+    <Content Include="Views\Providers\Delete.cshtml" />
+    <Content Include="Views\Providers\Details.cshtml" />
+    <Content Include="Views\Providers\Edit.cshtml" />
+    <Content Include="Views\Providers\Index.cshtml" />
     <Content Include="Views\Forms\Create.cshtml" />
     <Content Include="Views\Forms\Delete.cshtml" />
     <Content Include="Views\Forms\Details.cshtml" />
