@@ -135,6 +135,7 @@ namespace MementoHealth.Controllers
             return RedirectToAction("Index");
         }
 
+        // GET: Forms/Clone/5
         public ActionResult Clone(int? id)
         {
             if (id == null)
@@ -149,22 +150,23 @@ namespace MementoHealth.Controllers
             return View(form);
         }
 
-        // TODO: Implement
+        
+        // POST: Forms/Delete/5
         [HttpPost, ActionName("Clone")]
         [ValidateAntiForgeryToken]
         public ActionResult CloneConfirmed(int id)
         {
-            Form form = db.Forms.Find(id);
-            db.SaveChanges();
+            /*Form form = db.Forms.Find(id);
+            // TODO: Implement
+            db.SaveChanges();*/
             return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)
         {
             if (disposing)
-            {
                 db.Dispose();
-            }
+
             base.Dispose(disposing);
         }
     }
