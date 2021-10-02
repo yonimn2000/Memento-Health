@@ -380,28 +380,17 @@
     <Content Include="Views\Users\Index.cshtml" />
     <Content Include="Views\Manage\ChangePin.cshtml" />
     <Content Include="Views\Account\PinUnlock.cshtml" />
-<<<<<<< HEAD
     <Content Include="Views\Forms\Create.cshtml" />
     <Content Include="Views\Forms\Delete.cshtml" />
     <Content Include="Views\Forms\Details.cshtml" />
     <Content Include="Views\Forms\Edit.cshtml" />
     <Content Include="Views\Forms\Index.cshtml" />
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
     <Content Include="Views\Forms\Clone.cshtml" />
->>>>>>> Stashed changes
-=======
     <Content Include="Views\Patients\Create.cshtml" />
     <Content Include="Views\Patients\Delete.cshtml" />
     <Content Include="Views\Patients\Details.cshtml" />
     <Content Include="Views\Patients\Edit.cshtml" />
     <Content Include="Views\Patients\Index.cshtml" />
-<<<<<<< Updated upstream
->>>>>>> master
-=======
->>>>>>> 09c56c30e0e2f044a6ad2aea0773d21f4c542bd7
->>>>>>> Stashed changes
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
