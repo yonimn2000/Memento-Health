@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -9,9 +10,12 @@ namespace MementoHealth.Entities
     {
         [Key]
         public int PatientId { get; set; }
+
+        [DisplayName("External ID")]
         public string ExternalPatientId { get; set; }
 
         [Required]
+        [DisplayName("Full Name")]
         public string FullName { get; set; }
 
         [Required]
