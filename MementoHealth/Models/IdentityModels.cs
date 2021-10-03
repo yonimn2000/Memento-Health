@@ -51,7 +51,7 @@ namespace MementoHealth.Models
 
     public class ApplicationRole : IdentityRole<string, ApplicationUserRole>
     {
-        public virtual ICollection<ApplicationUserRole> Users { get; set; }
+        public virtual new ICollection<ApplicationUserRole> Users { get; set; }
 
         public ApplicationRole() { } // Needed to work correctly.
         public ApplicationRole(string name)
