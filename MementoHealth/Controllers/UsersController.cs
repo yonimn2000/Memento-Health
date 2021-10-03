@@ -146,7 +146,7 @@ namespace MementoHealth.Controllers
                 applicationUser.FullName = model.FullName;
                 applicationUser.PhoneNumber = model.Phone;
                 applicationUser.Roles.Clear();
-                applicationUser.Roles.Add(new IdentityUserRole
+                applicationUser.Roles.Add(new ApplicationUserRole
                 {
                     RoleId = Db.Roles.Where(r => r.Name.Equals(model.Role)).Single().Id
                 });

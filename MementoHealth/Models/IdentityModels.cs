@@ -2,6 +2,7 @@
 using MementoHealth.Migrations;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -11,10 +12,11 @@ using System.Threading.Tasks;
 
 namespace MementoHealth.Models
 {
-    public class ApplicationUser : IdentityUser
+    public class ApplicationUser : IdentityUser<string, IdentityUserLogin, ApplicationUserRole, IdentityUserClaim>
     {
         public string PinHash { get; set; }
         public int PinAccessFailedCount { get; set; }
+        public virtual new ICollection<ApplicationUserRole> Roles { get; set; }
 
         [ForeignKey("Provider")]
         public int? ProviderId { get; set; }
@@ -32,7 +34,7 @@ namespace MementoHealth.Models
         [DisplayName("Lock Out Status")]
         public string LockOutStatus => LockedOut ? "Locked out" : "Unlocked";
 
-        public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
+        public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser, string> manager)
         {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
             var userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
@@ -41,7 +43,24 @@ namespace MementoHealth.Models
         }
     }
 
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    public class ApplicationUserRole : IdentityUserRole<string>
+    {
+        public virtual ApplicationUser User { get; set; }
+        public virtual ApplicationRole Role { get; set; }
+    }
+
+    public class ApplicationRole : IdentityRole<string, ApplicationUserRole>
+    {
+        public virtual ICollection<ApplicationUserRole> Users { get; set; }
+
+        public ApplicationRole() { } // Needed to work correctly.
+        public ApplicationRole(string name)
+        {
+            Name = name;
+        }
+    }
+
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, string, IdentityUserLogin, ApplicationUserRole, IdentityUserClaim>
     {
         public DbSet<Provider> Providers { get; set; }
         public DbSet<Patient> Patients { get; set; }
@@ -51,11 +70,18 @@ namespace MementoHealth.Models
         public DbSet<FormQuestionAnswer> FormQuestionsAnswers { get; set; }
         public DbSet<FormQuestionCondition> FormQuestionConditions { get; set; }
 
-        public ApplicationDbContext() : base("DefaultConnection", throwIfV1Schema: false)
+        public ApplicationDbContext() : base("DefaultConnection")
         {
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<ApplicationDbContext, Configuration>());
         }
 
         public static ApplicationDbContext Create() => new ApplicationDbContext();
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<ApplicationUserRole>().HasRequired(s => s.Role).WithMany(g => g.Users).HasForeignKey(s => s.RoleId);
+            modelBuilder.Entity<ApplicationUserRole>().HasRequired(s => s.User).WithMany(g => g.Roles).HasForeignKey(s => s.UserId);
+        }
     }
 }
