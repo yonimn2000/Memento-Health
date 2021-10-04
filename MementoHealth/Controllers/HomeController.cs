@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using MementoHealth.Classes;
 using System.Web.Mvc;
 
 namespace MementoHealth.Controllers
@@ -10,20 +7,24 @@ namespace MementoHealth.Controllers
     {
         public ActionResult Index()
         {
+            if (User.IsInRole(Role.SysAdmin))
+                return RedirectToAction("Index", "Providers");
+            if (User.IsInRole(Role.ProviderAdmin))
+                return RedirectToAction("Index", "Forms");
+            if (User.IsInRole(Role.Doctor))
+                return RedirectToAction("Index", "Patients");
+            if (User.IsInRole(Role.Assistant))
+                return RedirectToAction("Index", "Forms");
             return View();
         }
 
         public ActionResult About()
         {
-            ViewBag.Message = "Your application description page.";
-
             return View();
         }
 
         public ActionResult Contact()
         {
-            ViewBag.Message = "Your contact page.";
-
             return View();
         }
     }
