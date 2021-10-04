@@ -1,38 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using MementoHealth.Classes;
+using MementoHealth.Entities;
+using MementoHealth.Models;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using MementoHealth.Entities;
-using MementoHealth.Models;
 
 namespace MementoHealth.Controllers
 {
+    [Authorize(Roles = Role.SysAdmin)]
     public class ProvidersController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private ApplicationDbContext Db { get; } = new ApplicationDbContext();
 
         // GET: Providers
         public ActionResult Index()
         {
-            return View(db.Providers.ToList());
+            return View(Db.Providers.ToList());
         }
 
         // GET: Providers/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
-            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Provider provider = db.Providers.Find(id);
+
+            Provider provider = Db.Providers.Find(id);
             if (provider == null)
-            {
                 return HttpNotFound();
-            }
+
             return View(provider);
         }
 
@@ -40,14 +36,12 @@ namespace MementoHealth.Controllers
         public ActionResult Edit(int? id)
         {
             if (id == null)
-            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Provider provider = db.Providers.Find(id);
+
+            Provider provider = Db.Providers.Find(id);
             if (provider == null)
-            {
                 return HttpNotFound();
-            }
+
             return View(provider);
         }
 
@@ -60,8 +54,8 @@ namespace MementoHealth.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(provider).State = EntityState.Modified;
-                db.SaveChanges();
+                Db.Entry(provider).State = EntityState.Modified;
+                Db.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View(provider);
@@ -71,14 +65,12 @@ namespace MementoHealth.Controllers
         public ActionResult Delete(int? id)
         {
             if (id == null)
-            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Provider provider = db.Providers.Find(id);
+
+            Provider provider = Db.Providers.Find(id);
             if (provider == null)
-            {
                 return HttpNotFound();
-            }
+
             return View(provider);
         }
 
@@ -87,18 +79,16 @@ namespace MementoHealth.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Provider provider = db.Providers.Find(id);
-            db.Providers.Remove(provider);
-            db.SaveChanges();
+            Provider provider = Db.Providers.Find(id);
+            Db.Providers.Remove(provider);
+            Db.SaveChanges();
             return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)
         {
             if (disposing)
-            {
-                db.Dispose();
-            }
+                Db.Dispose();
             base.Dispose(disposing);
         }
     }
