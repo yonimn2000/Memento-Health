@@ -1,8 +1,10 @@
-﻿using MementoHealth.Models;
+﻿using MementoHealth.Classes;
+using MementoHealth.Entities;
+using MementoHealth.Models;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -11,6 +13,7 @@ using System.Web.Mvc;
 
 namespace MementoHealth.Controllers
 {
+    [Authorize(Roles = Role.SysAdmin + "," + Role.ProviderAdmin)]
     public class UsersController : Controller
     {
         private ApplicationUserManager _userManager;
@@ -26,7 +29,16 @@ namespace MementoHealth.Controllers
         // GET: Users
         public ActionResult Index()
         {
-            return View(Db.Users.OrderBy(u => u.FullName).ToList().Select(u => new UserViewModel
+            IEnumerable<ApplicationUser> users;
+
+            if (User.IsInRole(Role.SysAdmin)) // If SysAdmin, get only other SysAdmins.
+                users = Db.Users.Where(u => u.Roles.Any(r => r.Role.Name.Equals(Role.SysAdmin)));
+            else if (User.IsInRole(Role.ProviderAdmin)) // If ProviderAdmin, get only users from current provider.
+                users = Db.Users.Find(User.Identity.GetUserId()).Provider.Staff;
+            else
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest); // Should not be able to reach here at all.
+
+            return View(users.OrderBy(u => u.FullName).ToList().Select(u => new UserViewModel
             {
                 Id = u.Id,
                 Email = u.Email,
@@ -48,21 +60,38 @@ namespace MementoHealth.Controllers
         public ActionResult Details(string id)
         {
             if (id == null)
-            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            ApplicationUser applicationUser = Db.Users.Find(id);
+            ApplicationUser applicationUser = FindUser_Restricted(id);
+
             if (applicationUser == null)
-            {
                 return HttpNotFound();
-            }
+
             return View(applicationUser);
+        }
+
+        private ApplicationUser FindUser_Restricted(string id)
+        {
+            ApplicationUser applicationUser = null;
+
+            if (User.IsInRole(Role.SysAdmin)) // If SysAdmin, get only other SysAdmins.
+                applicationUser = Db.Users.Where(u => u.Id.Equals(id) && u.Roles.Any(r => r.Role.Name.Equals(Role.SysAdmin))).SingleOrDefault();
+            else if (User.IsInRole(Role.ProviderAdmin)) // If ProviderAdmin, get only users from current provider.
+                applicationUser = GetCurrentUserProvider().Staff.Where(u => u.Id.Equals(id)).SingleOrDefault();
+
+            return applicationUser;
+        }
+
+        private Provider GetCurrentUserProvider()
+        {
+            if (User.IsInRole(Role.SysAdmin))
+                return null;
+            return Db.Users.Find(User.Identity.GetUserId()).Provider;
         }
 
         // GET: Users/Create
         public ActionResult Create()
         {
-            ViewBag.Roles = GetRolesSelectList();
+            ViewBag.Roles = GetRolesSelectListForCurrentUser();
             return View();
         }
 
@@ -73,36 +102,58 @@ namespace MementoHealth.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = UserManager.CreateAsync(new ApplicationUser
+                if (GetSelectableRolesForCurrentUser().Contains(model.Role))
                 {
-                    FullName = model.FullName,
-                    Email = model.Email,
-                    UserName = model.Email,
-                    PhoneNumber = model.Phone,
-                    EmailConfirmed = true
-                }).Result;
+                    IdentityResult result = await UserManager.CreateAsync(new ApplicationUser
+                    {
+                        FullName = model.FullName,
+                        Email = model.Email,
+                        UserName = model.Email,
+                        PhoneNumber = model.Phone,
+                        EmailConfirmed = true,
+                        ProviderId = GetCurrentUserProvider().ProviderId
+                    });
 
-                if (result.Succeeded)
-                {
-                    var user = await UserManager.FindByNameAsync(model.Email);
-                    UserManager.AddToRole(user.Id, model.Role);
-                    string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
-                    var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    await UserManager.SendEmailAsync(user.Id, "Memento Account",
-                        "An account with Memento has been created for you. Please set your new password by clicking <a href=\"" + callbackUrl + "\">here</a>");
-                    TempData.Add("StatusMessage", "User added successfully. The new user should follow the link that was sent to the user's email address.");
-                    return RedirectToAction("Index");
+                    if (result.Succeeded)
+                    {
+                        var user = await UserManager.FindByEmailAsync(model.Email);
+                        UserManager.AddToRole(user.Id, model.Role);
+                        string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
+                        var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                        await UserManager.SendEmailAsync(user.Id, "Memento Account",
+                            "An account with Memento has been created for you. Please set your new password by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                        TempData.Add("StatusMessage", "User added successfully. The new user should follow the link that was sent to the user's email address.");
+                        return RedirectToAction("Index");
+                    }
+                    else
+                        ModelState.AddModelError("", "An error has occurred while adding the user: " + string.Join(" | ", result.Errors));
                 }
                 else
-                    ModelState.AddModelError("", "An error has occurred while adding the user: " + string.Join(" | ", result.Errors));
+                    ModelState.AddModelError("", "Invalid role selected.");
             }
-            ViewBag.Roles = GetRolesSelectList();
+            ViewBag.Roles = GetRolesSelectListForCurrentUser();
             return View(model);
         }
 
-        private SelectList GetRolesSelectList(string selected = "")
+        private SelectList GetRolesSelectListForCurrentUser(string selected = "")
         {
-            return new SelectList(Db.Roles.Select(r => new SelectListItem { Text = r.Name, Value = r.Name }).ToList(), "Value", "Text", selected);
+            return new SelectList(GetSelectableRolesForCurrentUser().Select(r => new SelectListItem { Text = r, Value = r }).ToList(), "Value", "Text", selected);
+        }
+
+        private List<string> GetSelectableRolesForCurrentUser()
+        {
+            List<string> roles = new List<string>();
+
+            if (User.IsInRole(Role.SysAdmin))
+                roles.Add(Role.SysAdmin);
+            else if (User.IsInRole(Role.ProviderAdmin))
+            {
+                roles.Add(Role.Assistant);
+                roles.Add(Role.Doctor);
+                roles.Add(Role.ProviderAdmin);
+            }
+
+            return roles;
         }
 
         // GET: Users/Edit/5
@@ -111,11 +162,11 @@ namespace MementoHealth.Controllers
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            ApplicationUser applicationUser = Db.Users.Find(id);
+            ApplicationUser applicationUser = FindUser_Restricted(id);
             if (applicationUser == null)
                 return HttpNotFound();
 
-            ViewBag.Roles = GetRolesSelectList(GetUserRole(applicationUser));
+            ViewBag.Roles = GetRolesSelectListForCurrentUser(GetUserRole(applicationUser));
 
             return View(GetEditUserViewModel(applicationUser));
         }
@@ -140,21 +191,26 @@ namespace MementoHealth.Controllers
             if (model.Id.Equals(User.Identity.GetUserId()))
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            ApplicationUser applicationUser = Db.Users.Find(model.Id);
+            ApplicationUser applicationUser = FindUser_Restricted(model.Id);
             if (ModelState.IsValid)
             {
-                applicationUser.FullName = model.FullName;
-                applicationUser.PhoneNumber = model.Phone;
-                applicationUser.Roles.Clear();
-                applicationUser.Roles.Add(new ApplicationUserRole
+                if (GetSelectableRolesForCurrentUser().Contains(model.Role))
                 {
-                    RoleId = Db.Roles.Where(r => r.Name.Equals(model.Role)).Single().Id
-                });
-                Db.SaveChanges();
-                TempData.Add("StatusMessage", "User edited successfully.");
-                return RedirectToAction("Index");
+                    applicationUser.FullName = model.FullName;
+                    applicationUser.PhoneNumber = model.Phone;
+                    applicationUser.Roles.Clear();
+                    applicationUser.Roles.Add(new ApplicationUserRole
+                    {
+                        Role = Db.Roles.Where(r => r.Name.Equals(model.Role)).Single()
+                    });
+                    Db.SaveChanges();
+                    TempData.Add("StatusMessage", "User edited successfully.");
+                    return RedirectToAction("Index");
+                }
+                else
+                    ModelState.AddModelError("", "Invalid role selected.");
             }
-            ViewBag.Roles = GetRolesSelectList(GetUserRole(applicationUser));
+            ViewBag.Roles = GetRolesSelectListForCurrentUser(GetUserRole(applicationUser));
             return View(GetEditUserViewModel(applicationUser));
         }
 
@@ -164,11 +220,11 @@ namespace MementoHealth.Controllers
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            ApplicationUser applicationUser = Db.Users.Find(id);
+            ApplicationUser applicationUser = FindUser_Restricted(id);
+
             if (applicationUser == null)
-            {
                 return HttpNotFound();
-            }
+
             return View(applicationUser);
         }
 
@@ -181,7 +237,7 @@ namespace MementoHealth.Controllers
             if (id.Equals(User.Identity.GetUserId()))
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            ApplicationUser applicationUser = Db.Users.Find(id);
+            ApplicationUser applicationUser = FindUser_Restricted(id);
             Db.Users.Remove(applicationUser);
             Db.SaveChanges();
             return RedirectToAction("Index");
@@ -192,7 +248,7 @@ namespace MementoHealth.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult ResendEmailConfirmation(string id)
         {
-            ApplicationUser applicationUser = Db.Users.Find(id);
+            ApplicationUser applicationUser = FindUser_Restricted(id);
 
             if (applicationUser == null)
                 return HttpNotFound();
@@ -215,7 +271,7 @@ namespace MementoHealth.Controllers
             if (id.Equals(User.Identity.GetUserId()))
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            ApplicationUser applicationUser = Db.Users.Find(id);
+            ApplicationUser applicationUser = FindUser_Restricted(id);
 
             if (applicationUser == null)
                 return HttpNotFound();

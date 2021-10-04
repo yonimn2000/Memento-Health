@@ -2,6 +2,7 @@
 using MementoHealth.Migrations;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -33,6 +34,11 @@ namespace MementoHealth.Models
         [NotMapped]
         [DisplayName("Lock Out Status")]
         public string LockOutStatus => LockedOut ? "Locked out" : "Unlocked";
+
+        public ApplicationUser()
+        {
+            Id = Guid.NewGuid().ToString();
+        }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser, string> manager)
         {
