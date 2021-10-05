@@ -162,9 +162,8 @@ namespace MementoHealth.Controllers
         public ActionResult Delete(string id)
         {
             if (id == null)
-            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+
             ApplicationUser applicationUser = Db.Users.Find(id);
             if (applicationUser == null)
             {
@@ -178,6 +177,10 @@ namespace MementoHealth.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string id)
         {
+            // Do not let the current user delete themselves.
+            if (id.Equals(User.Identity.GetUserId()))
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
             ApplicationUser applicationUser = Db.Users.Find(id);
             Db.Users.Remove(applicationUser);
             Db.SaveChanges();
@@ -208,6 +211,10 @@ namespace MementoHealth.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult LockUnlock(string id, bool lockOut)
         {
+            // Do not let the current user lock themselves.
+            if (id.Equals(User.Identity.GetUserId()))
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
             ApplicationUser applicationUser = Db.Users.Find(id);
 
             if (applicationUser == null)
@@ -227,9 +234,7 @@ namespace MementoHealth.Controllers
         protected override void Dispose(bool disposing)
         {
             if (disposing)
-            {
                 Db.Dispose();
-            }
             base.Dispose(disposing);
         }
     }

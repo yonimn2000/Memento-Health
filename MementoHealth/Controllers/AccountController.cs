@@ -1,9 +1,12 @@
-﻿using MementoHealth.Models;
+﻿using MementoHealth.Attributes;
+using MementoHealth.Entities;
+using MementoHealth.Exceptions;
+using MementoHealth.Filters;
+using MementoHealth.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using System.Data.Entity.SqlServer.Utilities;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -16,9 +19,7 @@ namespace MementoHealth.Controllers
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
-        public AccountController()
-        {
-        }
+        public AccountController() { }
 
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
@@ -28,26 +29,14 @@ namespace MementoHealth.Controllers
 
         public ApplicationSignInManager SignInManager
         {
-            get
-            {
-                return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
-            }
-            private set
-            {
-                _signInManager = value;
-            }
+            get => _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
+            private set => _signInManager = value;
         }
 
         public ApplicationUserManager UserManager
         {
-            get
-            {
-                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
-            }
-            private set
-            {
-                _userManager = value;
-            }
+            get => _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            private set => _userManager = value;
         }
 
         //
@@ -87,7 +76,9 @@ namespace MementoHealth.Controllers
                     if (!await UserManager.GetTwoFactorEnabledAsync(userId))
                         UserManager.SetTwoFactorEnabled(userId, true);
 
+                    await UserManager.ResetPinAccessFailedCountAsync(userId);
                     return RedirectToLocal(returnUrl);
+
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
@@ -163,17 +154,27 @@ namespace MementoHealth.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser
+                Provider provider = new Provider
                 {
-                    UserName = model.Email,
-                    Email = model.Email,
-                    FullName = model.FullName,
-                    PhoneNumber = model.Phone
+                    Email = model.ProviderEmail,
+                    Address = model.ProviderAddress,
+                    Name = model.ProviderName,
+                    Phone = model.ProviderPhone,
                 };
-                var result = await UserManager.CreateAsync(user, model.Password);
+
+                ApplicationUser user = new ApplicationUser
+                {
+                    UserName = model.AdminEmail,
+                    Email = model.AdminEmail,
+                    FullName = model.AdminFullName,
+                    PhoneNumber = model.AdminPhone,
+                    Provider = provider
+                };
+
+                var result = await UserManager.CreateAsync(user, model.AdminPassword);
                 if (result.Succeeded)
                 {
-                    UserManager.AddToRole(user.Id, "SiteAdmin");
+                    UserManager.AddToRole(user.Id, "ProviderAdmin");
                     await SendEmailConfiramtion(user);
                     return View("RegisterSuccess");
                 }
@@ -288,57 +289,73 @@ namespace MementoHealth.Controllers
             return View();
         }
 
-        //
-        // GET: /Account/SendCode
-        [AllowAnonymous]
-        public async Task<ActionResult> SendCode(string returnUrl, bool rememberMe)
+        // POST: /Account/PinLock
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> PinLock(string returnUrl)
         {
-            var userId = await SignInManager.GetVerifiedUserIdAsync();
-            if (userId == null)
+            if (await UserManager.HasPinAsync(User.Identity.GetUserId()))
             {
-                return View("Error");
+                PinLockFilter.Enabled = true;
+                return RedirectToAction("PinUnlock", "Account", new { returnUrl });
             }
-            var userFactors = await UserManager.GetValidTwoFactorProvidersAsync(userId);
-            var factorOptions = userFactors.Select(purpose => new SelectListItem { Text = purpose, Value = purpose }).ToList();
-            return View(new SendCodeViewModel { Providers = factorOptions, ReturnUrl = returnUrl, RememberMe = rememberMe });
+            return RedirectToAction("ChangePin", "Manage", new { returnUrl, lockAfterChangingPin = true });
         }
 
         //
-        // POST: /Account/SendCode
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> SendCode(SendCodeViewModel model)
+        // GET: /Account/PinUnlock
+        [AllowThroughPinLock]
+        public ActionResult PinUnlock(string returnUrl)
         {
-            if (!ModelState.IsValid)
-            {
-                return View();
-            }
+            if (!PinLockFilter.Enabled)
+                return RedirectToLocal(returnUrl);
 
-            // Generate the token and send it
-            if (!await SignInManager.SendTwoFactorCodeAsync(model.SelectedProvider))
+            return View(new PinUnlockViewModel
             {
-                return View("Error");
+                ReturnUrl = returnUrl
+            });
+        }
+
+        // POST: /Account/PinUnlock
+        [HttpPost]
+        [AllowThroughPinLock]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> PinUnlock(PinUnlockViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    string userId = User.Identity.GetUserId();
+                    if (await UserManager.VerifyPinAsync(userId, model.Pin))
+                    {
+                        PinLockFilter.Enabled = false;
+                        await UserManager.ResetPinAccessFailedCountAsync(userId);
+                        return RedirectToLocal(model.ReturnUrl);
+                    }
+                    await UserManager.PinAccessFailedAsync(userId);
+                }
+                catch (ExceededMaxPinAccessFailedCountException)
+                {
+                    Session.Abandon();
+                    AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+                    return RedirectToAction("Login", "Account");
+                }
+                ModelState.AddModelError("", "Incorrect PIN");
             }
-            return RedirectToAction("VerifyCode", new { Provider = model.SelectedProvider, ReturnUrl = model.ReturnUrl, RememberMe = model.RememberMe });
+            return View(model);
         }
 
         //
         // POST: /Account/LogOff
         [HttpPost]
+        [AllowThroughPinLock]
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
+            Session.Abandon();
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             return RedirectToAction("Index", "Home");
-        }
-
-        //
-        // GET: /Account/ExternalLoginFailure
-        [AllowAnonymous]
-        public ActionResult ExternalLoginFailure()
-        {
-            return View();
         }
 
         protected override void Dispose(bool disposing)
@@ -365,37 +382,25 @@ namespace MementoHealth.Controllers
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
 
-        private IAuthenticationManager AuthenticationManager
-        {
-            get
-            {
-                return HttpContext.GetOwinContext().Authentication;
-            }
-        }
+        private IAuthenticationManager AuthenticationManager => HttpContext.GetOwinContext().Authentication;
 
         private void AddErrors(IdentityResult result)
         {
             foreach (var error in result.Errors)
-            {
                 ModelState.AddModelError("", error);
-            }
         }
 
         private ActionResult RedirectToLocal(string returnUrl)
         {
             if (Url.IsLocalUrl(returnUrl))
-            {
                 return Redirect(returnUrl);
-            }
             return RedirectToAction("Index", "Home");
         }
 
         internal class ChallengeResult : HttpUnauthorizedResult
         {
             public ChallengeResult(string provider, string redirectUri)
-                : this(provider, redirectUri, null)
-            {
-            }
+                : this(provider, redirectUri, null) { }
 
             public ChallengeResult(string provider, string redirectUri, string userId)
             {
@@ -412,9 +417,7 @@ namespace MementoHealth.Controllers
             {
                 var properties = new AuthenticationProperties { RedirectUri = RedirectUri };
                 if (UserId != null)
-                {
                     properties.Dictionary[XsrfKey] = UserId;
-                }
                 context.HttpContext.GetOwinContext().Authentication.Challenge(properties, LoginProvider);
             }
         }

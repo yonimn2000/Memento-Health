@@ -1,4 +1,6 @@
-﻿using MementoHealth.Models;
+﻿using MementoHealth.Attributes;
+using MementoHealth.Filters;
+using MementoHealth.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
@@ -53,6 +55,7 @@ namespace MementoHealth.Controllers
             var model = new IndexViewModel
             {
                 HasPassword = HasPassword(),
+                HasPin = await UserManager.HasPinAsync(userId),
                 PhoneNumber = await UserManager.GetPhoneNumberAsync(userId),
                 TwoFactor = await UserManager.GetTwoFactorEnabledAsync(userId),
                 Logins = await UserManager.GetLoginsAsync(userId),
@@ -88,25 +91,6 @@ namespace MementoHealth.Controllers
         }
 
         //
-        // POST: /Manage/RemovePhoneNumber
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> RemovePhoneNumber()
-        {
-            var result = await UserManager.SetPhoneNumberAsync(User.Identity.GetUserId(), null);
-            if (!result.Succeeded)
-            {
-                return RedirectToAction("Index", new { Message = ManageMessageId.Error });
-            }
-            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-            if (user != null)
-            {
-                await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-            }
-            return RedirectToAction("Index", new { Message = ManageMessageId.RemovePhoneSuccess });
-        }
-
-        //
         // GET: /Manage/ChangePassword
         public ActionResult ChangePassword()
         {
@@ -138,14 +122,20 @@ namespace MementoHealth.Controllers
         }
 
         // GET: /Manage/ChangePin
-        public ActionResult ChangePin()
+        [AllowThroughPinLock]
+        public ActionResult ChangePin(string returnUrl, bool lockAfterChangingPin = false)
         {
-            return View();
+            return View(new ChangePinViewModel
+            {
+                ReturnUrl = returnUrl,
+                LockAfterChangingPin = lockAfterChangingPin
+            });
         }
 
         //
         // POST: /Manage/ChangePin
         [HttpPost]
+        [AllowThroughPinLock]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ChangePin(ChangePinViewModel model)
         {
@@ -160,42 +150,18 @@ namespace MementoHealth.Controllers
                 if (await UserManager.CheckPasswordAsync(user, model.Password))
                 {
                     await UserManager.SetPinAsync(user.Id, model.NewPin);
-                    return RedirectToAction("Index", new { Message = ManageMessageId.ChangePinSuccess });
+                    if (model.LockAfterChangingPin)
+                    {
+                        PinLockFilter.Enabled = true;
+                        return RedirectToAction("PinUnlock", "Account", new { returnUrl = model.ReturnUrl });
+                    }
+                    PinLockFilter.Enabled = false;
+                    if (string.IsNullOrWhiteSpace(model.ReturnUrl))
+                        return RedirectToAction("Index", new { Message = ManageMessageId.ChangePinSuccess });
+                    return RedirectToLocal(model.ReturnUrl);
                 }
                 ModelState.AddModelError("", "Incorrect password");
             }
-            return View(model);
-        }
-
-        //
-        // GET: /Manage/SetPassword
-        public ActionResult SetPassword()
-        {
-            return View();
-        }
-
-        //
-        // POST: /Manage/SetPassword
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> SetPassword(SetPasswordViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var result = await UserManager.AddPasswordAsync(User.Identity.GetUserId(), model.NewPassword);
-                if (result.Succeeded)
-                {
-                    var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-                    if (user != null)
-                    {
-                        await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-                    }
-                    return RedirectToAction("Index", new { Message = ManageMessageId.SetPasswordSuccess });
-                }
-                AddErrors(result);
-            }
-
-            // If we got this far, something failed, redisplay form
             return View(model);
         }
 
@@ -214,29 +180,19 @@ namespace MementoHealth.Controllers
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
 
-        private IAuthenticationManager AuthenticationManager
-        {
-            get
-            {
-                return HttpContext.GetOwinContext().Authentication;
-            }
-        }
+        private IAuthenticationManager AuthenticationManager => HttpContext.GetOwinContext().Authentication;
 
         private void AddErrors(IdentityResult result)
         {
             foreach (var error in result.Errors)
-            {
                 ModelState.AddModelError("", error);
-            }
         }
 
         private bool HasPassword()
         {
             var user = UserManager.FindById(User.Identity.GetUserId());
             if (user != null)
-            {
                 return user.PasswordHash != null;
-            }
             return false;
         }
 
@@ -244,10 +200,15 @@ namespace MementoHealth.Controllers
         {
             var user = UserManager.FindById(User.Identity.GetUserId());
             if (user != null)
-            {
                 return user.PhoneNumber != null;
-            }
             return false;
+        }
+
+        private ActionResult RedirectToLocal(string returnUrl)
+        {
+            if (Url.IsLocalUrl(returnUrl))
+                return Redirect(returnUrl);
+            return RedirectToAction("Index", "Home");
         }
 
         public enum ManageMessageId

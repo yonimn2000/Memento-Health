@@ -7,6 +7,7 @@ namespace MementoHealth.Models
 {
     public class IndexViewModel
     {
+        public bool HasPin { get; set; }
         public bool HasPassword { get; set; }
         public IList<UserLoginInfo> Logins { get; set; }
         public string PhoneNumber { get; set; }
@@ -75,6 +76,9 @@ namespace MementoHealth.Models
         [Display(Name = "Confirm PIN")]
         [Compare("NewPin", ErrorMessage = "The new PIN and confirmation PIN do not match.")]
         public string ConfirmPin { get; set; }
+
+        public string ReturnUrl { get; set; }
+        public bool LockAfterChangingPin { get; set; }
     }
 
     public class AddPhoneNumberViewModel
