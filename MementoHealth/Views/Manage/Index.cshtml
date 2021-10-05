@@ -26,12 +26,9 @@
     <dl class="dl-horizontal" style="text-align: center">
         <dt style="text-align: left">PIN Code:</dt>
         <dd style="text-align: right">
-
-        <dt>PIN Code:</dt>
-        <dd>
-            [
+            
             @Html.ActionLink("Change your PIN code", "ChangePin")
-            ]
+            
         </dd>
 
         </dd>
@@ -44,11 +41,7 @@
             {
                 <br />
                 <text>&nbsp;&nbsp;@Html.ActionLink("Change", "AddPhoneNumber")&nbsp;&nbsp;</text>
-                using (Html.BeginForm("RemovePhoneNumber", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                {
-                    @Html.AntiForgeryToken()
-                    <text><input type="submit" value="Remove" class="btn-link" style="background: none; border: none" /></text>
-                }
+
             }
             else
             {
