@@ -88,6 +88,7 @@ namespace MementoHealth.Models
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<ApplicationUserRole>().HasRequired(s => s.Role).WithMany(g => g.Users).HasForeignKey(s => s.RoleId);
             modelBuilder.Entity<ApplicationUserRole>().HasRequired(s => s.User).WithMany(g => g.Roles).HasForeignKey(s => s.UserId);
+            modelBuilder.Entity<ApplicationUser>().HasOptional(u => u.Provider).WithMany(u => u.Staff).WillCascadeOnDelete(true);
         }
     }
 }

@@ -209,6 +209,10 @@
     <Compile Include="Migrations\202109241926029_Db0.Designer.cs">
       <DependentUpon>202109241926029_Db0.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202110062138441_ProviderCascadeDelete.cs" />
+    <Compile Include="Migrations\202110062138441_ProviderCascadeDelete.Designer.cs">
+      <DependentUpon>202110062138441_ProviderCascadeDelete.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\FormViewModels.cs" />
@@ -421,6 +425,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202109241926029_Db0.resx">
       <DependentUpon>202109241926029_Db0.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202110062138441_ProviderCascadeDelete.resx">
+      <DependentUpon>202110062138441_ProviderCascadeDelete.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
