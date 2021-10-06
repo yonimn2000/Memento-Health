@@ -9,7 +9,7 @@
 @using (Html.BeginForm("AddPhoneNumber", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
     @Html.AntiForgeryToken()
-    <h3>Add a phone number</h3>
+    <h3>Change phone number</h3>
     @Html.ValidationSummary("", new { @class = "text-danger" })
     <div class="container">
         <div class="form-group">
