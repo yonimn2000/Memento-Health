@@ -11,6 +11,7 @@ namespace MementoHealth.Models
         public bool HasPassword { get; set; }
         public IList<UserLoginInfo> Logins { get; set; }
         public string PhoneNumber { get; set; }
+        public string FullName { get; set; }
         public string Role { get; set; }
         public bool TwoFactor { get; set; }
         public bool BrowserRemembered { get; set; }
@@ -88,6 +89,13 @@ namespace MementoHealth.Models
         [Phone]
         [Display(Name = "Phone Number")]
         public string Number { get; set; }
+    }
+
+    public class ChangeFullNameViewModel
+    {
+        [Required]
+        [Display(Name = "Full Name")]
+        public string FullName { get; set; }
     }
 
     public class VerifyPhoneNumberViewModel

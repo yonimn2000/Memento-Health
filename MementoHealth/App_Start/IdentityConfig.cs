@@ -120,6 +120,19 @@ namespace MementoHealth
             return manager;
         }
 
+        public async Task<string> GetFullNameAsync(string userId)
+        {
+            ApplicationUser user = await FindByIdAsync(userId);
+            return user.FullName;
+        }
+
+        public async Task SetFullNameAsync(string userId, string fullName)
+        {
+            ApplicationUser user = await FindByIdAsync(userId);
+            user.FullName = fullName;
+            await UpdateAsync(user);
+        }
+
         public async Task SetPinAsync(string userId, string pin)
         {
             if (!pin.All(char.IsDigit))
