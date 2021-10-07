@@ -71,11 +71,6 @@ namespace MementoHealth.Controllers
                         ModelState.AddModelError("", "The provided email address has not been verified yet. Please check your email for the verification link.");
                         return View(model);
                     }
-
-                    // Force enable 2FA for all users after first sign in.
-                    if (!await UserManager.GetTwoFactorEnabledAsync(userId))
-                        UserManager.SetTwoFactorEnabled(userId, true);
-
                     await UserManager.ResetPinAccessFailedCountAsync(userId);
                     return RedirectToLocal(returnUrl);
 
