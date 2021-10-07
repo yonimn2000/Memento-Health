@@ -9,12 +9,11 @@
 <p class="text-success" style="text-align:center">@ViewBag.StatusMessage</p>
 <div class="container" style="text-align: center; width: 400px">
     <dl class="dl-horizontal" style="text-align: center">
-        <dt>Role:</dt>
-        <dd>@Model.Role</dd>
+        <dt class="text-left">Role:</dt>
+        <dd class="text-right">@Model.Role</dd>
         
         <dt style="text-align: left">Password:</dt>
         <dd style="text-align: right">
-
             @if (Model.HasPassword)
             {
                 @Html.ActionLink("Change your password", "ChangePassword")
@@ -23,20 +22,13 @@
             {
                 @Html.ActionLink("Create", "SetPassword")
             }
-
         </dd>
-    </dl>
-    <dl class="dl-horizontal" style="text-align: center">
+
         <dt style="text-align: left">PIN Code:</dt>
         <dd style="text-align: right">
-            
             @Html.ActionLink("Change your PIN code", "ChangePin")
-            
         </dd>
 
-        </dd>
-    </dl>
-    <dl class="dl-horizontal" style="text-align: center">
         <dt style="text-align: left">Phone Number:</dt>
         <dd style="text-align: right">
             @(Model.PhoneNumber ?? "None")
@@ -76,6 +68,7 @@
             text-align: left;
             text-overflow: ellipsis;
             overflow: hidden;
+            margin-bottom: 16px;
         }
 
         h2 {
