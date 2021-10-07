@@ -2,44 +2,41 @@
 
 @{
     ViewBag.Title = "User Manager";
+    ViewBag.UseFullScreenWidth = true;
 }
 
-<h2>@ViewBag.Title</h2>
+    <div class="box" style="position: relative">
+        <h2 style="display:block; margin: auto; text-align: center; margin-bottom: 25px;">@ViewBag.Title</h2>
+        <p style="position: absolute; top:10px; right:3.5%"> @Html.ActionLink("+", "Create", "Users", null, new { @class = "btn btn-primary btn-sm" })</p>
+    </div>
 
-@if (TempData["StatusMessage"] != null)
-{
-    <p class="text-info">@TempData["StatusMessage"]</p>
-}
+    <div class="container" style="overflow-y: auto; white-space: nowrap; min-width: 94.5%; text-align: center">
+        @if (TempData["StatusMessage"] != null)
+        {
+            <p class="text-info">@TempData["StatusMessage"]</p>
+        }
 
-<p>
-    @Html.ActionLink("Create User", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>Full Name</th>
-        <th>Email</th>
-        <th>Phone</th>
-        <th>Role</th>
-        <th>Status</th>
-        <th>Actions</th>
-    </tr>
 
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>@item.FullName</td>
-            <td>@item.Email</td>
-            <td>@item.Phone</td>
-            <td>@item.Role</td>
-            <td>@item.LockOutStatus @(item.EmailConfirmed ? "" : " + Email not confirmed")</td>
-            <td>
-                @if (User.Identity.Name.ToLower().Equals(item.Email.ToLower()))
-                {
-                    <text>@Html.ActionLink("Manage current user", "Index", "Manage")</text>
-                }
-                else
-                { // Hide actions for the current user.
-                    <text>
+        <table class="table">
+            <tr>
+                <th>Full Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Role</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.FullName</td>
+                    <td>@item.Email</td>
+                    <td>@item.Phone</td>
+                    <td>@item.Role</td>
+                    <td>@item.LockOutStatus @(item.EmailConfirmed ? "" : " + Email not confirmed")</td>
+                    <td>
+
                         @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
                         @Html.ActionLink("Details", "Details", new { id = item.Id })
                         @if (!item.EmailConfirmed)
@@ -51,17 +48,27 @@
                                 <a href="#" onclick="this.closest('form').submit();return false;">Resend Email Confirmation</a>
                             }
                         }
-                        <text>|</text>
-                        @using (Html.BeginForm("LockUnlock", "Users", new { id = item.Id, lockOut = !item.LockedOut }))
-                        {
-                            @Html.AntiForgeryToken()
-                            <a href="#" onclick="this.closest('form').submit();return false;">@(item.LockedOut ? "Unlock" : "Lock")</a>
+                        @if (!User.Identity.Name.ToLower().Equals(item.Email.ToLower()))
+                        { // Prevent removing or locking the current user.
+                            <text>|</text>
+                            using (Html.BeginForm("LockUnlock", "Users", new { id = item.Id, lockOut = !item.LockedOut }))
+                            {
+                                @Html.AntiForgeryToken()
+                                <a href="#" onclick="this.closest('form').submit();return false;">@(item.LockedOut ? "Unlock" : "Lock")</a>
+                            }
+                            <text> | @Html.ActionLink("Delete", "Delete", new { id = item.Id }) </text>
                         }
-                        |
-                        @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-                    </text>
-                }
-            </td>
-        </tr>
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+
+@section styles {
+    <style>
+       form {
+           display: inline-block;
+       }
+    </style>
     }
-</table>
