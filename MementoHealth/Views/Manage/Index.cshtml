@@ -11,7 +11,7 @@
     <dl class="dl-horizontal" style="text-align: center">
         <dt class="text-left">Role:</dt>
         <dd class="text-right">@Model.Role</dd>
-        
+
         <dt style="text-align: left">Password:</dt>
         <dd style="text-align: right">
             @if (Model.HasPassword)
@@ -29,18 +29,24 @@
             @Html.ActionLink("Change your PIN code", "ChangePin")
         </dd>
 
+        <dt class="text-left">Full Name:</dt>
+        <dd class="text-right">
+            @Model.FullName
+            <br />
+            @Html.ActionLink("Change", "AddPhoneNumber")
+        </dd>
+
         <dt style="text-align: left">Phone Number:</dt>
         <dd style="text-align: right">
             @(Model.PhoneNumber ?? "None")
+            <br />
             @if (Model.PhoneNumber != null)
             {
-                <br />
-                <text>&nbsp;&nbsp;@Html.ActionLink("Change", "AddPhoneNumber")&nbsp;&nbsp;</text>
-
+                <text>@Html.ActionLink("Change", "AddPhoneNumber")</text>
             }
             else
             {
-                <text>&nbsp;&nbsp;@Html.ActionLink("Add", "AddPhoneNumber")&nbsp;&nbsp;</text>
+                <text>@Html.ActionLink("Add", "AddPhoneNumber")</text>
             }
         </dd>
     </dl>
@@ -93,4 +99,4 @@
                 margin-left: 10px
             }
     </style>
-    }
+}

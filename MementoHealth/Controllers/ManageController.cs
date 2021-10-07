@@ -44,6 +44,7 @@ namespace MementoHealth.Controllers
             ViewBag.StatusMessage =
                 message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
                 : message == ManageMessageId.ChangePinSuccess ? "Your PIN has been changed."
+                : message == ManageMessageId.ChangeFullNameSuccess ? "Your full name has been changed."
                 : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
                 : message == ManageMessageId.SetTwoFactorSuccess ? "Your two-factor authentication provider has been set."
                 : message == ManageMessageId.Error ? "An error has occurred."
@@ -60,7 +61,8 @@ namespace MementoHealth.Controllers
                 TwoFactor = await UserManager.GetTwoFactorEnabledAsync(userId),
                 Logins = await UserManager.GetLoginsAsync(userId),
                 BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId),
-                Role = string.Join(", ", await UserManager.GetRolesAsync(userId))
+                Role = string.Join(", ", await UserManager.GetRolesAsync(userId)),
+                FullName = await UserManager.GetFullNameAsync(userId)
             };
             return View(model);
         }
@@ -88,6 +90,30 @@ namespace MementoHealth.Controllers
 
             // If we got this far, something failed, redisplay form
             ModelState.AddModelError("", "Failed to add phone");
+            return View(model);
+        }
+
+        // GET: /Manage/ChangeFullName
+        public async Task<ActionResult> ChangeFullName()
+        {
+            return View(new ChangeFullNameViewModel
+            {
+                FullName = await UserManager.GetFullNameAsync(User.Identity.GetUserId())
+            });
+        }
+
+        //
+        // POST: /Manage/ChangeFullName
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ChangeFullName(ChangeFullNameViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                await UserManager.SetFullNameAsync(User.Identity.GetUserId(), model.FullName);
+                return RedirectToAction("Index", new { Message = ManageMessageId.ChangeFullNameSuccess });
+            }
+
             return View(model);
         }
 
@@ -221,7 +247,8 @@ namespace MementoHealth.Controllers
             SetPasswordSuccess,
             RemoveLoginSuccess,
             RemovePhoneSuccess,
-            Error
+            Error,
+            ChangeFullNameSuccess
         }
 
         #endregion
