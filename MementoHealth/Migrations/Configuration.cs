@@ -1,5 +1,6 @@
 namespace MementoHealth.Migrations
 {
+    using MementoHealth.Classes;
     using MementoHealth.Models;
     using Microsoft.AspNet.Identity.EntityFramework;
     using System.Data.Entity.Migrations;
@@ -32,10 +33,10 @@ namespace MementoHealth.Migrations
                 context.Roles.Remove(context.Roles.Where(r => r.Name.Equals("SiteAdmin")).Single());
 
             context.Roles.AddOrUpdate(r => r.Name,
-                new IdentityRole("SysAdmin"),
-                new IdentityRole("ProviderAdmin"),
-                new IdentityRole("Doctor"),
-                new IdentityRole("Assistant"));
+                new ApplicationRole(Role.SysAdmin),
+                new ApplicationRole(Role.ProviderAdmin),
+                new ApplicationRole(Role.Doctor),
+                new ApplicationRole(Role.Assistant));
         }
     }
 }

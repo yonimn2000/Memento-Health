@@ -39,6 +39,7 @@ namespace MementoHealth.Models
         public string Id { get; set; }
 
         [Required]
+        [DisplayName("Full Name")]
         public string FullName { get; set; }
 
         public string Email { get; set; }
