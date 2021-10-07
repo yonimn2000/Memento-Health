@@ -36,7 +36,7 @@ namespace MementoHealth.Models
         public string NewPassword { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm new password")]
+        [Display(Name = "Confirm password")]
         [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
     }
@@ -55,7 +55,7 @@ namespace MementoHealth.Models
         public string NewPassword { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm new password")]
+        [Display(Name = "Confirm password")]
         [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
     }
@@ -74,7 +74,7 @@ namespace MementoHealth.Models
         public string NewPin { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm new PIN")]
+        [Display(Name = "Confirm PIN")]
         [Compare("NewPin", ErrorMessage = "The new PIN and confirmation PIN do not match.")]
         public string ConfirmPin { get; set; }
 
