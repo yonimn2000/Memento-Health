@@ -111,7 +111,7 @@ namespace MementoHealth.Controllers
                         UserName = model.Email,
                         PhoneNumber = model.Phone,
                         EmailConfirmed = true,
-                        ProviderId = GetCurrentUserProvider().ProviderId
+                        ProviderId = GetCurrentUserProvider()?.ProviderId
                     });
 
                     if (result.Succeeded)
