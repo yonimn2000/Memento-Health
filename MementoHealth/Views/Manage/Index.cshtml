@@ -64,14 +64,7 @@
         <dd style="text-align: right">
             @(Model.PhoneNumber ?? "None")
             <br />
-            @if (Model.PhoneNumber != null)
-            {
-                <text>@Html.ActionLink("Change", "AddPhoneNumber")</text>
-            }
-            else
-            {
-                <text>@Html.ActionLink("Add", "AddPhoneNumber")</text>
-            }
+            @Html.ActionLink(Model.PhoneNumber == null ? "Add" : "Cahnge", "AddPhoneNumber")
         </dd>
     </dl>
 </div>

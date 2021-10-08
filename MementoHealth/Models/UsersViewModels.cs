@@ -25,7 +25,6 @@ namespace MementoHealth.Models
         [EmailAddress]
         public string Email { get; set; }
 
-        [Required]
         [Phone]
         public string Phone { get; set; }
 
@@ -44,7 +43,6 @@ namespace MementoHealth.Models
 
         public string Email { get; set; }
 
-        [Required]
         [Phone]
         public string Phone { get; set; }
 

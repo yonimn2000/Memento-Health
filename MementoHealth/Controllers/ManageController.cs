@@ -69,9 +69,12 @@ namespace MementoHealth.Controllers
 
         //
         // GET: /Manage/AddPhoneNumber
-        public ActionResult AddPhoneNumber()
+        public async Task<ActionResult> AddPhoneNumber()
         {
-            return View();
+            return View(new AddPhoneNumberViewModel
+            {
+                Number = await UserManager.GetPhoneNumberAsync(User.Identity.GetUserId())
+            });
         }
 
         //
