@@ -62,6 +62,7 @@ namespace MementoHealth.Models
         public ApplicationRole() { } // Needed to work correctly.
         public ApplicationRole(string name)
         {
+            Id = Guid.NewGuid().ToString();
             Name = name;
         }
     }
