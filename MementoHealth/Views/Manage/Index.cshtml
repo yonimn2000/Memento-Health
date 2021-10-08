@@ -9,9 +9,11 @@
 <p class="text-success" style="text-align:center">@ViewBag.StatusMessage</p>
 <div class="container" style="text-align: center; width: 400px">
     <dl class="dl-horizontal" style="text-align: center">
+        <dt class="text-left">Role:</dt>
+        <dd class="text-right">@Model.Role</dd>
+
         <dt style="text-align: left">Password:</dt>
         <dd style="text-align: right">
-
             @if (Model.HasPassword)
             {
                 @Html.ActionLink("Change your password", "ChangePassword")
@@ -20,33 +22,49 @@
             {
                 @Html.ActionLink("Create", "SetPassword")
             }
-
         </dd>
-    </dl>
-    <dl class="dl-horizontal" style="text-align: center">
+
         <dt style="text-align: left">PIN Code:</dt>
         <dd style="text-align: right">
-            
             @Html.ActionLink("Change your PIN code", "ChangePin")
-            
         </dd>
 
-        </dd>
-    </dl>
-    <dl class="dl-horizontal" style="text-align: center">
-        <dt style="text-align: left">Phone Number:</dt>
+        <dt style="text-align: left">Two-Factor Auth:</dt>
         <dd style="text-align: right">
-            @(Model.PhoneNumber ?? "None")
-            @if (Model.PhoneNumber != null)
+            @if (Model.TwoFactor)
             {
-                <br />
-                <text>&nbsp;&nbsp;@Html.ActionLink("Change", "AddPhoneNumber")&nbsp;&nbsp;</text>
-
+                using (Html.BeginForm("DisableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <text>Enabled
+                    <input type="submit" value="Disable" class="btn btn-link" />
+                    </text>
+                }
             }
             else
             {
-                <text>&nbsp;&nbsp;@Html.ActionLink("Add", "AddPhoneNumber")&nbsp;&nbsp;</text>
+                using (Html.BeginForm("EnableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <text>Disabled
+                    <input type="submit" value="Enable" class="btn btn-link" />
+                    </text>
+                }
             }
+        </dd>
+
+        <dt class="text-left">Full Name:</dt>
+        <dd class="text-right">
+            @Model.FullName
+            <br />
+            @Html.ActionLink("Change", "ChangeFullName")
+        </dd>
+
+        <dt style="text-align: left">Phone Number:</dt>
+        <dd style="text-align: right">
+            @(Model.PhoneNumber ?? "None")
+            <br />
+            @Html.ActionLink(Model.PhoneNumber == null ? "Add" : "Cahnge", "AddPhoneNumber")
         </dd>
     </dl>
 </div>
@@ -73,6 +91,7 @@
             text-align: left;
             text-overflow: ellipsis;
             overflow: hidden;
+            margin-bottom: 16px;
         }
 
         h2 {
@@ -97,4 +116,4 @@
                 margin-left: 10px
             }
     </style>
-    }
+}
