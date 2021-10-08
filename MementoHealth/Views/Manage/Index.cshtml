@@ -4,13 +4,13 @@
     ViewBag.UseFullScreenWidth = true;
 }
 
-<h2>Manage Account</h2>
+<h2 id="page-title">Manage Account</h2>
 
 <p class="text-success" style="text-align:center">@ViewBag.StatusMessage</p>
 <div class="container" style="text-align: center; width: 400px">
-    <dl class="dl-horizontal" style="text-align: center">
-        <dt style="text-align: left">Password:</dt>
-        <dd style="text-align: right">
+    <dl class="dl-horizontal" id="custom-dl" style="text-align: center">
+        <dt id="custom-dt" style="text-align: left">Password:</dt>
+        <dd id="custom-dd" style="text-align: right">
 
             @if (Model.HasPassword)
             {
@@ -23,19 +23,17 @@
 
         </dd>
     </dl>
-    <dl class="dl-horizontal" style="text-align: center">
-        <dt style="text-align: left">PIN Code:</dt>
-        <dd style="text-align: right">
+    <dl class="dl-horizontal" id="custom-dl" style="text-align: center">
+        <dt id="custom-dt" style="text-align: left">PIN Code:</dt>
+        <dd id="custom-dd" style="text-align: right">
             
             @Html.ActionLink("Change your PIN code", "ChangePin")
             
         </dd>
-
-        </dd>
     </dl>
-    <dl class="dl-horizontal" style="text-align: center">
-        <dt style="text-align: left">Phone Number:</dt>
-        <dd style="text-align: right">
+    <dl class="dl-horizontal" id="custom-dl" style="text-align: center">
+        <dt id="custom-dt" style="text-align: left">Phone Number:</dt>
+        <dd id="custom-dd" style="text-align: right">
             @(Model.PhoneNumber ?? "None")
             @if (Model.PhoneNumber != null)
             {
@@ -50,51 +48,3 @@
         </dd>
     </dl>
 </div>
-
-@section styles {
-    <style>
-        dl {
-            display: flex;
-            flex-flow: row;
-            flex-wrap: wrap;
-            width: 100%;
-            overflow: visible;
-        }
-
-        dt {
-            flex: 0 0 50%;
-            text-overflow: ellipsis;
-            overflow: hidden;
-        }
-
-        dd {
-            flex: 0 0 50%;
-            margin-left: auto;
-            text-align: left;
-            text-overflow: ellipsis;
-            overflow: hidden;
-        }
-
-        h2 {
-            display: flex;
-            flex-direction: row;
-            padding-bottom: 25px;
-        }
-
-            h2:before, h2:after {
-                content: "";
-                flex: 1 1;
-                border-bottom: 1px solid;
-                margin: auto;
-                color: #e5e5e5
-            }
-
-            h2:before {
-                margin-right: 10px
-            }
-
-            h2:after {
-                margin-left: 10px
-            }
-    </style>
-    }
