@@ -48,8 +48,7 @@ namespace MementoHealth.Controllers
                 : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
                 : message == ManageMessageId.SetTwoFactorSuccess ? "Your two-factor authentication provider has been set."
                 : message == ManageMessageId.Error ? "An error has occurred."
-                : message == ManageMessageId.AddPhoneSuccess ? "Your phone number was added."
-                : message == ManageMessageId.RemovePhoneSuccess ? "Your phone number was removed."
+                : message == ManageMessageId.ChangePhoneSuccess ? "Your phone number has been changed."
                 : "";
 
             var userId = User.Identity.GetUserId();
@@ -69,9 +68,12 @@ namespace MementoHealth.Controllers
 
         //
         // GET: /Manage/AddPhoneNumber
-        public ActionResult AddPhoneNumber()
+        public async Task<ActionResult> AddPhoneNumber()
         {
-            return View();
+            return View(new AddPhoneNumberViewModel
+            {
+                Number = await UserManager.GetPhoneNumberAsync(User.Identity.GetUserId())
+            });
         }
 
         //
@@ -86,7 +88,7 @@ namespace MementoHealth.Controllers
             }
             var result = await UserManager.SetPhoneNumberAsync(User.Identity.GetUserId(), model.Number);
             if (result.Succeeded)
-                return RedirectToAction("Index", new { Message = ManageMessageId.AddPhoneSuccess });
+                return RedirectToAction("Index", new { Message = ManageMessageId.ChangePhoneSuccess });
 
             // If we got this far, something failed, redisplay form
             ModelState.AddModelError("", "Failed to add phone");
@@ -268,13 +270,12 @@ namespace MementoHealth.Controllers
 
         public enum ManageMessageId
         {
-            AddPhoneSuccess,
+            ChangePhoneSuccess,
             ChangePasswordSuccess,
             ChangePinSuccess,
             SetTwoFactorSuccess,
             SetPasswordSuccess,
             RemoveLoginSuccess,
-            RemovePhoneSuccess,
             Error,
             ChangeFullNameSuccess
         }
