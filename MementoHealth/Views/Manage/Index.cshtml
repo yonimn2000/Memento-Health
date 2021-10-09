@@ -24,13 +24,13 @@
         <p class="my-1">@Model.Role</p><br />
         <p class="my-1">
             @Model.FullName
-            <text>(</text>@Html.ActionLink("Change", "ChangeFullName")<text>)</text>
+            @Html.ActionLink("(Change)", "ChangeFullName")
         </p><br />
         <p class="my-1">
             @if (Model.PhoneNumber != null)
             {
                 @Model.PhoneNumber
-                <text>(</text>@Html.ActionLink("Change", "AddPhoneNumber")<text>)</text>
+                @Html.ActionLink("(Change)", "AddPhoneNumber")
             }
             else
             {
