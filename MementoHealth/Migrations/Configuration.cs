@@ -48,6 +48,7 @@ namespace MementoHealth.Migrations
                 string providerAdminEmail = email;
                 string systemAdminEmail = email.Replace("@", "+admin@");
                 string providerEmail = email.Replace("@", "+provider@");
+
                 using (DbContextTransaction transaction = context.Database.BeginTransaction())
                 {
                     ApplicationUserManager userManager = new ApplicationUserManager(new UserStore<ApplicationUser, ApplicationRole, string, IdentityUserLogin, ApplicationUserRole, IdentityUserClaim>(context));
@@ -67,8 +68,7 @@ namespace MementoHealth.Migrations
                             EmailConfirmed = true,
                             SecurityStamp = Guid.NewGuid().ToString("D"),
                             PasswordHash = userManager.PasswordHasher.HashPassword("P@ssw0rd"),
-                            LockoutEnabled = true,
-                            Roles = new HashSet<ApplicationUserRole>()
+                            LockoutEnabled = true
                         };
                         userManager.Create(sysAdmin);
                         userManager.AddToRole(sysAdmin.Id, Role.SysAdmin);
@@ -98,7 +98,6 @@ namespace MementoHealth.Migrations
                         userManager.Create(providerAdmin);
                         userManager.AddToRole(providerAdmin.Id, Role.ProviderAdmin);
                     }
-                    //context.SaveChanges();
                     transaction.Commit();
                 }
             }
