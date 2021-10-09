@@ -1,0 +1,58 @@
+﻿@model MementoHealth.Models.ChangeFullNameViewModel
+@{
+    ViewBag.Title = "Change Full Name";
+    ViewBag.UseFullScreenWidth = true;
+}
+
+@using (Html.BeginForm("ChangeFullName", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    <h3>Change full name</h3>
+    @Html.ValidationSummary("", new { @class = "text-danger" })
+    <div class="container">
+        <div class="form-group">
+            <div class="row mb-3 justify-content-center">
+                @Html.LabelFor(m => m.FullName, new { @class = "col-md-2 control-label" })
+                <div class="col-md-4">
+                    @Html.TextBoxFor(m => m.FullName, new { @class = "form-control" })
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row mb-3 my-4 justify-content-center">
+            <input type="submit" class="btn btn-primary" value="Change" />
+        </div>
+        <div style="text-align: center">@Html.ActionLink("Back to Manage Account", "Index")</div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+@section styles {
+    <style>
+        h3 {
+            display: flex;
+            flex-direction: row;
+            padding-bottom: 25px;
+        }
+
+            h3:before, h3:after {
+                content: "";
+                flex: 1 1;
+                border-bottom: 1px solid;
+                margin: auto;
+                color: #e5e5e5
+            }
+
+            h3:before {
+                margin-right: 10px
+            }
+
+            h3:after {
+                margin-left: 10px
+            }
+    </style>
+}

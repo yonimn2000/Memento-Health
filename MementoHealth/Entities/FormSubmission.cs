@@ -13,11 +13,11 @@ namespace MementoHealth.Entities
         public DateTime? SubmissionDate { get; set; }
 
         [ForeignKey("Patient")]
-        public int? PatientId { get; set; } // "Temprorary" solution to multiple cascade paths problem.
+        public int? PatientId { get; set; } // "Temporary" solution to multiple cascade paths problem.
         public virtual Patient Patient { get; set; }
 
         [ForeignKey("Form")]
-        public int? FormId { get; set; } // "Temprorary" solution to multiple cascade paths problem.
+        public int? FormId { get; set; } // "Temporary" solution to multiple cascade paths problem.
         public virtual Form Form { get; set; }
 
         public virtual ICollection<FormQuestionAnswer> Answers { get; set; }

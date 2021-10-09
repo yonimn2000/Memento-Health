@@ -8,8 +8,10 @@
 
 <p class="text-success" style="text-align:center">@ViewBag.StatusMessage</p>
 <div class="container" style="text-align: center; width: 400px">
-    <dl class="dl-horizontal" id="custom-dl" style="text-align: center">
-        <dt id="custom-dt" style="text-align: left">Password:</dt>
+   <dl class="dl-horizontal" id="custom-dl" style="text-align: center">
+         <dt id="custom-dt" class="text-left">Role:</dt>
+        <dd id= "custom-dd" class="text-right">@Model.Role</dd>
+       <dt id="custom-dt" style="text-align: left">Password:</dt>
         <dd id="custom-dd" style="text-align: right">
 
             @if (Model.HasPassword)
@@ -20,7 +22,6 @@
             {
                 @Html.ActionLink("Create", "SetPassword")
             }
-
         </dd>
     </dl>
     <dl class="dl-horizontal" id="custom-dl" style="text-align: center">
@@ -28,23 +29,41 @@
         <dd id="custom-dd" style="text-align: right">
             
             @Html.ActionLink("Change your PIN code", "ChangePin")
-            
+        </dd>
+
+        <dt style="text-align: left">Two-Factor Auth:</dt>
+        <dd style="text-align: right">
+            @if (Model.TwoFactor)
+            {
+                using (Html.BeginForm("DisableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <text>Enabled
+                    <input type="submit" value="Disable" class="btn btn-link" />
+                    </text>
+                }
+            }
+            else
+            {
+                using (Html.BeginForm("EnableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <text>Disabled
+                    <input type="submit" value="Enable" class="btn btn-link" />
+                    </text>
+                }
+            }
+        </dd>
+
         </dd>
     </dl>
     <dl class="dl-horizontal" id="custom-dl" style="text-align: center">
         <dt id="custom-dt" style="text-align: left">Phone Number:</dt>
         <dd id="custom-dd" style="text-align: right">
             @(Model.PhoneNumber ?? "None")
-            @if (Model.PhoneNumber != null)
-            {
-                <br />
-                <text>&nbsp;&nbsp;@Html.ActionLink("Change", "AddPhoneNumber")&nbsp;&nbsp;</text>
-
-            }
-            else
-            {
-                <text>&nbsp;&nbsp;@Html.ActionLink("Add", "AddPhoneNumber")&nbsp;&nbsp;</text>
-            }
+            <br />
+            @Html.ActionLink(Model.PhoneNumber == null ? "Add" : "Cahnge", "AddPhoneNumber")
         </dd>
     </dl>
 </div>
+

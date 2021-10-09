@@ -1,7 +1,13 @@
 namespace MementoHealth.Migrations
 {
+    using MementoHealth.Classes;
+    using MementoHealth.Entities;
     using MementoHealth.Models;
+    using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
+    using System;
+    using System.ComponentModel.DataAnnotations;
+    using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
 
@@ -28,14 +34,74 @@ namespace MementoHealth.Migrations
             //    );
             //
 
-            if(context.Roles.Any(r => r.Name.Equals("SiteAdmin")))
-                context.Roles.Remove(context.Roles.Where(r => r.Name.Equals("SiteAdmin")).Single());
-
             context.Roles.AddOrUpdate(r => r.Name,
-                new IdentityRole("SysAdmin"),
-                new IdentityRole("ProviderAdmin"),
-                new IdentityRole("Doctor"),
-                new IdentityRole("Assistant"));
+                new ApplicationRole(Role.SysAdmin),
+                new ApplicationRole(Role.ProviderAdmin),
+                new ApplicationRole(Role.Doctor),
+                new ApplicationRole(Role.Assistant));
+
+#if DEBUG
+            string email = Environment.GetEnvironmentVariable("MEMENTO_ADMIN_EMAIL");
+            if (!string.IsNullOrWhiteSpace(email) && new EmailAddressAttribute().IsValid(email))
+            {
+                string providerAdminEmail = email;
+                string systemAdminEmail = email.Replace("@", "+admin@");
+                string providerEmail = email.Replace("@", "+provider@");
+                const string initialPassword = "P@ssw0rd";
+
+                using (DbContextTransaction transaction = context.Database.BeginTransaction())
+                {
+                    ApplicationUserManager userManager = new ApplicationUserManager(new UserStore<ApplicationUser, ApplicationRole, string, IdentityUserLogin, ApplicationUserRole, IdentityUserClaim>(context));
+                    userManager.UserValidator = new UserValidator<ApplicationUser>(userManager)
+                    {
+                        AllowOnlyAlphanumericUserNames = false,
+                        RequireUniqueEmail = true
+                    };
+
+                    if (!context.Users.Any(u => u.Email == systemAdminEmail))
+                    {
+                        ApplicationUser sysAdmin = new ApplicationUser
+                        {
+                            FullName = "System Administrator",
+                            Email = systemAdminEmail,
+                            UserName = systemAdminEmail,
+                            EmailConfirmed = true,
+                            SecurityStamp = Guid.NewGuid().ToString("D"),
+                            PasswordHash = userManager.PasswordHasher.HashPassword(initialPassword),
+                            LockoutEnabled = true
+                        };
+                        userManager.Create(sysAdmin);
+                        userManager.AddToRole(sysAdmin.Id, Role.SysAdmin);
+                    }
+
+                    if (!context.Users.Any(u => u.Email == providerAdminEmail))
+                    {
+                        Provider provider = new Provider
+                        {
+                            Email = providerEmail,
+                            Address = "115 Library Dr, Rochester, MI 48309",
+                            Name = "My Provider",
+                            Phone = "(999) 555-1234",
+                        };
+
+                        ApplicationUser providerAdmin = new ApplicationUser
+                        {
+                            FullName = "Provider Administrator",
+                            Email = providerAdminEmail,
+                            UserName = providerAdminEmail,
+                            EmailConfirmed = true,
+                            SecurityStamp = Guid.NewGuid().ToString("D"),
+                            PasswordHash = userManager.PasswordHasher.HashPassword(initialPassword),
+                            LockoutEnabled = true,
+                            Provider = provider
+                        };
+                        userManager.Create(providerAdmin);
+                        userManager.AddToRole(providerAdmin.Id, Role.ProviderAdmin);
+                    }
+                    transaction.Commit();
+                }
+            }
+#endif
         }
     }
 }
