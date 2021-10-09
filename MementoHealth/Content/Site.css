@@ -28,30 +28,30 @@ textarea {
     position: relative;
 }
 
-#page-title {
+.page-title {
     display: flex;
     flex-direction: row;
     padding-bottom: 25px;
     text-align: center;
 }
 
-#page-title:before, #page-title:after {
+.page-title:before, .page-title:after {
     content: "";
     flex: 1 1;
     border-bottom: 1px solid;
     margin: auto;
-    color: #e5e5e5
+    color: #e5e5e5;
 }
 
-#page-title:before {
-    margin-right: 10px
+.page-title:before {
+    margin-right: 10px;
 }
 
-#page-title:after {
-    margin-left: 10px
+.page-title:after {
+    margin-left: 10px;
 }
 
-#custom-dl {
+.custom-dl {
     display: flex;
     flex-flow: row;
     flex-wrap: wrap;
@@ -59,13 +59,13 @@ textarea {
     overflow-y: auto;
 }
 
-#custom-dt {
+.custom-dt {
     flex: 0 0 50%;
     text-overflow: ellipsis;
     overflow: hidden;
 }
 
-#custom-dd {
+.custom-dd {
     flex: 0 0 50%;
     margin-left: auto;
     text-align: left;

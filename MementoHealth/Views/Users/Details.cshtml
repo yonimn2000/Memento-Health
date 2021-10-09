@@ -5,24 +5,24 @@
     ViewBag.UseFullScreenWidth = true;
 }
 
-<h2 id="page-title">@ViewBag.Title</h2>
+<div class="page-title h2">@ViewBag.Title</div>
 
 
-<div class="container" style="text-align: center; overflow:auto; width: 100%">
-    <div style='float:left; width:48.5%; text-align:right'>
+<div class="container" style="text-align: center; overflow:auto; min-width: 100%">
+    <div style='float:left; width:49.5%; text-align:right'>
         <p class="my-1 font-weight-bold">@Html.DisplayNameFor(model => model.FullName)</p><br />
         <p class="my-1 font-weight-bold">@Html.DisplayNameFor(model => model.Email)</p><br />
-        <p class="my-1 font-weight-bold">@Html.DisplayNameFor(model => model.EmailConfirmed)</p><br />
-        <p class="my-1 font-weight-bold">@Html.DisplayNameFor(model => model.PhoneNumber)</p><br />
+        <p class="my-1 font-weight-bold">Email Confirmed</p><br />
+        <p class="my-1 font-weight-bold">Phone Number</p><br />
         <p class="my-1 font-weight-bold">@Html.DisplayNameFor(model => model.LockOutStatus)</p>
     </div>
 
-    <div style='float: left; width: 40%; margin-left: 30px; overflow-y: auto; text-align: left'>
+    <div style='float: left; width: 40%; margin-left: 25px; overflow-y: auto; text-align: left'>
         <p class="my-1">@Html.DisplayFor(model => model.FullName)</p><br />
         <p class="my-1">@Html.DisplayFor(model => model.Email)</p><br />
         <p class="my-1">@Html.DisplayFor(model => model.EmailConfirmed)</p><br />
         <p class="my-1">@Html.DisplayFor(model => model.PhoneNumber)</p><br />
-        <p class="my-1">@Html.DisplayFor(model => model.LockOutStatus)
+        <p class="my-1">@Html.DisplayFor(model => model.LockOutStatus)</p>
     </div>
 </div>
 

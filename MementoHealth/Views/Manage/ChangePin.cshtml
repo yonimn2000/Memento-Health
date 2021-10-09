@@ -4,7 +4,7 @@
     ViewBag.UseFullScreenWidth = true;
 }
 
-<h2 id="page-title">@ViewBag.Title</h2>
+<div class="page-title h2">@ViewBag.Title</div>
 
 @using (Html.BeginForm("ChangePin", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {

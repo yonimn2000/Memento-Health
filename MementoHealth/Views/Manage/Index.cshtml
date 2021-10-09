@@ -4,16 +4,24 @@
     ViewBag.UseFullScreenWidth = true;
 }
 
-<h2 id="page-title">Manage Account</h2>
+<div class="page-title h2">Manage Account</div>
 
 <p class="text-success" style="text-align:center">@ViewBag.StatusMessage</p>
-<div class="container" style="text-align: center; width: 400px">
-   <dl class="dl-horizontal" id="custom-dl" style="text-align: center">
-         <dt id="custom-dt" class="text-left">Role:</dt>
-        <dd id= "custom-dd" class="text-right">@Model.Role</dd>
-       <dt id="custom-dt" style="text-align: left">Password:</dt>
-        <dd id="custom-dd" style="text-align: right">
 
+
+
+<div class="container" style="text-align: center; overflow:auto; min-width: 100%">
+    <div style='float:left; width:49.5%; text-align:right'>
+        <p class="my-1 font-weight-bold">Role:</p><br />
+        <p class="my-1 font-weight-bold">Password:</p><br />
+        <p class="my-1 font-weight-bold">Pin Code:</p><br />
+        <p class="my-1 font-weight-bold">Two-Factor Authentication:</p><br />
+        <p class="my-1 font-weight-bold">Phone Number:</p>
+    </div>
+
+    <div style='float: left; width: 40%; margin-left: 25px; overflow-y: auto; text-align: left'>
+        <p class="my-1">@Model.Role</p><br />
+        <p class="my-1">
             @if (Model.HasPassword)
             {
                 @Html.ActionLink("Change your password", "ChangePassword")
@@ -22,25 +30,17 @@
             {
                 @Html.ActionLink("Create", "SetPassword")
             }
-        </dd>
-    </dl>
-    <dl class="dl-horizontal" id="custom-dl" style="text-align: center">
-        <dt id="custom-dt" style="text-align: left">PIN Code:</dt>
-        <dd id="custom-dd" style="text-align: right">
-            
-            @Html.ActionLink("Change your PIN code", "ChangePin")
-        </dd>
-
-        <dt style="text-align: left">Two-Factor Auth:</dt>
-        <dd style="text-align: right">
+        </p><br />
+        <p class="my-1">@Html.ActionLink("Change your PIN code", "ChangePin")</p><br />
+        <p class="my-1">
             @if (Model.TwoFactor)
             {
                 using (Html.BeginForm("DisableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
                 {
                     @Html.AntiForgeryToken()
-                    <text>Enabled
-                    <input type="submit" value="Disable" class="btn btn-link" />
-                    </text>
+
+                    <input type="submit" value="Disable" class="btn btn-link" style="padding: 0 0 0 0" />
+
                 }
             }
             else
@@ -48,22 +48,30 @@
                 using (Html.BeginForm("EnableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
                 {
                     @Html.AntiForgeryToken()
-                    <text>Disabled
-                    <input type="submit" value="Enable" class="btn btn-link" />
-                    </text>
+
+                    <input type="submit" value="Enable" class="btn btn-link" style="padding: 0 0 0 0"/>
+
                 }
             }
-        </dd>
-
-        </dd>
-    </dl>
-    <dl class="dl-horizontal" id="custom-dl" style="text-align: center">
-        <dt id="custom-dt" style="text-align: left">Phone Number:</dt>
-        <dd id="custom-dd" style="text-align: right">
-            @(Model.PhoneNumber ?? "None")
-            <br />
-            @Html.ActionLink(Model.PhoneNumber == null ? "Add" : "Cahnge", "AddPhoneNumber")
-        </dd>
-    </dl>
+        </p>
+        <p class="my-1" style="padding-top: 12px">
+            @if (Model.PhoneNumber != null)
+            {
+                @Model.PhoneNumber<br />
+                @Html.ActionLink("Change", "AddPhoneNumber")
+            }
+            else
+            {
+                @Html.ActionLink("Add", "AddPhoneNumber")
+            }
+        </p>
+    </div>
 </div>
 
+@section styles {
+    <style>
+        form {
+            display: inline-block;
+        }
+    </style>
+}
