@@ -6,7 +6,6 @@ namespace MementoHealth.Migrations
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
     using System;
-    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
@@ -48,6 +47,7 @@ namespace MementoHealth.Migrations
                 string providerAdminEmail = email;
                 string systemAdminEmail = email.Replace("@", "+admin@");
                 string providerEmail = email.Replace("@", "+provider@");
+                const string initialPassword = "P@ssw0rd";
 
                 using (DbContextTransaction transaction = context.Database.BeginTransaction())
                 {
@@ -67,7 +67,7 @@ namespace MementoHealth.Migrations
                             UserName = systemAdminEmail,
                             EmailConfirmed = true,
                             SecurityStamp = Guid.NewGuid().ToString("D"),
-                            PasswordHash = userManager.PasswordHasher.HashPassword("P@ssw0rd"),
+                            PasswordHash = userManager.PasswordHasher.HashPassword(initialPassword),
                             LockoutEnabled = true
                         };
                         userManager.Create(sysAdmin);
@@ -91,7 +91,7 @@ namespace MementoHealth.Migrations
                             UserName = providerAdminEmail,
                             EmailConfirmed = true,
                             SecurityStamp = Guid.NewGuid().ToString("D"),
-                            PasswordHash = userManager.PasswordHasher.HashPassword("P@ssw0rd"),
+                            PasswordHash = userManager.PasswordHasher.HashPassword(initialPassword),
                             LockoutEnabled = true,
                             Provider = provider
                         };
