@@ -5,76 +5,28 @@
     ViewBag.UseFullScreenWidth = true;
 }
 
-<h2>@ViewBag.Title</h2>
+<div class="page-title h2">@ViewBag.Title</div>
 
-<div class="container" style="text-align: center; width: 400px">
-    <dl class="dl-horizontal" style="text-align: center">
-        <dt style="text-align: left">@Html.DisplayNameFor(model => model.FullName)</dt>
-        <dd style="text-align: right">@Html.DisplayFor(model => model.FullName)</dd>
 
-        <dt style="text-align: left">@Html.DisplayNameFor(model => model.Email)</dt>
-        <dd style="text-align: right">@Html.DisplayFor(model => model.Email)</dd>
+<div class="container" style="text-align: center; overflow:auto; min-width: 100%">
+    <div style='float:left; width:49.5%; text-align:right'>
+        <p class="my-1 font-weight-bold">@Html.DisplayNameFor(model => model.FullName)</p><br />
+        <p class="my-1 font-weight-bold">@Html.DisplayNameFor(model => model.Email)</p><br />
+        <p class="my-1 font-weight-bold">Email Confirmed</p><br />
+        <p class="my-1 font-weight-bold">Phone Number</p><br />
+        <p class="my-1 font-weight-bold">@Html.DisplayNameFor(model => model.LockOutStatus)</p>
+    </div>
 
-        <dt style="text-align: left">@Html.DisplayNameFor(model => model.EmailConfirmed)</dt>
-        <dd style="text-align: right">@Html.DisplayFor(model => model.EmailConfirmed)</dd>
-
-        <dt style="text-align: left">@Html.DisplayNameFor(model => model.PhoneNumber)</dt>
-        <dd style="text-align: right">@Html.DisplayFor(model => model.PhoneNumber)</dd>
-
-        <dt style="text-align: left">@Html.DisplayNameFor(model => model.LockOutStatus)</dt>
-        <dd style="text-align: right">@Html.DisplayFor(model => model.LockOutStatus)</dd>
-    </dl>
+    <div style='float: left; width: 40%; margin-left: 25px; overflow-y: auto; text-align: left'>
+        <p class="my-1">@Html.DisplayFor(model => model.FullName)</p><br />
+        <p class="my-1">@Html.DisplayFor(model => model.Email)</p><br />
+        <p class="my-1">@Html.DisplayFor(model => model.EmailConfirmed)</p><br />
+        <p class="my-1">@Html.DisplayFor(model => model.PhoneNumber)</p><br />
+        <p class="my-1">@Html.DisplayFor(model => model.LockOutStatus)</p>
+    </div>
 </div>
 
-<p style="text-align: center">
+<p class="my-4" style="text-align: center">
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
-
-@section styles {
-    <style>
-        dl {
-            display: flex;
-            flex-flow: row;
-            flex-wrap: wrap;
-            width: 100%;
-            overflow: visible;
-        }
-
-        dt {
-            flex: 0 0 50%;
-            text-overflow: ellipsis;
-            overflow: hidden;
-        }
-
-        dd {
-            flex: 0 0 50%;
-            margin-left: auto;
-            text-align: left;
-            text-overflow: ellipsis;
-            overflow: hidden;
-        }
-        h2 {
-            display: flex;
-            flex-direction: row;
-            padding-bottom: 25px;
-            text-align: center;
-        }
-
-            h2:before, h2:after {
-                content: "";
-                flex: 1 1;
-                border-bottom: 1px solid;
-                margin: auto;
-                color: #e5e5e5
-            }
-
-            h2:before {
-                margin-right: 10px
-            }
-
-            h2:after {
-                margin-left: 10px
-            }
-    </style>
-}
