@@ -110,16 +110,17 @@ namespace MementoHealth.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "QuestionId,Question,JsonData,IsRequired")] FormQuestion newFormQuestion)
+        public ActionResult Edit([Bind(Include = "QuestionId,Question,JsonData,IsRequired,TypeString")] FormQuestion newFormQuestion)
         {
             FormQuestion formQuestion = FindFormQuestion_Restricted(newFormQuestion.QuestionId);
             if (ModelState.IsValid)
             {
+                formQuestion.TypeString = newFormQuestion.TypeString;
                 formQuestion.Question = newFormQuestion.Question;
                 formQuestion.JsonData = newFormQuestion.JsonData;
                 formQuestion.IsRequired = newFormQuestion.IsRequired;
                 Db.SaveChanges();
-                return RedirectToAction("Index", new { id = newFormQuestion.FormId });
+                return RedirectToAction("Index", new { id = formQuestion.FormId });
             }
             return View("Editor", newFormQuestion);
         }
