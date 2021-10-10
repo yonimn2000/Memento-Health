@@ -179,9 +179,11 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Attributes\AllowThroughPinLockAttribute.cs" />
+    <Compile Include="Classes\QuestionType.cs" />
     <Compile Include="Classes\Role.cs" />
     <Compile Include="Classes\SecurePasswordHasher.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\FormsQuestionsController.cs" />
     <Compile Include="Controllers\FormsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -216,6 +218,10 @@
     <Compile Include="Migrations\202110062138441_ProviderCascadeDelete.Designer.cs">
       <DependentUpon>202110062138441_ProviderCascadeDelete.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202110102031065_QuestionV2.cs" />
+    <Compile Include="Migrations\202110102031065_QuestionV2.Designer.cs">
+      <DependentUpon>202110102031065_QuestionV2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\FormViewModels.cs" />
@@ -244,6 +250,7 @@
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\Custom\FormQuestionDataConverter.js" />
     <Content Include="Scripts\esm\popper-utils.js" />
     <Content Include="Scripts\esm\popper-utils.min.js" />
     <Content Include="Scripts\esm\popper.js" />
@@ -407,6 +414,10 @@
     <Content Include="Views\Patients\Index.cshtml" />
     <Content Include="Views\Manage\ChangeFullName.cshtml" />
     <Content Include="Views\Shared\NotFound.cshtml" />
+    <Content Include="Views\FormQuestions\Editor.cshtml" />
+    <Content Include="Views\FormQuestions\Delete.cshtml" />
+    <Content Include="Views\FormQuestions\Details.cshtml" />
+    <Content Include="Views\FormQuestions\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -434,6 +445,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202110062138441_ProviderCascadeDelete.resx">
       <DependentUpon>202110062138441_ProviderCascadeDelete.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202110102031065_QuestionV2.resx">
+      <DependentUpon>202110102031065_QuestionV2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
