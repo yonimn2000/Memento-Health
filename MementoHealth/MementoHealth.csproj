@@ -179,6 +179,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Attributes\AllowThroughPinLockAttribute.cs" />
+    <Compile Include="Classes\QuestionType.cs" />
     <Compile Include="Classes\Role.cs" />
     <Compile Include="Classes\SecurePasswordHasher.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -215,6 +216,10 @@
     <Compile Include="Migrations\202110062138441_ProviderCascadeDelete.cs" />
     <Compile Include="Migrations\202110062138441_ProviderCascadeDelete.Designer.cs">
       <DependentUpon>202110062138441_ProviderCascadeDelete.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202110092230369_AnswerType.cs" />
+    <Compile Include="Migrations\202110092230369_AnswerType.Designer.cs">
+      <DependentUpon>202110092230369_AnswerType.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -434,6 +439,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202110062138441_ProviderCascadeDelete.resx">
       <DependentUpon>202110062138441_ProviderCascadeDelete.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202110092230369_AnswerType.resx">
+      <DependentUpon>202110092230369_AnswerType.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

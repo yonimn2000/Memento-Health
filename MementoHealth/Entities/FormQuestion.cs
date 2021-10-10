@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using MementoHealth.Classes;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -13,9 +16,21 @@ namespace MementoHealth.Entities
         public string Question { get; set; }
 
         [Required]
+        [Column("Type")]
+        [DisplayName("Answer Type")]
+        public string TypeString
+        {
+            get => Type.ToString();
+            set => Type = (QuestionType)Enum.Parse(typeof(QuestionType), value, true);
+        }
+
+        [NotMapped]
+        public QuestionType Type { get; set; }
+
+        [DisplayName("Data")]
         public string JsonData { get; set; }
 
-        [Required]
+        [DisplayName("Is Required")]
         public bool IsRequired { get; set; }
 
         [ForeignKey("Form")]
