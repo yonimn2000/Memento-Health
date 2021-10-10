@@ -39,10 +39,6 @@ namespace MementoHealth.Entities
         public int FormId { get; set; }
         public virtual Form Form { get; set; }
 
-        [ForeignKey("NextQuesiton")]
-        public int? NextQuestionId { get; set; }
-        public virtual FormQuestion NextQuesiton { get; set; }
-
         public virtual ICollection<FormQuestionAnswer> Answers { get; set; }
         public virtual ICollection<FormQuestionCondition> Conditions { get; set; }
     }

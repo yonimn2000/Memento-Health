@@ -53,7 +53,7 @@
             <br />
         </div>
 
-        <button id="create-button" class="btn btn-primary" onclick="createClicked()">Add</button>
+        <button type="button" id="create-button" class="btn btn-primary" onclick="return createClicked();">Add</button>
     </div>
 }
 
@@ -63,7 +63,7 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-<script>
+    <script>
         let addMultiLabel = () => {
             let newElement = "<input type='text' name='' value='' />"
             $("#multi-labels").append(newElement);
@@ -111,13 +111,19 @@
 
         let createClicked = async () => {
             let jsonData = {};
+            let isValidForm = true;
 
             switch ($('#@Html.IdFor(m => m.TypeString)').val()) {
                 case '@QuestionType.Checkboxes.ToString()':
                 case '@QuestionType.Radiobuttons.ToString()':
                     let labels = [];
                     $("#multi-labels").children().each(function () {
-                        labels.push($(this).val());
+                        let label = $(this).val();
+                        if (label.length == 0) {
+                            alert("Label text cannot be empty.");
+                            isValidForm = false;
+                        } else
+                            labels.push(label);
                     });
                     jsonData.Labels = labels;
                     break;
@@ -125,14 +131,15 @@
                     let file = $('#img-selector').prop('files')[0];
                     if (!file) {
                         alert("Please select an image first.");
-                        return;
-                    }
-                    jsonData.ImageBase64 = await fileToBase64(file)
+                        isValidForm = false;
+                    } else
+                        jsonData.ImageBase64 = await fileToBase64(file)
                     break;
             }
-
-            $('#JsonData').val(jQuery.isEmptyObject(jsonData) ? "": JSON.stringify(jsonData));
-            $('#create-button').closest("form").submit();
+            if (isValidForm) {
+                $('#JsonData').val(jQuery.isEmptyObject(jsonData) ? "" : JSON.stringify(jsonData));
+                $('#create-button').closest("form").submit();
+            }
         }
-</script>
+    </script>
 }

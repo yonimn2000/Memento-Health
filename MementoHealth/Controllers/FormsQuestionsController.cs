@@ -131,7 +131,7 @@ namespace MementoHealth.Controllers
         {
             FormQuestion formQuestion = FindFormQuestion_Restricted(id);
             FormQuestion prevQuestion = formQuestion.Form.Questions.Where(q => q.Number == formQuestion.Number - 1).SingleOrDefault();
-            if(prevQuestion == null)
+            if (prevQuestion == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
             formQuestion.Number--;
@@ -175,6 +175,9 @@ namespace MementoHealth.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             FormQuestion formQuestion = FindFormQuestion_Restricted(id);
+            FormQuestion nextQuestion = formQuestion.Form.Questions.Where(q => q.Number == formQuestion.Number + 1).SingleOrDefault();
+            foreach (FormQuestion question in formQuestion.Form.Questions.Where(q => q.Number > formQuestion.Number).ToList())
+                question.Number--;
             Db.FormQuestions.Remove(formQuestion);
             Db.SaveChanges();
             return RedirectToAction("Index", new { id = formQuestion.FormId });

@@ -218,13 +218,9 @@
     <Compile Include="Migrations\202110062138441_ProviderCascadeDelete.Designer.cs">
       <DependentUpon>202110062138441_ProviderCascadeDelete.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202110092230369_AnswerType.cs" />
-    <Compile Include="Migrations\202110092230369_AnswerType.Designer.cs">
-      <DependentUpon>202110092230369_AnswerType.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202110101558303_QuestionNumber.cs" />
-    <Compile Include="Migrations\202110101558303_QuestionNumber.Designer.cs">
-      <DependentUpon>202110101558303_QuestionNumber.cs</DependentUpon>
+    <Compile Include="Migrations\202110102031065_QuestionV2.cs" />
+    <Compile Include="Migrations\202110102031065_QuestionV2.Designer.cs">
+      <DependentUpon>202110102031065_QuestionV2.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -451,11 +447,8 @@
     <EmbeddedResource Include="Migrations\202110062138441_ProviderCascadeDelete.resx">
       <DependentUpon>202110062138441_ProviderCascadeDelete.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202110092230369_AnswerType.resx">
-      <DependentUpon>202110092230369_AnswerType.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202110101558303_QuestionNumber.resx">
-      <DependentUpon>202110101558303_QuestionNumber.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202110102031065_QuestionV2.resx">
+      <DependentUpon>202110102031065_QuestionV2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

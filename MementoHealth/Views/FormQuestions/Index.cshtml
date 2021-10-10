@@ -16,7 +16,6 @@
         <th>Is Required</th>
         <th>Answer Type</th>
         <th>Data</th>
-        <th>Next Q#</th>
         <th>Conditions</th>
         <th>Actions</th>
     </tr>
@@ -28,7 +27,6 @@
             <td>@question.IsRequired</td>
             <td>@question.TypeString</td>
             <td class="json-data" data-type="@question.TypeString" data-json="@question.JsonData"></td>
-            <td>@(question.NextQuesiton?.Question)</td>
             <td>@question.Conditions.Count</td>
             <td>
                 @if (question.Number == 1)

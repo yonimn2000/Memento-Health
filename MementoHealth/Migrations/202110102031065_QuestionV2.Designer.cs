@@ -7,13 +7,13 @@ namespace MementoHealth.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class AnswerType : IMigrationMetadata
+    public sealed partial class QuestionV2 : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(AnswerType));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(QuestionV2));
         
         string IMigrationMetadata.Id
         {
-            get { return "202110092230369_AnswerType"; }
+            get { return "202110102031065_QuestionV2"; }
         }
         
         string IMigrationMetadata.Source
