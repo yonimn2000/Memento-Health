@@ -222,6 +222,10 @@
     <Compile Include="Migrations\202110092230369_AnswerType.Designer.cs">
       <DependentUpon>202110092230369_AnswerType.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202110101558303_QuestionNumber.cs" />
+    <Compile Include="Migrations\202110101558303_QuestionNumber.Designer.cs">
+      <DependentUpon>202110101558303_QuestionNumber.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\FormViewModels.cs" />
@@ -449,6 +453,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202110092230369_AnswerType.resx">
       <DependentUpon>202110092230369_AnswerType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202110101558303_QuestionNumber.resx">
+      <DependentUpon>202110101558303_QuestionNumber.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

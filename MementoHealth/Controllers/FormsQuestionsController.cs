@@ -21,7 +21,9 @@ namespace MementoHealth.Controllers
             if (form == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            return View(form.Questions.ToList());
+            ViewBag.FormId = form.FormId;
+            ViewBag.FormName = form.Name;
+            return View(form.Questions.OrderBy(q => q.Number).ToList());
         }
 
         // GET: FormQuestions/Details/5
@@ -74,7 +76,8 @@ namespace MementoHealth.Controllers
                         Question = formQuestion.Question,
                         IsRequired = formQuestion.IsRequired,
                         TypeString = formQuestion.TypeString,
-                        JsonData = formQuestion.JsonData
+                        JsonData = formQuestion.JsonData,
+                        Number = (form.Questions.OrderByDescending(q => q.Number).FirstOrDefault()?.Number ?? 0) + 1
                     });
                     Db.SaveChanges();
                     return RedirectToAction("Index", new { id = form.FormId });
@@ -119,6 +122,38 @@ namespace MementoHealth.Controllers
                 return RedirectToAction("Index", new { id = newFormQuestion.FormId });
             }
             return View(newFormQuestion);
+        }
+
+        // POST: FormQuestions/MoveUp/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult MoveUp(int id)
+        {
+            FormQuestion formQuestion = FindFormQuestion_Restricted(id);
+            FormQuestion prevQuestion = formQuestion.Form.Questions.Where(q => q.Number == formQuestion.Number - 1).SingleOrDefault();
+            if(prevQuestion == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            formQuestion.Number--;
+            prevQuestion.Number++;
+            Db.SaveChanges();
+            return RedirectToAction("Index", new { id = formQuestion.FormId });
+        }
+
+        // POST: FormQuestions/MoveDown/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult MoveDown(int id)
+        {
+            FormQuestion formQuestion = FindFormQuestion_Restricted(id);
+            FormQuestion nextQuestion = formQuestion.Form.Questions.Where(q => q.Number == formQuestion.Number + 1).SingleOrDefault();
+            if (nextQuestion == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            formQuestion.Number++;
+            nextQuestion.Number--;
+            Db.SaveChanges();
+            return RedirectToAction("Index", new { id = formQuestion.FormId });
         }
 
         // GET: FormQuestions/Delete/5

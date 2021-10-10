@@ -12,6 +12,8 @@ namespace MementoHealth.Entities
         [Key]
         public int QuestionId { get; set; }
 
+        public int Number { get; set; }
+
         [Required]
         public string Question { get; set; }
 
