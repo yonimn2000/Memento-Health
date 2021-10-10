@@ -50,10 +50,10 @@ namespace MementoHealth.Controllers
             return Db.FormQuestions.Where(q => q.QuestionId == id && q.Form.ProviderId == providerId).SingleOrDefault();
         }
 
-        // GET: FormQuestions/Create
-        public ActionResult Create(int id)
+        // GET: FormQuestions/Add
+        public ActionResult Add(int id)
         {
-            return View(new FormQuestion { FormId = id });
+            return View("Editor", new FormQuestion { FormId = id });
         }
 
         // POST: FormQuestions/Create
@@ -61,7 +61,7 @@ namespace MementoHealth.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Question,TypeString,JsonData,IsRequired,FormId")] FormQuestion formQuestion)
+        public ActionResult Add([Bind(Include = "Question,TypeString,JsonData,IsRequired,FormId")] FormQuestion formQuestion)
         {
             if (ModelState.IsValid)
             {
@@ -84,7 +84,7 @@ namespace MementoHealth.Controllers
                 }
                 ModelState.AddModelError("", $"The question '{formQuestion.Question}' already exists. Please change the question text.");
             }
-            return View(formQuestion);
+            return View("Editor", formQuestion);
         }
 
         private Provider GetCurrentUserProvider()
@@ -102,7 +102,7 @@ namespace MementoHealth.Controllers
             if (formQuestion == null)
                 return HttpNotFound();
 
-            return View(formQuestion);
+            return View("Editor", formQuestion);
         }
 
         // POST: FormQuestions/Edit/5
@@ -121,7 +121,7 @@ namespace MementoHealth.Controllers
                 Db.SaveChanges();
                 return RedirectToAction("Index", new { id = newFormQuestion.FormId });
             }
-            return View(newFormQuestion);
+            return View("Editor", newFormQuestion);
         }
 
         // POST: FormQuestions/MoveUp/5

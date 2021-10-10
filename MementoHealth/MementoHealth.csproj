@@ -414,10 +414,9 @@
     <Content Include="Views\Patients\Index.cshtml" />
     <Content Include="Views\Manage\ChangeFullName.cshtml" />
     <Content Include="Views\Shared\NotFound.cshtml" />
-    <Content Include="Views\FormQuestions\Create.cshtml" />
+    <Content Include="Views\FormQuestions\Editor.cshtml" />
     <Content Include="Views\FormQuestions\Delete.cshtml" />
     <Content Include="Views\FormQuestions\Details.cshtml" />
-    <Content Include="Views\FormQuestions\Edit.cshtml" />
     <Content Include="Views\FormQuestions\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>

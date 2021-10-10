@@ -1,7 +1,8 @@
 ﻿@model MementoHealth.Entities.FormQuestion
 
 @{
-    ViewBag.Title = "Add Form Question";
+    string action = ViewContext.RouteData.Values["action"].ToString();
+    ViewBag.Title = action + " Form Question";
 }
 
 <h2>@ViewBag.Title</h2>
@@ -53,7 +54,7 @@
             <br />
         </div>
 
-        <button type="button" id="create-button" class="btn btn-primary" onclick="return createClicked();">Add</button>
+        <button type="button" id="create-button" class="btn btn-primary" onclick="return createClicked();">@action</button>
     </div>
 }
 
