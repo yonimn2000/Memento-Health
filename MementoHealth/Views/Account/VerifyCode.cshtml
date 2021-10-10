@@ -13,16 +13,15 @@
 
     <div class="row d-flex justify-content-center">
 
-        <div class="form-div shadow bg-light text-center">
+        <div class="custom-form-div shadow bg-light text-center">
 
             <h2>@ViewBag.Title</h2>
             <h4>Enter verification code</h4>
             <hr />
             @Html.ValidationSummary("", new { @class = "text-danger" })
             <div class="form-group">
-                @Html.LabelFor(m => m.Code, new { @class = "col-md-2 control-label" })
                 <div class="col-md-auto">
-                    @Html.TextBoxFor(m => m.Code, new { @class = "form-control" })
+                    @Html.TextBoxFor(m => m.Code, new { @class = "form-control", placeholder = "Code" })
                 </div>
             </div>
             <div class="form-group">
@@ -34,8 +33,8 @@
                 </div>
             </div>
             <div class="form-group">
-                <div class="col-md-offset-2 col-md-auto">
-                    <input type="submit" class="btn btn-primary" value="Submit" />
+                <div class="col-md-auto">
+                    <input type="submit" class="btn btn-primary w-100" value="Submit" />
                 </div>
             </div>
 
