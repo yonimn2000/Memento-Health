@@ -4,30 +4,36 @@
     ViewBag.Title = "Pin Unlock";
 }
 
-<h2>@ViewBag.Title</h2>
+<div class="row d-flex justify-content-center">
+    <div class="custom-form-div shadow bg-light text-center">
 
-<div class="row">
-    <div class="col-md-8">
-        <section id="loginForm">
-            @using (Html.BeginForm())
-            {
-                @Html.AntiForgeryToken()
-                @Html.HiddenFor(m => m.ReturnUrl)
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                <div class="form-group">
-                    @Html.LabelFor(m => m.Pin, new { @class = "col-md-2 control-label" })
-                    <div class="col-md-10">
-                        @Html.PasswordFor(m => m.Pin, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.Pin, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Unlock" class="btn btn-primary" />
-                    </div>
-                </div>
-            }
-            @Html.ActionLink("Forgot your PIN?", "ChangePin", "Manage", new { returnUrl = Model.ReturnUrl }, null)
-        </section>
+        <h2>@ViewBag.Title</h2>
+        <hr />
+        <div class="row">
+            <div class="col-md-auto">
+                <section id="loginForm">
+                    @using (Html.BeginForm())
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.HiddenFor(m => m.ReturnUrl)
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="form-group">
+                            <div class="col-md-auto">
+                                @Html.PasswordFor(m => m.Pin, new { @class = "form-control", placeholder = "PIN" })
+                                @Html.ValidationMessageFor(m => m.Pin, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-auto">
+                                <input type="submit" value="Unlock" class="btn btn-primary w-100" />
+                            </div>
+                        </div>
+                    }
+                    @Html.ActionLink("Forgot your PIN?", "ChangePin", "Manage", new { returnUrl = Model.ReturnUrl }, null)
+                </section>
+            </div>
+        </div>
     </div>
+
+
 </div>
