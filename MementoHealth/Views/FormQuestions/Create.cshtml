@@ -1,0 +1,138 @@
+﻿@model MementoHealth.Entities.FormQuestion
+
+@{
+    ViewBag.Title = "Add Form Question";
+}
+
+<h2>@ViewBag.Title</h2>
+<hr />
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.ValidationMessageFor(model => model.Question, "", new { @class = "text-danger" })
+    @Html.ValidationMessageFor(model => model.IsRequired, "", new { @class = "text-danger" })
+    @Html.ValidationMessageFor(model => model.JsonData, "", new { @class = "text-danger" })
+
+    <div>
+        @Html.HiddenFor(model => model.FormId)
+        @Html.HiddenFor(model => model.JsonData)
+
+        <label for="@Html.NameFor(m => m.Question)">@Html.NameFor(m => m.Question)</label>
+        <input id="@Html.NameFor(m => m.Question)" name="@Html.NameFor(m => m.Question)" type="text" />
+        <br />
+
+        <label for="@Html.NameFor(m => m.IsRequired)">@Html.NameFor(m => m.IsRequired)</label>
+        <input id="@Html.IdFor(m => m.IsRequired)" name="@Html.NameFor(m => m.IsRequired)" value="true" type="checkbox" />
+        <br />
+
+        <label for="@Html.NameFor(m => m.TypeString)">@Html.DisplayNameFor(m => m.TypeString)</label>
+        <select name="@Html.NameFor(m => m.TypeString)" id="@Html.IdFor(m => m.TypeString)" onchange="answerTypeSelected()">
+            @foreach (var type in Enum.GetNames(typeof(QuestionType)))
+            {
+                <option value="@type">@type</option>
+            }
+        </select>
+        <br />
+
+        <div id="multi-editor" class="custom-editor" style="display:none">
+            <div>Labels:</div>
+            <div id="multi-labels">
+                <input type="text" name="" value="" />
+            </div>
+            <input type="button" name="add" value="Add" onclick="addMultiLabel()" />
+            <input type="button" name="add" value="Remove last" onclick="removeLastMultiLabel()" />
+            <br />
+        </div>
+
+        <div id="image-editor" class="custom-editor" style="display:none">
+            <div>Image:</div>
+            <input id="img-selector" type="file" name="file" accept="image/*" onchange="imageSelected(event)" />
+            <img id="selected-image" width="300px" />
+            <br />
+        </div>
+
+        <button id="create-button" class="btn btn-primary" onclick="createClicked()">Add</button>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+<script>
+        let addMultiLabel = () => {
+            let newElement = "<input type='text' name='' value='' />"
+            $("#multi-labels").append(newElement);
+        }
+
+        let removeLastMultiLabel = () => {
+            if ($("#multi-labels").children().length > 1)
+                $("#multi-labels").children().last().remove();
+        }
+
+        let imageSelected = (event) => {
+            if (event.target.files[0].size > 5242880) {
+                alert("File is too big. Max allowed size is 5 MBs");
+                this.value = "";
+            } else {
+                let imgElement = document.getElementById('selected-image');
+                let file = event.target.files[0];
+                imgElement.src = URL.createObjectURL(file);
+                imgElement.onload = () => URL.revokeObjectURL(imgElement.src); // free memory
+            }
+        }
+
+        let answerTypeSelected = () => {
+            $(".custom-editor").hide();
+            let selectedType = $('#@Html.IdFor(m => m.TypeString)').val();
+            switch (selectedType) {
+                case '@QuestionType.Checkboxes.ToString()':
+                case '@QuestionType.Radiobuttons.ToString()':
+                    $("#multi-editor").show();
+                    break;
+                case '@QuestionType.Image.ToString()':
+                    $("#image-editor").show();
+                    break;
+            }
+        }
+
+        let fileToBase64 = async (file) => {
+            let result_base64 = await new Promise((resolve) => {
+                let fileReader = new FileReader();
+                fileReader.onload = () => resolve(fileReader.result);
+                fileReader.readAsDataURL(file);
+            });
+            return result_base64;
+        }
+
+        let createClicked = async () => {
+            let jsonData = {};
+
+            switch ($('#@Html.IdFor(m => m.TypeString)').val()) {
+                case '@QuestionType.Checkboxes.ToString()':
+                case '@QuestionType.Radiobuttons.ToString()':
+                    let labels = [];
+                    $("#multi-labels").children().each(function () {
+                        labels.push($(this).val());
+                    });
+                    jsonData.Labels = labels;
+                    break;
+                case '@QuestionType.Image.ToString()':
+                    let file = $('#img-selector').prop('files')[0];
+                    if (!file) {
+                        alert("Please select an image first.");
+                        return;
+                    }
+                    jsonData.ImageBase64 = await fileToBase64(file)
+                    break;
+            }
+
+            $('#JsonData').val(jQuery.isEmptyObject(jsonData) ? "": JSON.stringify(jsonData));
+            $('#create-button').closest("form").submit();
+        }
+</script>
+}

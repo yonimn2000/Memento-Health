@@ -1,0 +1,48 @@
+﻿@using MementoHealth.Entities
+@model IEnumerable<FormQuestion>
+@{
+    ViewBag.Title = $"“{Model.FirstOrDefault()?.Form.Name}” Form Questions";
+}
+
+<h2>@ViewBag.Title</h2>
+<hr />
+@Html.ActionLink("Back to Forms", "Index", "Forms", new { id = Model.FirstOrDefault().FormId }, null) | 
+@Html.ActionLink("Add question", "Create", new { id = Model.FirstOrDefault().FormId })
+
+<table class="table">
+    <tr>
+        <th>Question</th>
+        <th>Is Required</th>
+        <th>Answer Type</th>
+        <th>Data</th>
+        <th>Next Question</th>
+        <th>Conditions</th>
+        <th>Actions</th>
+    </tr>
+    @foreach (FormQuestion question in Model)
+    {
+        <tr>
+            <td>@question.Question</td>
+            <td>@question.IsRequired</td>
+            <td>@question.TypeString</td>
+            <td class="json-data" data-type="@question.TypeString" data-json="@question.JsonData"></td>
+            <td>@(question.NextQuesiton?.Question)</td>
+            <td>@question.Conditions.Count</td>
+            <td>
+                @Html.ActionLink("Details", "Details", "FormQuestions", new { id = question.QuestionId }, null) |
+                @Html.ActionLink("Edit", "Edit", "FormQuestions", new { id = question.QuestionId }, null) |
+                @Html.ActionLink("Delete", "Delete", "FormQuestions", new { id = question.QuestionId }, null)
+            </td>
+        </tr>
+    }
+
+</table>
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Scripts/Custom/FormQuestionDataConverter.js")
+}

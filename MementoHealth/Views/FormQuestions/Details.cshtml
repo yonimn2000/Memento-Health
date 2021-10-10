@@ -1,0 +1,39 @@
+﻿@model MementoHealth.Entities.FormQuestion
+
+@{
+    ViewBag.Title = "Form Question Details";
+}
+
+<h2>@ViewBag.Title</h2>
+<hr />
+
+<div>
+    <dl class="dl-horizontal">
+        <dt>@Html.DisplayNameFor(model => model.Form.Name)</dt>
+        <dd>@Html.DisplayFor(model => model.Form.Name)</dd>
+
+        <dt>@Html.DisplayNameFor(model => model.Question)</dt>
+        <dd>@Html.DisplayFor(model => model.Question)</dd>
+
+        <dt>@Html.DisplayNameFor(model => model.IsRequired)</dt>
+        <dd>@Html.DisplayFor(model => model.IsRequired)</dd>
+
+        <dt>@Html.DisplayNameFor(model => model.TypeString)</dt>
+        <dd>@Html.DisplayFor(model => model.TypeString)</dd>
+
+        <dt>@Html.DisplayNameFor(model => model.JsonData)</dt>
+        <dd class="json-data" data-type="@Model.TypeString" data-json="@Model.JsonData"></dd>
+
+        <dt>@Html.DisplayNameFor(model => model.NextQuesiton.Question)</dt>
+        <dd>@Html.DisplayFor(model => model.NextQuesiton.Question)</dd>
+    </dl>
+</div>
+
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.QuestionId }) |
+    @Html.ActionLink("Back to List", "Index", new { id = Model.FormId })
+</p>
+
+@section Scripts {
+    @Scripts.Render("~/Scripts/Custom/FormQuestionDataConverter.js")
+}

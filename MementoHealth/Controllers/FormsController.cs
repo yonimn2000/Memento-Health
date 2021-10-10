@@ -41,8 +41,7 @@ namespace MementoHealth.Controllers
 
         private Form FindForm_Restricted(int? id)
         {
-            string userId = User.Identity.GetUserId();
-            return Db.Users.Find(userId).Provider.Forms.Where(f => f.FormId == id).SingleOrDefault();
+            return GetCurrentUserProvider().Forms.Where(f => f.FormId == id).SingleOrDefault();
         }
 
         // GET: Forms/Create
@@ -62,23 +61,27 @@ namespace MementoHealth.Controllers
         {
             if (ModelState.IsValid)
             {
-                Form newForm = new Form
+                int providerId = GetCurrentUserProvider().ProviderId;
+                if (!Db.Forms.Any(f => f.Name.Equals(form.Name) && f.ProviderId == providerId))
                 {
-                    Name = form.Name,
-                    ProviderId = GetCurrentUserProvider().ProviderId
-                };
-                Db.Forms.Add(newForm);
-                Db.SaveChanges();
-                return RedirectToAction("Index");
-            }
+                    Form newForm = new Form
+                    {
+                        Name = form.Name,
+                        ProviderId = providerId
+                    };
 
+                    Db.Forms.Add(newForm);
+                    Db.SaveChanges();
+                    return RedirectToAction("Edit", new { id = newForm.FormId });
+                }
+                ModelState.AddModelError("", $"A from with the name of '{form.Name}' already exists." +
+                    "Please pick a different name.");
+            }
             return View(form);
         }
 
         private Provider GetCurrentUserProvider()
         {
-            if (User.IsInRole(Role.SysAdmin))
-                return null;
             return Db.Users.Find(User.Identity.GetUserId()).Provider;
         }
 
@@ -106,8 +109,6 @@ namespace MementoHealth.Controllers
         }
 
         // POST: Forms/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = Role.ProviderAdmin)]
