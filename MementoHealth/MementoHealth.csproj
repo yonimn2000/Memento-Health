@@ -407,7 +407,6 @@
     <Content Include="Views\Providers\Index.cshtml" />
     <Content Include="Views\Forms\Create.cshtml" />
     <Content Include="Views\Forms\Delete.cshtml" />
-    <Content Include="Views\Forms\Details.cshtml" />
     <Content Include="Views\Forms\Edit.cshtml" />
     <Content Include="Views\Forms\Index.cshtml" />
     <Content Include="Views\Forms\Clone.cshtml" />
@@ -420,7 +419,6 @@
     <Content Include="Views\Shared\NotFound.cshtml" />
     <Content Include="Views\FormQuestions\Editor.cshtml" />
     <Content Include="Views\FormQuestions\Delete.cshtml" />
-    <Content Include="Views\FormQuestions\Details.cshtml" />
     <Content Include="Views\FormQuestions\Index.cshtml" />
     <Content Include="Views\Account\_CaptchaPartial.cshtml" />
   </ItemGroup>
