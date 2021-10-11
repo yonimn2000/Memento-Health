@@ -21,39 +21,35 @@
         @Html.HiddenFor(model => model.QuestionId)
         @Html.HiddenFor(model => model.JsonData)
 
-        @Html.LabelFor(m => m.Question)
-        @Html.TextBoxFor(m => m.Question)
-        <br />
+        @Html.LabelFor(m => m.Question, new { @class = "control-label" })
+        @Html.TextBoxFor(m => m.Question, new { @class = "form-control mb-3" })
 
-        @Html.LabelFor(m => m.IsRequired)
-        @Html.CheckBoxFor(m => m.IsRequired)
-        <br />
+        <div class="form-check mb-3">
+            @Html.CheckBoxFor(m => m.IsRequired, new { @class = "form-check-input" })
+            @Html.LabelFor(m => m.IsRequired, new { @class = "form-check-label" })
+        </div>
 
-        @Html.LabelFor(m => m.Question)
+        @Html.LabelFor(m => m.TypeString, new { @class = "control-label" })
         @Html.DropDownList(nameof(Model.TypeString),
             new SelectList(Enum.GetNames(typeof(QuestionType))
                 .Select(x => new { Value = x, Text = x }),
                     "Value",
                     "Text"
             ),
-            new { onchange = "answerTypeSelected()" }
+            new { onchange = "answerTypeSelected()", @class = "form-control mb-3" }
         )
-        <br />
 
-        <div id="multi-editor" class="custom-editor" style="display:none">
-            <div>Labels:</div>
+        <div id="multi-editor" class="custom-editor mb-3" style="display:none">
+            <div class="mb-2">Labels</div>
+            <input class="btn btn-sm btn-outline-success" type="button" id="add-label-btn" value="Add label" onclick="addMultiLabel()" />
+            <input class="btn btn-sm btn-outline-danger" type="button" id="remove-label-btn" style="display:none" value="Remove last" onclick="removeLastMultiLabel()" />
             <div id="multi-labels"></div>
-            <input type="button" name="add" value="Add" onclick="addMultiLabel()" />
-            <input type="button" name="add" value="Remove last" onclick="removeLastMultiLabel()" />
-            <br />
         </div>
 
-        <div id="image-editor" class="custom-editor" style="display:none">
-            <div>Image:</div>
-            <input id="img-selector" type="file" name="file" accept="image/*" onchange="imageSelected(event)" />
-            <br />
+        <div id="image-editor" class="custom-editor mb-3" style="display:none">
+            <label for="file" class="mb-2">Image</label>
+            <input id="img-selector" class="form-control-file" type="file" name="file" accept="image/*" onchange="imageSelected(event)" />
             <img id="selected-image" width="300px" />
-            <br />
         </div>
 
         <button type="button" id="create-button" class="btn btn-primary" onclick="return createClicked();">@action</button>
@@ -87,13 +83,17 @@
         })
 
         let addMultiLabel = (val = "") => {
-            let newElement = `<input type='text' name='' value='${val}' />`
+            let newElement = `<input type='text' class='form-control mt-1' value='${val}' />`
             $("#multi-labels").append(newElement);
+            if ($("#multi-labels").children().length > 1)
+                $("#remove-label-btn").show();
         };
 
         let removeLastMultiLabel = () => {
             if ($("#multi-labels").children().length > 1)
                 $("#multi-labels").children().last().remove();
+            if ($("#multi-labels").children().length == 1)
+                $("#remove-label-btn").hide();
         };
 
         let imageSelected = async (event) => {

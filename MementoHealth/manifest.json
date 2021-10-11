@@ -12,18 +12,5 @@
       "sizes": "512x512",
       "type": "image/png"
     }
-  ],
-  "shortcuts": [
-    {
-      "name": "Forms",
-      "url": "./Forms",
-      "icons": [
-        {
-          "src": "./Images/Logo.png",
-          "type": "image/png",
-          "sizes": "512x512"
-        }
-      ]
-    }
   ]
 }

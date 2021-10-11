@@ -31,7 +31,7 @@
             <td>
                 @if (question.Number == 1)
                 {
-                    <text>Up</text>
+                    <span class="text-secondary">Up</span>
                 }
                 else
                 {
@@ -44,7 +44,7 @@
 
                 @if (question.Number == Model.Max(q => q.Number))
                 {
-                    <text>Down</text>
+                    <span class="text-secondary">Down</span>
                 }
                 else
                 {
