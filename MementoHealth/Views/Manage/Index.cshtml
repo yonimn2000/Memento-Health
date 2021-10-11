@@ -30,7 +30,7 @@
             @if (Model.PhoneNumber != null)
             {
                 @Model.PhoneNumber
-                @Html.ActionLink("(Change)", "AddPhoneNumber")
+                @Html.ActionLink(" (Change)", "AddPhoneNumber")
             }
             else
             {
@@ -72,11 +72,3 @@
         </p><br />
     </div>
 </div>
-
-@section styles {
-    <style>
-        form {
-            display: inline-block;
-        }
-    </style>
-}

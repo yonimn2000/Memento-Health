@@ -12,32 +12,40 @@
     @Html.HiddenFor(m => m.ReturnUrl)
     @Html.HiddenFor(m => m.LockAfterChangingPin)
     @Html.ValidationSummary("", new { @class = "text-danger" })
-    <div class="container">
-        <div class="form-group">
-            <div class="row mb-3 justify-content-center">
-                @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
-                <div class="col-md-4">
-                    @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
-                </div>
-            </div>
+
+
+
+
+
+
+    <div class="container" style="overflow:auto; white-space: nowrap; width: 500px">
+        <div style='float: left; width: 150px'>
+            <p class="my-2 font-weight-bold">@Html.LabelFor(m => m.Password, new { @class = "col-md-4 control-label" })</p><br />
+            <p class="my-2 font-weight-bold">@Html.LabelFor(m => m.NewPin, new { @class = "col-md-4 control-label" })</p><br />
+            <p class="my-2 font-weight-bold">@Html.LabelFor(m => m.ConfirmPin, new { @class = "col-md-4 control-label" })</p><br />
         </div>
-        <div class="form-group">
-            <div class="row mb-3 justify-content-center">
-                @Html.LabelFor(m => m.NewPin, new { @class = "col-md-2 control-label" })
-                <div class="col-md-4">
+
+        <div style='float: right; width: 63%; padding-right: 10%; overflow-y: auto; text-align: left'>
+            <p class="my-1">
+                @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+            </p><br />
+                <p class="my-1">
                     @Html.PasswordFor(m => m.NewPin, new { @class = "form-control" })
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="row mb-3 justify-content-center">
-                @Html.LabelFor(m => m.ConfirmPin, new { @class = "col-md-2 control-label" })
-                <div class="col-md-4">
-                    @Html.PasswordFor(m => m.ConfirmPin, new { @class = "form-control" })
-                </div>
-            </div>
+                </p><br />
+                    <p class="my-1">
+                        @Html.PasswordFor(m => m.ConfirmPin, new { @class = "form-control" })
+                    </p><br />
         </div>
     </div>
+
+
+
+
+
+
+
+
+
     <div class="form-group">
         <div class="row mb-3 my-4 justify-content-center">
             <input type="submit" value="Change PIN" class="btn btn-primary" />
