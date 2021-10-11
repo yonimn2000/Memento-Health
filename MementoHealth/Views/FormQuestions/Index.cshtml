@@ -28,7 +28,10 @@
                 <td>@question.IsRequired</td>
                 <td>@question.TypeString</td>
                 <td class="json-data" data-type="@question.TypeString" data-json="@question.JsonData"></td>
-                <td>@question.Conditions.Count</td>
+                <td>
+                    @question.Conditions.Count
+                    (@Html.ActionLink("View", "Index", "FormQuestionConditions", new { id = question.QuestionId }, null))
+                </td>
                 <td>
                     @if (question.Number == 1)
                     {

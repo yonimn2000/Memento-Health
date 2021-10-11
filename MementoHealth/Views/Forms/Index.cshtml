@@ -25,10 +25,15 @@
     {
         <tr>
             <td>@Html.DisplayFor(modelItem => item.Name)</td>
-            <td>@Html.DisplayFor(modelItem => item.NumberOfQuestions)</td>
-            <td>@Html.DisplayFor(modelItem => item.NumberOfSubmissions)</td>
             <td>
-                @Html.ActionLink("View Questions", "Index", "FormQuestions", new { id = item.FormId }, null) |
+                @Html.DisplayFor(modelItem => item.NumberOfQuestions)
+                (@Html.ActionLink("View", "Index", "FormQuestions", new { id = item.FormId }, null))
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NumberOfSubmissions)
+                (@Html.ActionLink("View", "Index", "FormSubmissions", new { id = item.FormId }, null))
+            </td>
+            <td>
                 @if (User.IsInRole(Role.ProviderAdmin))
                 {
                     <text>
