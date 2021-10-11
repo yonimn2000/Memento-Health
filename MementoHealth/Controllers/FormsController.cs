@@ -19,11 +19,18 @@ namespace MementoHealth.Controllers
         public ActionResult Index()
         {
             return View(GetCurrentUserProvider().Forms.OrderBy(u => u.Name).ToList()
-                .Select(u => new FormViewModel
-                {
-                    FormId = u.FormId,
-                    Name = u.Name,
-                }).ToList());
+                .Select(f => FormToViewModel(f)).ToList());
+        }
+
+        private static FormViewModel FormToViewModel(Form form)
+        {
+            return new FormViewModel
+            {
+                FormId = form.FormId,
+                Name = form.Name,
+                NumberOfQuestions = form.Questions.Count,
+                NumberOfSubmissions = form.Submissions.Count
+            };
         }
 
         // GET: Forms/Details/5
@@ -36,7 +43,7 @@ namespace MementoHealth.Controllers
             if (form == null)
                 return HttpNotFound();
 
-            return View(form);
+            return View(FormToViewModel(form));
         }
 
         private Form FindForm_Restricted(int? id)
@@ -72,7 +79,7 @@ namespace MementoHealth.Controllers
 
                     Db.Forms.Add(newForm);
                     Db.SaveChanges();
-                    return RedirectToAction("Edit", new { id = newForm.FormId });
+                    return RedirectToAction("Index");
                 }
                 ModelState.AddModelError("", $"A from with the name of '{form.Name}' already exists." +
                     "Please pick a different name.");
@@ -135,7 +142,7 @@ namespace MementoHealth.Controllers
             if (form == null)
                 return HttpNotFound();
 
-            return View(form);
+            return View(FormToViewModel(form));
         }
 
         // POST: Forms/Delete/5
@@ -161,7 +168,7 @@ namespace MementoHealth.Controllers
             if (form == null)
                 return HttpNotFound();
 
-            return View(form);
+            return View(FormToViewModel(form));
         }
 
 
