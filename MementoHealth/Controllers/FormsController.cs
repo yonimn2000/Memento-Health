@@ -72,7 +72,7 @@ namespace MementoHealth.Controllers
 
                     Db.Forms.Add(newForm);
                     Db.SaveChanges();
-                    return RedirectToAction("Edit", new { id = newForm.FormId });
+                    return RedirectToAction("Index");
                 }
                 ModelState.AddModelError("", $"A from with the name of '{form.Name}' already exists." +
                     "Please pick a different name.");
