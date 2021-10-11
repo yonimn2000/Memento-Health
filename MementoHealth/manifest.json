@@ -1,0 +1,29 @@
+﻿{
+  "name": "Memento Health",
+  "short_name": "Memento Health",
+  "theme_color": "#4c64a7",
+  "background_color": "#4c64a7",
+  "display": "standalone",
+  "start_url": "./",
+  "scope": "./",
+  "icons": [
+    {
+      "src": "./Images/Logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Forms",
+      "url": "./Forms",
+      "icons": [
+        {
+          "src": "./Images/Logo.png",
+          "type": "image/png",
+          "sizes": "512x512"
+        }
+      ]
+    }
+  ]
+}
