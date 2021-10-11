@@ -14,7 +14,7 @@
         <dd>@Html.DisplayFor(model => model.FullName)</dd>
 
         <dt>@Html.DisplayNameFor(model => model.Birthday)</dt>
-        <dd>@Html.DisplayFor(model => model.Birthday)</dd>
+        <dd>@Model.Birthday.ToShortDateString()</dd>
 
         <dt>@Html.DisplayNameFor(model => model.ExternalPatientId)</dt>
         <dd>@Html.DisplayFor(model => model.ExternalPatientId)</dd>
