@@ -1,4 +1,5 @@
-﻿@model MementoHealth.Models.RegisterViewModel
+﻿@using CaptchaMvc.HtmlHelpers
+@model MementoHealth.Models.RegisterViewModel
 @{
     ViewBag.Title = "Register";
 }
@@ -12,7 +13,7 @@
             <div class="custom-form-div shadow bg-light">
 
                 <h3>Create a new account</h3>
-       
+
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
                 <hr />
@@ -65,10 +66,14 @@
                 </div>
                 <div class="form-group">
                     <div class="col-md-auto">
+                        @Html.MathCaptcha("_CaptchaPartial")
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-auto">
                         <input type="submit" class="btn btn-primary w-100" value="Register" />
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
