@@ -14,7 +14,7 @@ namespace MementoHealth.Controllers
     {
         private ApplicationDbContext Db { get; } = new ApplicationDbContext();
 
-        // GET: Forms
+        // GET: FormQuestions/5
         public ActionResult Index(int id)
         {
             Form form = FindForm_Restricted(id);
@@ -37,13 +37,13 @@ namespace MementoHealth.Controllers
             return Db.FormQuestions.Where(q => q.QuestionId == id && q.Form.ProviderId == providerId).SingleOrDefault();
         }
 
-        // GET: FormQuestions/Add
+        // GET: FormQuestions/Add/5
         public ActionResult Add(int id, int insertAfterId = 0)
         {
             return View("Editor", new FormQuestion { FormId = id, QuestionId = insertAfterId });
         }
 
-        // POST: FormQuestions/Create
+        // POST: FormQuestions/Add
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
