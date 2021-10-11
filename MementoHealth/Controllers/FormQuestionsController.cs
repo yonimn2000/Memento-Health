@@ -190,7 +190,6 @@ namespace MementoHealth.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             FormQuestion formQuestion = FindFormQuestion_Restricted(id);
-            FormQuestion nextQuestion = formQuestion.Form.Questions.Where(q => q.Number == formQuestion.Number + 1).SingleOrDefault();
             foreach (FormQuestion question in formQuestion.Form.Questions.Where(q => q.Number > formQuestion.Number).ToList())
                 question.Number--;
             Db.FormQuestions.Remove(formQuestion);
