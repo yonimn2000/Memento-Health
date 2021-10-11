@@ -15,7 +15,7 @@ namespace MementoHealth.Controllers
         private ApplicationDbContext Db { get; } = new ApplicationDbContext();
 
         // GET: Forms
-        public ActionResult Index(int? id)
+        public ActionResult Index(int id)
         {
             Form form = FindForm_Restricted(id);
             if (form == null)
@@ -51,9 +51,9 @@ namespace MementoHealth.Controllers
         }
 
         // GET: FormQuestions/Add
-        public ActionResult Add(int id)
+        public ActionResult Add(int id, int insertAfterId = 0)
         {
-            return View("Editor", new FormQuestion { FormId = id });
+            return View("Editor", new FormQuestion { FormId = id, QuestionId = insertAfterId });
         }
 
         // POST: FormQuestions/Create
@@ -61,30 +61,43 @@ namespace MementoHealth.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Add([Bind(Include = "Question,TypeString,JsonData,IsRequired,FormId")] FormQuestion formQuestion)
+        public ActionResult Add([Bind(Include = "QuestionId,Question,TypeString,JsonData,IsRequired,FormId")] FormQuestion formQuestion)
         {
-            if (ModelState.IsValid)
-            {
-                Form form = FindForm_Restricted(formQuestion.FormId);
-                if (form == null)
-                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            if (!ModelState.IsValid)
+                return View("Editor", formQuestion);
 
-                if (!Db.FormQuestions.Any(q => q.Question.Equals(formQuestion.Question) && q.FormId == form.FormId))
-                {
-                    form.Questions.Add(new FormQuestion
-                    {
-                        Question = formQuestion.Question,
-                        IsRequired = formQuestion.IsRequired,
-                        TypeString = formQuestion.TypeString,
-                        JsonData = formQuestion.JsonData,
-                        Number = (form.Questions.OrderByDescending(q => q.Number).FirstOrDefault()?.Number ?? 0) + 1
-                    });
-                    Db.SaveChanges();
-                    return RedirectToAction("Index", new { id = form.FormId });
-                }
+            Form form = FindForm_Restricted(formQuestion.FormId);
+            if (form == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            // Check for duplicate questions.
+            if (Db.FormQuestions.Any(q => q.Question.Equals(formQuestion.Question) && q.FormId == form.FormId))
+            {
                 ModelState.AddModelError("", $"The question '{formQuestion.Question}' already exists. Please change the question text.");
+                return View("Editor", formQuestion);
             }
-            return View("Editor", formQuestion);
+
+            FormQuestion newFormQuestion = new FormQuestion
+            {
+                Question = formQuestion.Question,
+                IsRequired = formQuestion.IsRequired,
+                TypeString = formQuestion.TypeString,
+                JsonData = formQuestion.JsonData
+            };
+
+            if (formQuestion.QuestionId == 0) // If adding a question.
+                newFormQuestion.Number = (form.Questions.OrderByDescending(q => q.Number).FirstOrDefault()?.Number ?? 0) + 1;
+            else // Inserting a question
+            {
+                FormQuestion prevQuestion = form.Questions.Where(q => q.QuestionId == formQuestion.QuestionId).Single();
+                foreach (FormQuestion question in form.Questions.Where(q => q.Number > prevQuestion.Number).ToList())
+                    question.Number++;
+                newFormQuestion.Number = prevQuestion.Number + 1;
+            }
+
+            form.Questions.Add(newFormQuestion);
+            Db.SaveChanges();
+            return RedirectToAction("Index", new { id = form.FormId });
         }
 
         private Provider GetCurrentUserProvider()
@@ -155,6 +168,19 @@ namespace MementoHealth.Controllers
             nextQuestion.Number--;
             Db.SaveChanges();
             return RedirectToAction("Index", new { id = formQuestion.FormId });
+        }
+
+        // GET: FormQuestions/Insert/5
+        public ActionResult Insert(int? id)
+        {
+            if (id == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            FormQuestion formQuestion = FindFormQuestion_Restricted(id);
+            if (formQuestion == null)
+                return HttpNotFound();
+
+            return RedirectToAction("Add", new { id = formQuestion.FormId, insertAfterId = formQuestion.QuestionId });
         }
 
         // GET: FormQuestions/Delete/5
