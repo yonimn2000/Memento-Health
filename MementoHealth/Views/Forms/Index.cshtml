@@ -27,7 +27,16 @@
             <td>@Html.DisplayFor(modelItem => item.Name)</td>
             <td>
                 @Html.DisplayFor(modelItem => item.NumberOfQuestions)
-                (@Html.ActionLink("View", "Index", "FormQuestions", new { id = item.FormId }, null))
+                (
+                @if (item.NumberOfQuestions == 0)
+                {
+                    @Html.ActionLink("Add", "Add", "FormQuestions", new { id = item.FormId }, null)
+                }
+                else
+                {
+                    @Html.ActionLink("View", "Index", "FormQuestions", new { id = item.FormId }, null)
+                }
+                )
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.NumberOfSubmissions)

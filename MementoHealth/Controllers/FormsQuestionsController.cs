@@ -21,8 +21,9 @@ namespace MementoHealth.Controllers
             if (form == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            ViewBag.FormId = form.FormId;
-            ViewBag.FormName = form.Name;
+            if (form.Questions.Count == 0)
+                return RedirectToAction("Index", "Forms");
+
             return View(form.Questions.OrderBy(q => q.Number).ToList());
         }
 
