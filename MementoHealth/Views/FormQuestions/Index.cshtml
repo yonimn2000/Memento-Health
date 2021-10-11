@@ -29,7 +29,16 @@
             <td class="json-data" data-type="@question.TypeString" data-json="@question.JsonData"></td>
             <td>
                 @question.Conditions.Count
-                (@Html.ActionLink("View", "Index", "FormQuestionConditions", new { id = question.QuestionId }, null))
+                (
+                @if (question.Conditions.Count == 0)
+                {
+                    @Html.ActionLink("Add", "Add", "FormQuestionConditions", new { id = question.QuestionId }, null)
+                }
+                else
+                {
+                    @Html.ActionLink("View", "Index", "FormQuestionConditions", new { id = question.QuestionId }, null)
+                }
+                )
             </td>
             <td>
                 @if (question.Number == 1)
