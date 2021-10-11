@@ -24,18 +24,11 @@
         <p class="my-1">@Model.Role</p><br />
         <p class="my-1">
             @Model.FullName
-            @Html.ActionLink("(Change)", "ChangeFullName")
+            (@Html.ActionLink("Change", "ChangeFullName"))
         </p><br />
         <p class="my-1">
-            @if (Model.PhoneNumber != null)
-            {
-                @Model.PhoneNumber
-                @Html.ActionLink("(Change)", "AddPhoneNumber")
-            }
-            else
-            {
-                @Html.ActionLink("Add", "AddPhoneNumber")
-            }
+            @Model.PhoneNumber
+            (@Html.ActionLink(Model.PhoneNumber == null ? "Add" : "Change", "AddPhoneNumber"))
         </p><br />
         <p class="my-1">
             @if (Model.HasPassword)
