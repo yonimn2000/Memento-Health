@@ -118,7 +118,8 @@ namespace MementoHealth.Controllers
                 return View("Editor", newFormQuestion);
 
             // Check for duplicate questions.
-            if (Db.FormQuestions.Any(q => q.Question.Equals(formQuestion.Question) && q.FormId == formQuestion.FormId))
+            if (Db.FormQuestions.Any(q => q.Question.Equals(formQuestion.Question) 
+                    && q.FormId == formQuestion.FormId && q.QuestionId != formQuestion.QuestionId))
             {
                 ModelState.AddModelError("", $"The question '{formQuestion.Question}' already exists. Please change the question text.");
                 return View("Editor", formQuestion);
