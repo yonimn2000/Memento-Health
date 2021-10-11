@@ -65,7 +65,7 @@ namespace MementoHealth.Controllers
                 Patient newPatient = new Patient
                 {
                     FullName = patient.FullName,
-                    Birthday = patient.Birthday,
+                    Birthday = patient.Birthday.Date,
                     ExternalPatientId = patient.ExternalPatientId,
                     ProviderId = GetCurrentUserProvider().ProviderId
                 };
@@ -111,7 +111,7 @@ namespace MementoHealth.Controllers
             {
                 originalPatient.ExternalPatientId = patient.ExternalPatientId;
                 originalPatient.FullName = patient.FullName;
-                originalPatient.Birthday = patient.Birthday;
+                originalPatient.Birthday = patient.Birthday.Date;
                 Db.SaveChanges();
                 return RedirectToAction("Index");
             }
