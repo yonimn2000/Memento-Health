@@ -26,19 +26,6 @@ namespace MementoHealth.Controllers
             return View(form.Questions.OrderBy(q => q.Number).ToList());
         }
 
-        // GET: FormQuestions/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-
-            FormQuestion formQuestion = FindFormQuestion_Restricted(id);
-            if (formQuestion == null)
-                return HttpNotFound();
-
-            return View(formQuestion);
-        }
-
         private Form FindForm_Restricted(int? id)
         {
             return GetCurrentUserProvider().Forms.Where(f => f.FormId == id).SingleOrDefault();

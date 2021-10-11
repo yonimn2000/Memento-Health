@@ -29,10 +29,9 @@
             <td>@Html.DisplayFor(modelItem => item.NumberOfSubmissions)</td>
             <td>
                 @Html.ActionLink("View Questions", "Index", "FormQuestions", new { id = item.FormId }, null) |
-                @Html.ActionLink("Details", "Details", new { id = item.FormId })
                 @if (User.IsInRole(Role.ProviderAdmin))
                 {
-                    <text> |
+                    <text>
                         @Html.ActionLink("Clone", "Clone", new { id = item.FormId }) |
                         @Html.ActionLink("Edit", "Edit", new { id = item.FormId }) |
                         @Html.ActionLink("Delete", "Delete", new { id = item.FormId })
