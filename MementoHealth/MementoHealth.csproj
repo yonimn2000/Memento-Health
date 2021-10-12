@@ -236,7 +236,8 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Images\camron.png" />
-    <Content Include="Images\Memento Health-logos_transparent.svg" />
+    <Content Include="Images\Memento Health-logo.svg" />
+    <Content Include="Images\Mobile Memento Health-logo.svg" />
     <Content Include="Images\Small Memento Health Logo.png" />
     <Content Include="Images\waiting_room.svg" />
     <Content Include="Images\yonatan.jpg" />

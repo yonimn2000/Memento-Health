@@ -12,32 +12,32 @@
 
 <div class="container" style="text-align: center; overflow:auto; min-width: 100%">
     <div style='float:left; width:49.5%; text-align:right'>
-        <p class="my-1 font-weight-bold">Role:</p><br />
-        <p class="my-1 font-weight-bold">Full Name:</p><br />
-        <p class="my-1 font-weight-bold">Phone Number:</p><br />
-        <p class="my-1 font-weight-bold">Password:</p><br />
-        <p class="my-1 font-weight-bold">Pin Code:</p><br />
-        <p class="my-1 font-weight-bold">Two-Factor Authentication:</p><br />
+        <div class="my-1 font-weight-bold">Role</div><br />
+        <div class="my-1 font-weight-bold">Full Name</div><br />
+        <div class="my-1 font-weight-bold">Phone Number</div><br />
+        <div class="my-1 font-weight-bold">Password</div><br />
+        <div class="my-1 font-weight-bold">Pin Code</div><br />
+        <div class="my-1 font-weight-bold">Two-Factor Authentication</div><br />
     </div>
 
     <div style='float: left; width: 43%; margin-left: 25px; overflow-y: auto; text-align: left; white-space:nowrap'>
-        <p class="my-1">@Model.Role</p><br />
-        <p class="my-1">
+        <div class="my-1">@Model.Role</div><br />
+        <div class="my-1">
             @Model.FullName
-            @Html.ActionLink("(Change)", "ChangeFullName")
-        </p><br />
-        <p class="my-1">
-            @if (Model.PhoneNumber != null)
-            {
-                @Model.PhoneNumber
-                @Html.ActionLink(" (Change)", "AddPhoneNumber")
-            }
-            else
-            {
-                @Html.ActionLink("Add", "AddPhoneNumber")
-            }
-        </p><br />
-        <p class="my-1">
+            <text>(</text>@Html.ActionLink("Change", "ChangeFullName")<text>)</text>
+        </div><br />
+              <div class="my-1">
+                  @if (Model.PhoneNumber != null)
+                  {
+                      @Model.PhoneNumber
+                      <text>(</text>@Html.ActionLink("Change", "AddPhoneNumber")<text>)</text>
+                  }
+                  else
+                  {
+                      @Html.ActionLink("Add", "AddPhoneNumber")
+                  }
+              </div><br />
+        <div class="my-1">
             @if (Model.HasPassword)
             {
                 @Html.ActionLink("Change your password", "ChangePassword")
@@ -46,9 +46,9 @@
             {
                 @Html.ActionLink("Create", "SetPassword")
             }
-        </p><br />
-        <p class="my-1">@Html.ActionLink("Change your PIN code", "ChangePin")</p><br />
-        <p class="my-1">
+        </div><br />
+        <div class="my-1">@Html.ActionLink("Change your PIN code", "ChangePin")</div><br />
+        <div class="my-1">
             @if (Model.TwoFactor)
             {
                 using (Html.BeginForm("DisableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
@@ -69,6 +69,6 @@
 
                 }
             }
-        </p><br />
+        </div><br />
     </div>
 </div>
