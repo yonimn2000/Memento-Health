@@ -114,16 +114,23 @@ namespace MementoHealth.Controllers
         public ActionResult Edit([Bind(Include = "QuestionId,Question,JsonData,IsRequired,TypeString")] FormQuestion newFormQuestion)
         {
             FormQuestion formQuestion = FindFormQuestion_Restricted(newFormQuestion.QuestionId);
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
+                return View("Editor", newFormQuestion);
+
+            // Check for duplicate questions.
+            if (Db.FormQuestions.Any(q => q.Question.Equals(formQuestion.Question) 
+                    && q.FormId == formQuestion.FormId && q.QuestionId != formQuestion.QuestionId))
             {
-                formQuestion.TypeString = newFormQuestion.TypeString;
-                formQuestion.Question = newFormQuestion.Question;
-                formQuestion.JsonData = newFormQuestion.JsonData;
-                formQuestion.IsRequired = newFormQuestion.IsRequired;
-                Db.SaveChanges();
-                return RedirectToAction("Index", new { id = formQuestion.FormId });
+                ModelState.AddModelError("", $"The question '{formQuestion.Question}' already exists. Please change the question text.");
+                return View("Editor", formQuestion);
             }
-            return View("Editor", newFormQuestion);
+
+            formQuestion.TypeString = newFormQuestion.TypeString;
+            formQuestion.Question = newFormQuestion.Question;
+            formQuestion.JsonData = newFormQuestion.JsonData;
+            formQuestion.IsRequired = newFormQuestion.IsRequired;
+            Db.SaveChanges();
+            return RedirectToAction("Index", new { id = formQuestion.FormId });
         }
 
         // POST: FormQuestions/MoveUp/5
@@ -190,7 +197,6 @@ namespace MementoHealth.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             FormQuestion formQuestion = FindFormQuestion_Restricted(id);
-            FormQuestion nextQuestion = formQuestion.Form.Questions.Where(q => q.Number == formQuestion.Number + 1).SingleOrDefault();
             foreach (FormQuestion question in formQuestion.Form.Questions.Where(q => q.Number > formQuestion.Number).ToList())
                 question.Number--;
             Db.FormQuestions.Remove(formQuestion);
