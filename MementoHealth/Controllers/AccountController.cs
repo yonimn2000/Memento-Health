@@ -1,4 +1,5 @@
-﻿using MementoHealth.Attributes;
+﻿using CaptchaMvc.Attributes;
+using MementoHealth.Attributes;
 using MementoHealth.Entities;
 using MementoHealth.Exceptions;
 using MementoHealth.Filters;
@@ -145,6 +146,7 @@ namespace MementoHealth.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
+        [CaptchaVerify("Invalid CAPTCHA")]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
