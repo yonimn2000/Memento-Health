@@ -24,7 +24,7 @@ textarea {
 
 #logo-img {
     height: 50px;
-    top: -3px;
+    top: -1px;
     position: relative;
 }
 
@@ -37,6 +37,7 @@ textarea {
 
 .page-title:before, .page-title:after {
     content: "";
+
     flex: 1 1;
     border-bottom: 1px solid;
     margin: auto;
@@ -51,26 +52,6 @@ textarea {
     margin-left: 10px;
 }
 
-.custom-dl {
-    display: flex;
-    flex-flow: row;
-    flex-wrap: wrap;
-    width: 100%;
-    overflow-y: auto;
-}
-
-.custom-dt {
-    flex: 0 0 50%;
-    text-overflow: ellipsis;
-    overflow: hidden;
-}
-
-.custom-dd {
-    flex: 0 0 50%;
-    margin-left: auto;
-    text-align: left;
-    text-overflow: ellipsis;
-}
 .navbar {
    -webkit-box-shadow: -1px 0 5px 0 rgba(0,0,0,.25);
    box-shadow: -1px 0 5px 0 rgba(0,0,0,.25);
@@ -99,4 +80,15 @@ textarea {
         padding-bottom: 20px;
         padding-left: 20px;
     }
+}
+
+@media only screen and (max-width: 500px) {
+    #logo-img {
+        content: url('../Images/Mobile Memento Health-logo.svg');
+        top: -1px;
+    }
+}
+
+.table {
+    margin-bottom: 0;
 }
