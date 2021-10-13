@@ -5,33 +5,39 @@
     ViewBag.UseFullScreenWidth = true;
 }
 
-<div class="text-danger page-title h3">Are you sure you want to delete this user?</div>
 
-<div class="container" style="text-align: center; overflow:auto; min-width: 100%">
-    <div style='float:left; width:49.5%; text-align:right'>
-        <div class="my-1 font-weight-bold">@Html.DisplayNameFor(model => model.FullName)</div><br />
-        <div class="my-1 font-weight-bold">@Html.DisplayNameFor(model => model.Email)</div><br />
-        <div class="my-1 font-weight-bold">@Html.DisplayNameFor(model => model.EmailConfirmed)</div><br />
-        <div class="my-1 font-weight-bold">@Html.DisplayNameFor(model => model.PhoneNumber)</div><br />
-        <div class="my-1 font-weight-bold">@Html.DisplayNameFor(model => model.LockOutStatus)</div>
-    </div>
+<div class="row d-flex justify-content-center">
+    <div class="shadow bg-light text-center" style="border-radius: 12px">
+        <div class="text-danger page-title h3 font-weight-bold" style="padding-top: 25px;">Delete this user?</div>
+        <div class="custom-form-div" style="margin-top: -50px; padding-bottom: 0px">
+            <div class="container" style="text-align: center; overflow:auto; min-width: 325px">
+                <div style='float:left; width:49.5%; text-align:right'>
+                    <div class="my-1 font-weight-bold">@Html.DisplayNameFor(model => model.FullName)</div><br />
+                    <div class="my-1 font-weight-bold">@Html.DisplayNameFor(model => model.Email)</div><br />
+                    <div class="my-1 font-weight-bold">@Html.DisplayNameFor(model => model.EmailConfirmed)</div><br />
+                    <div class="my-1 font-weight-bold">@Html.DisplayNameFor(model => model.PhoneNumber)</div><br />
+                    <div class="my-1 font-weight-bold">@Html.DisplayNameFor(model => model.LockOutStatus)</div>
+                </div>
 
-    <div style='float: left; width: 40%; margin-left: 25px; overflow-y: auto; text-align: left'>
-        <div class="my-1">@Html.DisplayFor(model => model.FullName)</div><br />
-        <div class="my-1">@Html.DisplayFor(model => model.Email)</div><br />
-        <div class="my-1">@Html.DisplayFor(model => model.EmailConfirmed)</div><br />
-        <div class="my-1">@Html.DisplayFor(model => model.PhoneNumber)</div><br />
-        <div class="my-1">@Html.DisplayFor(model => model.LockOutStatus)</div>
+                <div style='float: left; width: 40%; margin-left: 25px; overflow-y: auto; text-align: left'>
+                    <div class="my-1">@Html.DisplayFor(model => model.FullName)</div><br />
+                    <div class="my-1">@Html.DisplayFor(model => model.Email)</div><br />
+                    <div class="my-1">@Html.DisplayFor(model => model.EmailConfirmed)</div><br />
+                    <div class="my-1">@Html.DisplayFor(model => model.PhoneNumber)</div><br />
+                    <div class="my-1">@Html.DisplayFor(model => model.LockOutStatus)</div>
+                </div>
+            </div>
+
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-actions no-color my-4" style="text-align: center">
+                    <input type="submit" value="Delete" class="btn btn-danger w-100" />
+
+                </div>
+                <div style="text-align: center">@Html.ActionLink("Back to List", "Index")</div>
+            }
+        </div>
     </div>
 </div>
-
-    @using (Html.BeginForm())
-    {
-        @Html.AntiForgeryToken()
-
-        <div class="form-actions no-color my-4" style="text-align: center">
-            <input type="submit" value="Delete" class="btn btn-danger" />
-
-        </div>
-        <div style="text-align: center">@Html.ActionLink("Back to List", "Index")</div>
-    }
