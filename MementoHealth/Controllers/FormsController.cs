@@ -19,30 +19,23 @@ namespace MementoHealth.Controllers
         public ActionResult Index()
         {
             return View(GetCurrentUserProvider().Forms.OrderBy(u => u.Name).ToList()
-                .Select(u => new FormViewModel
-                {
-                    FormId = u.FormId,
-                    Name = u.Name,
-                }).ToList());
+                .Select(f => FormToViewModel(f)).ToList());
         }
 
-        // GET: Forms/Details/5
-        public ActionResult Details(int? id)
+        private static FormViewModel FormToViewModel(Form form)
         {
-            if (id == null)
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-
-            Form form = FindForm_Restricted(id);
-            if (form == null)
-                return HttpNotFound();
-
-            return View(form);
+            return new FormViewModel
+            {
+                FormId = form.FormId,
+                Name = form.Name,
+                NumberOfQuestions = form.Questions.Count,
+                NumberOfSubmissions = form.Submissions.Count
+            };
         }
 
         private Form FindForm_Restricted(int? id)
         {
-            string userId = User.Identity.GetUserId();
-            return Db.Users.Find(userId).Provider.Forms.Where(f => f.FormId == id).SingleOrDefault();
+            return GetCurrentUserProvider().Forms.Where(f => f.FormId == id).SingleOrDefault();
         }
 
         // GET: Forms/Create
@@ -62,23 +55,27 @@ namespace MementoHealth.Controllers
         {
             if (ModelState.IsValid)
             {
-                Form newForm = new Form
+                int providerId = GetCurrentUserProvider().ProviderId;
+                if (!Db.Forms.Any(f => f.Name.Equals(form.Name) && f.ProviderId == providerId))
                 {
-                    Name = form.Name,
-                    ProviderId = GetCurrentUserProvider().ProviderId
-                };
-                Db.Forms.Add(newForm);
-                Db.SaveChanges();
-                return RedirectToAction("Index");
-            }
+                    Form newForm = new Form
+                    {
+                        Name = form.Name,
+                        ProviderId = providerId
+                    };
 
+                    Db.Forms.Add(newForm);
+                    Db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                ModelState.AddModelError("", $"A from with the name of '{form.Name}' already exists." +
+                    "Please pick a different name.");
+            }
             return View(form);
         }
 
         private Provider GetCurrentUserProvider()
         {
-            if (User.IsInRole(Role.SysAdmin))
-                return null;
             return Db.Users.Find(User.Identity.GetUserId()).Provider;
         }
 
@@ -106,8 +103,6 @@ namespace MementoHealth.Controllers
         }
 
         // POST: Forms/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = Role.ProviderAdmin)]
@@ -134,7 +129,7 @@ namespace MementoHealth.Controllers
             if (form == null)
                 return HttpNotFound();
 
-            return View(form);
+            return View(FormToViewModel(form));
         }
 
         // POST: Forms/Delete/5
@@ -160,7 +155,7 @@ namespace MementoHealth.Controllers
             if (form == null)
                 return HttpNotFound();
 
-            return View(form);
+            return View(FormToViewModel(form));
         }
 
 

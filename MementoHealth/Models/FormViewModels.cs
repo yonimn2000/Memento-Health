@@ -7,6 +7,12 @@ namespace MementoHealth.Models
     {
         public int FormId { get; set; }
         public string Name { get; set; }
+
+        [DisplayName("Questions")]
+        public int NumberOfQuestions { get; set; }
+        
+        [DisplayName("Submissions")]
+        public int NumberOfSubmissions { get; set; }
     }
 
     public class CreateFormViewModel

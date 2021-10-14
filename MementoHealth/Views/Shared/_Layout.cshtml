@@ -8,7 +8,8 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" type="image/ico" href="~/Images/Small Memento Health Logo.png">
+    <link rel="shortcut icon" type="image/ico" href="~/Images/Logo.png">
+    <link rel="manifest" href="~/manifest.json">
     <title>@ViewBag.Title - Memento Health</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
@@ -63,6 +64,14 @@
             <p>&copy; @DateTime.Now.Year - Memento Health</p>
         </footer>
     </div>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker
+                .register('@Url.Content("~/serviceWorker.js")')
+                .then(function () { console.log('Service Worker Registered'); });
+        }
+    </script>
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")

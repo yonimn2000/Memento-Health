@@ -1,0 +1,90 @@
+﻿@using MementoHealth.Entities
+@model IEnumerable<FormQuestion>
+@{
+    Form form = Model.First().Form;
+    ViewBag.Title = $"“{form.Name}” Form Questions";
+}
+
+<h2>@ViewBag.Title</h2>
+<hr />
+@Html.ActionLink("Back to Forms", "Index", "Forms")
+
+<table class="table">
+    <tr>
+        <th>#</th>
+        <th>Question</th>
+        <th>Is Required</th>
+        <th>Answer Type</th>
+        <th>Data</th>
+        <th>Conditions</th>
+        <th>Actions</th>
+    </tr>
+    @foreach (FormQuestion question in Model)
+    {
+        <tr>
+            <td>@question.Number</td>
+            <td>@question.Question</td>
+            <td>@question.IsRequired</td>
+            <td>@question.TypeString</td>
+            <td class="json-data" data-type="@question.TypeString" data-json="@question.JsonData"></td>
+            <td>
+                @question.Conditions.Count
+                (
+                @if (question.Conditions.Count == 0)
+                {
+                    @Html.ActionLink("Add", "Add", "FormQuestionConditions", new { id = question.QuestionId }, null)
+                }
+                else
+                {
+                    @Html.ActionLink("View", "Index", "FormQuestionConditions", new { id = question.QuestionId }, null)
+                }
+                )
+            </td>
+            <td>
+                @if (question.Number == 1)
+                {
+                    <span class="text-secondary">Up</span>
+                }
+                else
+                {
+                    using (Html.BeginForm("MoveUp", "FormQuestions", new { id = question.QuestionId }, FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        <a href="#" onclick="this.closest('form').submit();return false;">Up</a>
+                    }
+                } |
+
+                @if (question.Number == Model.Max(q => q.Number))
+                {
+                    <span class="text-secondary">Down</span>
+                }
+                else
+                {
+                    using (Html.BeginForm("MoveDown", "FormQuestions", new { id = question.QuestionId }, FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        <a href="#" onclick="this.closest('form').submit();return false;">Down</a>
+                    }
+                } |
+
+                @Html.ActionLink("Insert after", "Insert", new { id = question.QuestionId }) |
+                @Html.ActionLink("Edit", "Edit", new { id = question.QuestionId }) |
+                @Html.ActionLink("Delete", "Delete", new { id = question.QuestionId })
+            </td>
+        </tr>
+    }
+
+</table>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Scripts/Custom/FormQuestionDataConverter.js")
+}
+
+@section styles {
+    <style>
+        form {
+            display: inline-block;
+        }
+    </style>
+}

@@ -1,4 +1,5 @@
-﻿@model MementoHealth.Models.RegisterViewModel
+﻿@using CaptchaMvc.HtmlHelpers
+@model MementoHealth.Models.RegisterViewModel
 @{
     ViewBag.Title = "Register";
 }
@@ -9,10 +10,10 @@
 
     <div class="container-fluid">
         <div class="row d-flex justify-content-center">
-            <div class="form-div shadow bg-light">
+            <div class="custom-form-div shadow bg-light">
 
                 <h3>Create a new account</h3>
-       
+
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
                 <hr />
@@ -64,11 +65,15 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <div class="col-md-offset-2 col-md-auto">
-                        <input type="submit" class="btn btn-primary" value="Register" />
+                    <div class="col-md-auto">
+                        @Html.MathCaptcha("_CaptchaPartial")
                     </div>
                 </div>
-
+                <div class="form-group">
+                    <div class="col-md-auto">
+                        <input type="submit" class="btn btn-primary w-100" value="Register" />
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -76,39 +81,4 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-}
-
-@section styles
-{
-    <style>
-
-        .btn {
-            width: 100%;
-        }
-
-        .form-div {
-            border: 1px solid transparent;
-            border-radius: 20px;
-            margin-top: 30px;
-            margin-bottom: 50px;
-            padding-top: 50px;
-            padding-right: 150px;
-            padding-bottom: 50px;
-            padding-left: 150px;
-        }
-
-        @@media only screen and (max-width: 768px) {
-          /* Mobile css */
-            .form-div {
-                border: 1px solid transparent;
-                border-radius: 20px;
-                margin-top: 20px;
-                margin-bottom: 20px;
-                padding-top: 20px;
-                padding-right: 20px;
-                padding-bottom: 20px;
-                padding-left: 20px;
-            }
-        }
-    </style>
 }

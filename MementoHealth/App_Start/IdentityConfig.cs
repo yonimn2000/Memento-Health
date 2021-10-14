@@ -27,6 +27,11 @@ namespace MementoHealth
 
         public static async Task<bool> SendAsync(string destination, string subject, string body)
         {
+#if DEBUG
+            Debug.WriteLine($"Email to: {destination}");
+            Debug.WriteLine($"Subject: {subject}");
+            Debug.WriteLine($"Body: {body}");
+#endif
             string apiKey = Environment.GetEnvironmentVariable("MEMENTO_SENDGRID_KEY");
             MailMessage mail = new MailMessage();
             SmtpClient SmtpServer = new SmtpClient("smtp.sendgrid.net", 587)
