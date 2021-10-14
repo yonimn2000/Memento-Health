@@ -4,30 +4,43 @@
     ViewBag.UseFullScreenWidth = true;
 }
 
+<div class="row d-flex justify-content-center">
+    <div class="shadow bg-light text-center" style="border-radius: 12px">
+        <div class="page-title h2 font-weight-bold" style="padding-top: 25px;">@ViewBag.Title</div>
+        <div class="custom-form-div" style="margin-top: -50px; padding-bottom: 0px">
 
+            <div class="row">
+                <div class="col-md-auto">
+                    <section>
+                        @using (Html.BeginForm("AddPhoneNumber", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.ValidationSummary("", new { @class = "text-danger" })
 
-@using (Html.BeginForm("AddPhoneNumber", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-{
-    @Html.AntiForgeryToken()
-    <div class="page-title h3">Add a phone number</div>
-    @Html.ValidationSummary("", new { @class = "text-danger" })
-    <div class="container">
-        <div class="form-group">
-            <div class="row mb-3 justify-content-center">
-                @Html.LabelFor(m => m.Number, new { @class = "col-md-2 control-label" })
-                <div class="col-md-4">
-                    @Html.TextBoxFor(m => m.Number, new { @class = "form-control" })
+                            <div class="form-group mt-2">
+                                <div class="col-md-auto" style="text-align: left; padding: 0 0 0 0">
+                                    @Html.LabelFor(m => m.Number, new { @class = "control-label col-md-auto" })
+                                </div>
+                                <div class="col-md-auto">
+                                    @Html.TextBoxFor(m => m.Number, new { @class = "form-control" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-auto my-4 mt-4" style="text-align: center; padding-top: 5px">
+                                    <input type="submit" class="btn btn-primary w-100" value="Change" />
+                                </div>
+                            </div>
+                            <p>
+                                @Html.ActionLink("Back to Manage Account", "Index")
+                            </p>
+                        }
+                    </section>
                 </div>
             </div>
         </div>
     </div>
-    <div class="form-group">
-        <div class="row mb-3 my-4 justify-content-center">
-            <input type="submit" class="btn btn-primary" value="Change" />
-        </div>
-        <div style="text-align: center">@Html.ActionLink("Back to Manage Account", "Index")</div>
-    </div>
-}
+</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

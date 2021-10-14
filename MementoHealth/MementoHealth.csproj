@@ -244,7 +244,8 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Images\camron.png" />
-    <Content Include="Images\Memento Health-logos_transparent.svg" />
+    <Content Include="Images\Memento Health-logo.svg" />
+    <Content Include="Images\Mobile Memento Health-logo.svg" />
     <Content Include="Images\Logo.png" />
     <Content Include="Images\waiting_room.svg" />
     <Content Include="Images\yonatan.jpg" />
@@ -396,7 +397,6 @@
     <Content Include="Views\Account\RegisterSuccess.cshtml" />
     <Content Include="Views\Users\Create.cshtml" />
     <Content Include="Views\Users\Delete.cshtml" />
-    <Content Include="Views\Users\Details.cshtml" />
     <Content Include="Views\Users\Edit.cshtml" />
     <Content Include="Views\Users\Index.cshtml" />
     <Content Include="Views\Manage\ChangePin.cshtml" />
