@@ -20,24 +20,24 @@
                             @Html.ValidationSummary("", new { @class = "text-danger" })
 
                             <div class="form-group mt-2">
-                                <div class="col-md-auto" style="text-align: left">
-                                    @Html.LabelFor(m => m.Password, new { @class = "control-label col-md-auto font-weight-light" })
+                                <div class="col-md-auto" style="text-align: left; padding: 0 0 0 0 ">
+                                    @Html.LabelFor(m => m.Password, new { @class = "control-label col-md-auto" })
                                 </div>
                                 <div class="col-md-auto">
                                     @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
                                 </div>
                             </div>
                             <div class="form-group">
-                                <div class="col-md-auto" style="text-align: left">
-                                    @Html.LabelFor(m => m.NewPin, new { @class = "control-label col-md-auto font-weight-light" })
+                                <div class="col-md-auto" style="text-align: left; padding: 0 0 0 0">
+                                    @Html.LabelFor(m => m.NewPin, new { @class = "control-label col-md-auto" })
                                 </div>
                                 <div class="col-md-auto">
                                     @Html.PasswordFor(m => m.NewPin, new { @class = "form-control" })
                                 </div>
                             </div>
                             <div class="form-group">
-                                <div class="col-md-auto" style="text-align: left">
-                                    @Html.LabelFor(m => m.ConfirmPin, new { @class = "control-label col-md-auto font-weight-light" })
+                                <div class="col-md-auto" style="text-align: left; padding: 0 0 0 0">
+                                    @Html.LabelFor(m => m.ConfirmPin, new { @class = "control-label col-md-auto" })
                                 </div>
                                 <div class="col-md-auto">
                                     @Html.PasswordFor(m => m.ConfirmPin, new { @class = "form-control" })
@@ -45,7 +45,7 @@
                             </div>
 
                             <div class="form-group">
-                                <div class="col-md-auto my-4 mt-5 justify-content-center" style="text-align: center">
+                                <div class="col-md-auto my-4 mt-4" style="text-align: center; padding-top: 5px">
                                     <input type="submit" value="Change PIN" class="btn btn-primary w-100" />
                                 </div>
                             </div>
