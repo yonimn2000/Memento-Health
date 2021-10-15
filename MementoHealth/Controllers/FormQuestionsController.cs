@@ -41,6 +41,10 @@ namespace MementoHealth.Controllers
         // GET: FormQuestions/Add/5
         public ActionResult Add(int id, int insertAfterId = 0)
         {
+            Form form = FindForm_Restricted(id);
+            if (form == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
             return View("Editor", new FormQuestion { FormId = id, QuestionId = insertAfterId });
         }
 
