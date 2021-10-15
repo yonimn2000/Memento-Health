@@ -62,15 +62,7 @@
                         <tr>
                             <td>@item.FullName</td>
                             <td>@item.Email</td>
-                            @if (item.PhoneNumberConfirmed == false)
-                            {
-                                <td>None</td>
-                            }
-                            else
-                            {
-                                <td>@item.PhoneNumber</td>
-                            }
-
+                        <td>@(item.PhoneNumber ?? "None")</td>
                         </tr>
                         }
                     </tbody>
