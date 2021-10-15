@@ -4,10 +4,10 @@
         switch ($(this).data("type")) {
             case 'Checkboxes':
             case 'Radiobuttons':
-                $(this).text(json.Labels.join(", "));
+                $(this).text(json.labels.join(", "));
                 break;
             case 'Image':
-                $(this).append(`<img width='100px' src='${json.ImageBase64}' />`);
+                $(this).append(`<img width='100px' src='${json.image.url}' />`);
                 break;
         }
     });
