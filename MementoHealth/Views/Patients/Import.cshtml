@@ -1,0 +1,32 @@
+﻿
+@{
+    ViewBag.Title = "Import";
+}
+
+<div class="row d-flex justify-content-center">
+
+    <div class="custom-form-div shadow bg-light text-center">
+        <h2>Import Patients CSV File:</h2>
+        <hr />
+        <div class="row">
+            <div class="col-md-auto">
+                @using (Html.BeginForm("Import", "Patients", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    <p class="text-left">In order to import patients using a file, create a CSV file with headers ExternalID, FullName, 
+                       Birthday. Add one patient per row and separate the columns for the headers using commas. If a patient does
+                       not have an external id leave the column blank.
+                    </p>
+                    <input type="file" name="patientsFile" />
+                    <br />
+                    <br />
+                    <input type="submit" value="Upload" class="btn btn-primary w-100" />
+                    <br />
+                    <br />
+                    @Html.ActionLink("View Patients", "Index")
+                    <br />
+                    @ViewBag.Message
+                }
+            </div>
+        </div>
+    </div>
+</div>

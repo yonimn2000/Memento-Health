@@ -3,9 +3,12 @@ using MementoHealth.Entities;
 using MementoHealth.Models;
 using Microsoft.AspNet.Identity;
 using System;
+using System.Collections.Generic;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Web;
 using System.Web.Mvc;
 
 namespace MementoHealth.Controllers
@@ -80,7 +83,67 @@ namespace MementoHealth.Controllers
         // GET: Patients/Import
         public ActionResult Import()
         {
-            throw new NotImplementedException();
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Import(HttpPostedFileBase patientsFile)
+        {
+            try
+            {
+                if (patientsFile.ContentLength > 0)
+                {
+                    StreamReader fileReader = new StreamReader(patientsFile.InputStream);
+
+                        while (!fileReader.EndOfStream)
+                        {
+
+                        //  Each line is turned into currentPatient array in the loop
+                        string[] currentPatient = fileReader.ReadLine().Split(',');
+
+                        // If statement checks that data being entered is not the header
+                        if (!currentPatient.Contains("ExternalID"))
+                            {
+                                
+                                string test = currentPatient[0];
+
+                                // Check if first value in array is integer to confirm that it is an external id, otherwise else statement assigns null to externalid
+                                if (int.TryParse(test, out int output))
+                                {
+                                    Patient newPatient = new Patient
+                                    {
+                                        ExternalPatientId = currentPatient[0],
+                                        FullName = currentPatient[1],
+                                        Birthday = DateTime.Parse(currentPatient[2]),
+                                        ProviderId = GetCurrentUserProvider().ProviderId
+                                    };
+                                    Db.Patients.Add(newPatient);
+                                    Db.SaveChanges();
+                            }
+                                else
+                                {
+                                    Patient newPatient = new Patient
+                                    {
+                                        FullName = currentPatient[1],
+                                        Birthday = DateTime.Parse(currentPatient[2]),
+                                        ExternalPatientId = null,
+                                        ProviderId = GetCurrentUserProvider().ProviderId
+                                    };
+                                    Db.Patients.Add(newPatient);
+                                    Db.SaveChanges();
+                            }
+                            }
+                        }
+                }
+                
+                ViewBag.Message = "File upload was successful";
+                return View();
+            }
+            catch
+            {
+                ViewBag.Message = "An error occurred";
+                return View();
+            }
         }
 
         // GET: Patients/Edit/5
