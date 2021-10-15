@@ -33,19 +33,6 @@ namespace MementoHealth.Controllers
             };
         }
 
-        // GET: Forms/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-
-            Form form = FindForm_Restricted(id);
-            if (form == null)
-                return HttpNotFound();
-
-            return View(FormToViewModel(form));
-        }
-
         private Form FindForm_Restricted(int? id)
         {
             return GetCurrentUserProvider().Forms.Where(f => f.FormId == id).SingleOrDefault();

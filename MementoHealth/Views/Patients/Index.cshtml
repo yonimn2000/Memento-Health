@@ -22,7 +22,7 @@
     {
         <tr>
             <td>@Html.DisplayFor(modelItem => item.FullName)</td>
-            <td>@Html.DisplayFor(modelItem => item.Birthday)</td>
+            <td>@item.Birthday.ToShortDateString()</td>
             <td>@Html.DisplayFor(modelItem => item.ExternalPatientId)</td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id = item.PatientId }) |

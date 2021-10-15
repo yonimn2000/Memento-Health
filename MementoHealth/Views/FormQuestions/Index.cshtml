@@ -1,13 +1,13 @@
 ﻿@using MementoHealth.Entities
 @model IEnumerable<FormQuestion>
 @{
-    ViewBag.Title = $"“{ViewBag.FormName}” Form Questions";
+    Form form = Model.First().Form;
+    ViewBag.Title = $"“{form.Name}” Form Questions";
 }
 
 <h2>@ViewBag.Title</h2>
 <hr />
-@Html.ActionLink("Back to Forms", "Index", "Forms") |
-@Html.ActionLink("Add question", "Add", new { id = ViewBag.FormId })
+@Html.ActionLink("Back to Forms", "Index", "Forms")
 
 <table class="table">
     <tr>
@@ -27,7 +27,19 @@
             <td>@question.IsRequired</td>
             <td>@question.TypeString</td>
             <td class="json-data" data-type="@question.TypeString" data-json="@question.JsonData"></td>
-            <td>@question.Conditions.Count</td>
+            <td>
+                @question.Conditions.Count
+                (
+                @if (question.Conditions.Count == 0)
+                {
+                    @Html.ActionLink("Add", "Add", "FormQuestionConditions", new { id = question.QuestionId }, null)
+                }
+                else
+                {
+                    @Html.ActionLink("View", "Index", "FormQuestionConditions", new { id = question.QuestionId }, null)
+                }
+                )
+            </td>
             <td>
                 @if (question.Number == 1)
                 {
@@ -55,7 +67,7 @@
                     }
                 } |
 
-                @Html.ActionLink("Details", "Details", new { id = question.QuestionId }) |
+                @Html.ActionLink("Insert after", "Insert", new { id = question.QuestionId }) |
                 @Html.ActionLink("Edit", "Edit", new { id = question.QuestionId }) |
                 @Html.ActionLink("Delete", "Delete", new { id = question.QuestionId })
             </td>

@@ -72,11 +72,11 @@
                     case '@QuestionType.Checkboxes.ToString()':
                     case '@QuestionType.Radiobuttons.ToString()':
                         $("#multi-editor").show();
-                        jsonData.Labels.forEach(label => addMultiLabel(label));
+                        jsonData.labels.forEach(label => addMultiLabel(label));
                         break;
                     case '@QuestionType.Image.ToString()':
                         $("#image-editor").show();
-                        $("#selected-image").attr("src", jsonData.ImageBase64);
+                        $("#selected-image").attr("src", jsonData.image.url);
                         break;
                 }
             }
@@ -102,7 +102,7 @@
                 this.value = "";
             } else {
                 let file = $('#img-selector').prop('files')[0];
-                $("#selected-image").attr("src", await fileToBase64(file));
+                $("#selected-image").attr("src", await fileToUrl(file));
             }
         };
 
@@ -122,7 +122,7 @@
             }
         };
 
-        let fileToBase64 = async (file) => {
+        let fileToUrl = async (file) => {
             let result_base64 = await new Promise((resolve) => {
                 let fileReader = new FileReader();
                 fileReader.onload = () => resolve(fileReader.result);
@@ -131,7 +131,21 @@
             return result_base64;
         };
 
-        let createClicked = () => {
+        let imageSize = (url) => {
+            const img = document.createElement("img");
+            const promise = new Promise((resolve, reject) => {
+                img.onload = () => {
+                    const width = img.naturalWidth;
+                    const height = img.naturalHeight;
+                    resolve({ width, height });
+                };
+                img.onerror = reject;
+            });
+            img.src = url;
+            return promise;
+        }
+
+        let createClicked = async () => {
             let jsonData = {};
             let isValidForm = true;
 
@@ -147,15 +161,21 @@
                         } else
                             labels.push(label);
                     });
-                    jsonData.Labels = labels;
+                    jsonData.labels = labels;
                     break;
                 case '@QuestionType.Image.ToString()':
-                    let imageBase64 = $("#selected-image").attr("src");
-                    if (!imageBase64) {
+                    let imageUrl = $("#selected-image").attr("src");
+                    if (!imageUrl) {
                         alert("Please select an image first.");
                         isValidForm = false;
-                    } else
-                        jsonData.ImageBase64 = imageBase64;
+                    } else {
+                        jsonData.image = {};
+                        jsonData.image.url = imageUrl;
+
+                        const imageDimensions = await imageSize(imageUrl);
+                        jsonData.image.width = imageDimensions.width;
+                        jsonData.image.height = imageDimensions.height;
+                    }
                     break;
             }
             if (isValidForm) {

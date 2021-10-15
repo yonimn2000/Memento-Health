@@ -25,14 +25,27 @@
     {
         <tr>
             <td>@Html.DisplayFor(modelItem => item.Name)</td>
-            <td>@Html.DisplayFor(modelItem => item.NumberOfQuestions)</td>
-            <td>@Html.DisplayFor(modelItem => item.NumberOfSubmissions)</td>
             <td>
-                @Html.ActionLink("View Questions", "Index", "FormQuestions", new { id = item.FormId }, null) |
-                @Html.ActionLink("Details", "Details", new { id = item.FormId })
+                @Html.DisplayFor(modelItem => item.NumberOfQuestions)
+                (
+                @if (item.NumberOfQuestions == 0)
+                {
+                    @Html.ActionLink("Add", "Add", "FormQuestions", new { id = item.FormId }, null)
+                }
+                else
+                {
+                    @Html.ActionLink("View", "Index", "FormQuestions", new { id = item.FormId }, null)
+                }
+                )
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NumberOfSubmissions)
+                (@Html.ActionLink("View", "Index", "FormSubmissions", new { id = item.FormId }, null))
+            </td>
+            <td>
                 @if (User.IsInRole(Role.ProviderAdmin))
                 {
-                    <text> |
+                    <text>
                         @Html.ActionLink("Clone", "Clone", new { id = item.FormId }) |
                         @Html.ActionLink("Edit", "Edit", new { id = item.FormId }) |
                         @Html.ActionLink("Delete", "Delete", new { id = item.FormId })
