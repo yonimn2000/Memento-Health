@@ -7,7 +7,7 @@
 <h2>Provider Details</h2>
 
 <div>
-    
+
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -41,6 +41,44 @@
         <dd>
             @Html.DisplayFor(model => model.Email)
         </dd>
+
+        <dd>
+            <strong>Admins</strong>
+        </dd>
+
+        <div class="card shadow">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Full Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Staff.Where(s => s.Roles.Any(r => r.Role.Name.Equals(Role.ProviderAdmin))).ToList())
+                        {
+                        <tr>
+                            <td>@item.FullName</td>
+                            <td>@item.Email</td>
+                            @if (item.PhoneNumberConfirmed == false)
+                            {
+                                <td>None</td>
+                            }
+                            else
+                            {
+                                <td>@item.PhoneNumber</td>
+                            }
+
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+            
 
     </dl>
 </div>
