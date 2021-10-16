@@ -129,6 +129,9 @@ namespace MementoHealth.Controllers
                 return View("Editor", formQuestion);
             }
 
+            if (formQuestion.Type != newFormQuestion.Type || formQuestion.JsonData != newFormQuestion.JsonData)
+                formQuestion.Conditions.Clear();
+
             formQuestion.TypeString = newFormQuestion.TypeString;
             formQuestion.Question = newFormQuestion.Question;
             formQuestion.JsonData = newFormQuestion.JsonData;
