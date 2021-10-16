@@ -40,6 +40,11 @@ namespace MementoHealth.Entities
         public virtual Form Form { get; set; }
 
         public virtual ICollection<FormQuestionAnswer> Answers { get; set; }
+
+        [InverseProperty("Question")]
         public virtual ICollection<FormQuestionCondition> Conditions { get; set; }
+
+        [InverseProperty("GoToQuestion")]
+        public virtual ICollection<FormQuestionCondition> ConditionGoTos { get; set; }
     }
 }

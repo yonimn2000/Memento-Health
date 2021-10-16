@@ -1,8 +1,10 @@
 ﻿@using MementoHealth.Entities
 @model IEnumerable<FormQuestion>
 @{
+    int maxQuestionNumber = Model.Max(q => q.Number);
     Form form = Model.First().Form;
     ViewBag.Title = $"“{form.Name}” Form Questions";
+    ViewBag.UseFullScreenWidth = true;
 }
 
 <h2>@ViewBag.Title</h2>
@@ -21,6 +23,8 @@
     </tr>
     @foreach (FormQuestion question in Model)
     {
+        bool isFirstRow = question.Conditions.Count == 0;
+        bool isLastRow = question.Number == maxQuestionNumber;
         <tr>
             <td>@question.Number</td>
             <td>@question.Question</td>
@@ -28,15 +32,24 @@
             <td>@question.TypeString</td>
             <td class="json-data" data-type="@question.TypeString" data-json="@question.JsonData"></td>
             <td>
-                @question.Conditions.Count
-                (
-                @if (question.Conditions.Count == 0)
+                @if (question.Conditions.Count > 0)
                 {
-                    @Html.ActionLink("Add", "Add", "FormQuestionConditions", new { id = question.QuestionId }, null)
+                    <ol class="pl-0">
+                        @foreach (var condition in question.Conditions)
+                        {
+                            <li>@condition</li>
+                        }
+                    </ol>
+                }
+
+                (
+                @if (isFirstRow)
+                {
+                    @Html.ActionLink("Add condition", "Add", "FormQuestionConditions", new { id = question.QuestionId }, null)
                 }
                 else
                 {
-                    @Html.ActionLink("View", "Index", "FormQuestionConditions", new { id = question.QuestionId }, null)
+                    @Html.ActionLink("Edit conditions", "Index", "FormQuestionConditions", new { id = question.QuestionId }, null)
                 }
                 )
             </td>
@@ -54,7 +67,7 @@
                     }
                 } |
 
-                @if (question.Number == Model.Max(q => q.Number))
+                @if (isLastRow)
                 {
                     <span class="text-secondary">Down</span>
                 }
