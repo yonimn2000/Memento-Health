@@ -225,6 +225,10 @@
     <Compile Include="Migrations\202110102031065_QuestionV2.Designer.cs">
       <DependentUpon>202110102031065_QuestionV2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202110162002487_ConditionV2.cs" />
+    <Compile Include="Migrations\202110162002487_ConditionV2.Designer.cs">
+      <DependentUpon>202110162002487_ConditionV2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\FormViewModels.cs" />
@@ -451,6 +455,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202110102031065_QuestionV2.resx">
       <DependentUpon>202110102031065_QuestionV2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202110162002487_ConditionV2.resx">
+      <DependentUpon>202110162002487_ConditionV2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
