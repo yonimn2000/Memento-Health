@@ -1,0 +1,32 @@
+﻿@model MementoHealth.Entities.FormQuestionCondition
+
+@{
+    ViewBag.Title = "Delete Form Question Condition";
+}
+
+<h2 class="text-danger">@ViewBag.Title</h2>
+<h3 class="text-danger">Are you sure you want to delete this form question condition?</h3>
+<hr />
+
+<div>
+    <dl class="dl-horizontal">
+        <dt>@Html.DisplayNameFor(model => model.Question.Question)</dt>
+        <dd>@Html.DisplayFor(model => model.Question.Question)</dd>
+
+        <dt>@Html.DisplayNameFor(model => model.Number)</dt>
+        <dd>@Html.DisplayFor(model => model.Number)</dd>
+
+        <dt>Condition</dt>
+        <dd>@Model</dd>
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-danger" /> |
+            @Html.ActionLink("Back to List", "Index", new { id = Model.QuestionId })
+        </div>
+    }
+</div>
