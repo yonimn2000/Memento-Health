@@ -50,6 +50,12 @@ namespace MementoHealth.Controllers
             return Db.Users.Find(userId).Provider.Patients.Where(f => f.PatientId == id).SingleOrDefault();
         }
 
+        private Patient FindPatientByExternal_Restricted(string externalId)
+        {
+            string userId = User.Identity.GetUserId();
+            return Db.Users.Find(userId).Provider.Patients.Where(f => f.ExternalPatientId == externalId).SingleOrDefault();
+        }
+
         // GET: Patients/Create
         public ActionResult Create()
         {
@@ -87,6 +93,7 @@ namespace MementoHealth.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Import(HttpPostedFileBase patientsFile)
         {
             try
@@ -95,53 +102,37 @@ namespace MementoHealth.Controllers
                 {
                     StreamReader fileReader = new StreamReader(patientsFile.InputStream);
 
-                        while (!fileReader.EndOfStream)
-                        {
+                    while (!fileReader.EndOfStream)
+                    {
 
                         //  Each line is turned into currentPatient array in the loop
                         string[] currentPatient = fileReader.ReadLine().Split(',');
 
-                        // If statement checks that data being entered is not the header
-                        if (!currentPatient.Contains("ExternalID"))
-                            {
-                                
-                                string test = currentPatient[0];
+                        // Check if patient with external id exists already
+                        Patient testPatient = FindPatientByExternal_Restricted(currentPatient[0]);
 
-                                // Check if first value in array is integer to confirm that it is an external id, otherwise else statement assigns null to externalid
-                                if (int.TryParse(test, out int output))
-                                {
-                                    Patient newPatient = new Patient
-                                    {
-                                        ExternalPatientId = currentPatient[0],
-                                        FullName = currentPatient[1],
-                                        Birthday = DateTime.Parse(currentPatient[2]),
-                                        ProviderId = GetCurrentUserProvider().ProviderId
-                                    };
-                                    Db.Patients.Add(newPatient);
-                                    Db.SaveChanges();
-                            }
-                                else
-                                {
-                                    Patient newPatient = new Patient
-                                    {
-                                        FullName = currentPatient[1],
-                                        Birthday = DateTime.Parse(currentPatient[2]),
-                                        ExternalPatientId = null,
-                                        ProviderId = GetCurrentUserProvider().ProviderId
-                                    };
-                                    Db.Patients.Add(newPatient);
-                                    Db.SaveChanges();
-                            }
-                            }
+                        // If statement checks that data being entered is not the header and doesnt exist already
+                        if (!currentPatient[0].ToLower().Contains("externalid") && testPatient == null)
+                        {
+                            Patient newPatient = new Patient
+                            {
+                                ExternalPatientId = currentPatient[0].Length > 0 ? currentPatient[0] : null,
+                                FullName = currentPatient[1],
+                                Birthday = DateTime.Parse(currentPatient[2]),
+                                ProviderId = GetCurrentUserProvider().ProviderId
+                            };
+                            Db.Patients.Add(newPatient);
+                            Db.SaveChanges();
                         }
+                    }
                 }
-                
+
                 ViewBag.Message = "File upload was successful";
                 return View();
             }
-            catch
+            catch (Exception e)
             {
-                ViewBag.Message = "An error occurred";
+                ViewBag.Message = "An error occurred" + e.Message;
                 return View();
             }
         }
