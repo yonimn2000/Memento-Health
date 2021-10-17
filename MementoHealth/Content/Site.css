@@ -87,6 +87,10 @@ textarea {
         content: url('../Images/Mobile Memento Health-logo.svg');
         top: -1px;
     }
+
+    #home-header {
+        background-attachment: initial;
+    }
 }
 
 .table {
