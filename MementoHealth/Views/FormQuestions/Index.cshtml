@@ -23,7 +23,7 @@
     </tr>
     @foreach (FormQuestion question in Model)
     {
-        bool isFirstRow = question.Conditions.Count == 0;
+        bool isFirstRow = question.Number == 1;
         bool isLastRow = question.Number == maxQuestionNumber;
         <tr>
             <td>@question.Number</td>
@@ -32,29 +32,30 @@
             <td>@question.TypeString</td>
             <td class="json-data" data-type="@question.TypeString" data-json="@question.JsonData"></td>
             <td>
-                @if (question.Conditions.Count > 0)
-                {
-                    <ol class="pl-0">
-                        @foreach (var condition in question.Conditions)
-                        {
-                            <li>@condition</li>
-                        }
-                    </ol>
-                }
-
-                (
-                @if (isFirstRow)
+                @if (question.Conditions.Count == 0)
                 {
                     @Html.ActionLink("Add condition", "Add", "FormQuestionConditions", new { id = question.QuestionId }, null)
                 }
-                else
+                else if (question.Conditions.Count > 0)
                 {
+                    if (question.Conditions.Count == 1)
+                    {
+                        <div>@question.Conditions.Single()</div>
+                    }
+                    else
+                    {
+                        <ol class="pl-3 mb-0">
+                            @foreach (var condition in question.Conditions)
+                            {
+                                <li>@condition</li>
+                            }
+                        </ol>
+                    }
                     @Html.ActionLink("Edit conditions", "Index", "FormQuestionConditions", new { id = question.QuestionId }, null)
                 }
-                )
             </td>
             <td>
-                @if (question.Number == 1)
+                @if (isFirstRow)
                 {
                     <span class="text-secondary">Up</span>
                 }
@@ -81,7 +82,7 @@
                 } |
 
                 @Html.ActionLink("Insert after", "Insert", new { id = question.QuestionId }) |
-                @Html.ActionLink("Edit", "Edit", new { id = question.QuestionId }) |
+                @Html.ActionLink("Edit question", "Edit", new { id = question.QuestionId }) |
                 @Html.ActionLink("Delete", "Delete", new { id = question.QuestionId })
             </td>
         </tr>
