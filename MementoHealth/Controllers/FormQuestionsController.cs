@@ -41,6 +41,10 @@ namespace MementoHealth.Controllers
         // GET: FormQuestions/Add/5
         public ActionResult Add(int id, int insertAfterId = 0)
         {
+            Form form = FindForm_Restricted(id);
+            if (form == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
             return View("Editor", new FormQuestion { FormId = id, QuestionId = insertAfterId });
         }
 
@@ -124,6 +128,9 @@ namespace MementoHealth.Controllers
                 ModelState.AddModelError("", $"The question '{formQuestion.Question}' already exists. Please change the question text.");
                 return View("Editor", formQuestion);
             }
+
+            if (formQuestion.Type != newFormQuestion.Type || formQuestion.JsonData != newFormQuestion.JsonData)
+                formQuestion.Conditions.Clear();
 
             formQuestion.TypeString = newFormQuestion.TypeString;
             formQuestion.Question = newFormQuestion.Question;

@@ -1,0 +1,69 @@
+﻿@using MementoHealth.Entities
+@model IEnumerable<FormQuestionCondition>
+@{
+    FormQuestion formQuestion = Model.First().Question;
+    ViewBag.Title = $"“{formQuestion.Question}” Question Conditions";
+}
+
+<h2>@ViewBag.Title</h2>
+<hr />
+@Html.ActionLink("Back to Form Questions", "Index", "FormQuestions", new { id = formQuestion.FormId }, null)
+
+<table class="table">
+    <tr>
+        <th>#</th>
+        <th>Condition</th>
+        <th>Actions</th>
+    </tr>
+    @foreach (FormQuestionCondition condition in Model)
+    {
+        <tr>
+            <td>@condition.Number</td>
+            <td>@condition.ToString(true)</td>
+            <td>
+                @if (condition.Number == 1)
+                {
+                    <span class="text-secondary">Up</span>
+                }
+                else
+                {
+                    using (Html.BeginForm("MoveUp", "FormQuestionConditions", new { id = condition.ConditionId }, FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        <a href="#" onclick="this.closest('form').submit();return false;">Up</a>
+                    }
+                } |
+
+                @if (condition.Number == Model.Max(c => c.Number))
+                {
+                    <span class="text-secondary">Down</span>
+                }
+                else
+                {
+                    using (Html.BeginForm("MoveDown", "FormQuestionConditions", new { id = condition.QuestionId }, FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        <a href="#" onclick="this.closest('form').submit();return false;">Down</a>
+                    }
+                } |
+
+                @Html.ActionLink("Insert after", "Insert", new { id = condition.ConditionId }) |
+                @Html.ActionLink("Edit", "Edit", new { id = condition.ConditionId }) |
+                @Html.ActionLink("Delete", "Delete", new { id = condition.ConditionId })
+            </td>
+        </tr>
+    }
+
+</table>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+@section styles {
+    <style>
+        form {
+            display: inline-block;
+        }
+    </style>
+}

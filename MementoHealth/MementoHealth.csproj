@@ -186,6 +186,7 @@
     <Compile Include="Classes\Role.cs" />
     <Compile Include="Classes\SecurePasswordHasher.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\FormQuestionConditionsController.cs" />
     <Compile Include="Controllers\FormQuestionsController.cs" />
     <Compile Include="Controllers\FormsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -225,6 +226,10 @@
     <Compile Include="Migrations\202110102031065_QuestionV2.Designer.cs">
       <DependentUpon>202110102031065_QuestionV2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202110162002487_ConditionV2.cs" />
+    <Compile Include="Migrations\202110162002487_ConditionV2.Designer.cs">
+      <DependentUpon>202110162002487_ConditionV2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\FormViewModels.cs" />
@@ -241,12 +246,16 @@
     <Content Include="Content\bootstrap-reboot.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\jquery.selectareas.css" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Images\camron.png" />
     <Content Include="Images\Memento Health-logo.svg" />
     <Content Include="Images\Mobile Memento Health-logo.svg" />
     <Content Include="Images\Logo.png" />
+    <Content Include="Images\SelectAreas\bt-delete.png" />
+    <Content Include="Images\SelectAreas\filter.svg" />
+    <Content Include="Images\SelectAreas\outline.gif" />
     <Content Include="Images\waiting_room.svg" />
     <Content Include="Images\yonatan.jpg" />
     <Content Include="Scripts\bootstrap.bundle.js" />
@@ -280,6 +289,7 @@
     <Content Include="Scripts\jquery-3.6.0.slim.js" />
     <Content Include="Scripts\jquery-3.6.0.slim.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.selectareas.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -422,6 +432,9 @@
     <Content Include="Views\FormQuestions\Index.cshtml" />
     <Content Include="Views\Account\_CaptchaPartial.cshtml" />
     <Content Include="Views\Patients\Import.cshtml" />
+    <Content Include="Views\FormQuestionConditions\Delete.cshtml" />
+    <Content Include="Views\FormQuestionConditions\Editor.cshtml" />
+    <Content Include="Views\FormQuestionConditions\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -452,6 +465,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202110102031065_QuestionV2.resx">
       <DependentUpon>202110102031065_QuestionV2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202110162002487_ConditionV2.resx">
+      <DependentUpon>202110162002487_ConditionV2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
