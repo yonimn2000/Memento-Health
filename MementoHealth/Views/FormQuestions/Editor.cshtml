@@ -3,6 +3,7 @@
 @{
     string action = ViewContext.RouteData.Values["action"].ToString();
     ViewBag.Title = action + " Form Question";
+    int numberOfConditions = Model.Conditions?.Count ?? 0;
 }
 
 <h2>@ViewBag.Title</h2>
@@ -28,6 +29,14 @@
             @Html.CheckBoxFor(m => m.IsRequired, new { @class = "form-check-input" })
             @Html.LabelFor(m => m.IsRequired, new { @class = "form-check-label" })
         </div>
+
+        @if (!action.Equals("add", StringComparison.InvariantCultureIgnoreCase) && numberOfConditions > 0)
+        {
+            <p class="text-danger">
+                Modifying any of the fields below will result in the deletion of the
+                @numberOfConditions condition@(numberOfConditions == 1 ? "" : "s") of this question.
+            </p>
+        }
 
         @Html.LabelFor(m => m.TypeString, new { @class = "control-label" })
         @Html.DropDownList(nameof(Model.TypeString),
