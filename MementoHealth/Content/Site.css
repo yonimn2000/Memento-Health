@@ -89,6 +89,12 @@ textarea {
     }
 }
 
+@media (hover: none) {
+    #home-header {
+        background-attachment: initial;
+    }
+}
+
 .table {
     margin-bottom: 0;
 }
