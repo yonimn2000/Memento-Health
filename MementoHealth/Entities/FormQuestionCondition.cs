@@ -51,10 +51,10 @@ namespace MementoHealth.Entities
                         stringBuilder.Append($"'{jsonData.text}'");
                         break;
                     case QuestionType.Number:
-                        stringBuilder.Append(jsonData.number as double?);
+                        stringBuilder.Append(jsonData.number);
                         break;
                     case QuestionType.Date:
-                        stringBuilder.Append(jsonData.date as DateTime?);
+                        stringBuilder.Append(jsonData.date);
                         break;
                     case QuestionType.Checkboxes:
                         stringBuilder.Append($"'{string.Join("' and '", jsonData.checkboxes as DynamicJsonArray)}'");
