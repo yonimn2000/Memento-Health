@@ -182,6 +182,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Attributes\AllowThroughPinLockAttribute.cs" />
+    <Compile Include="Classes\HtmlExtensions.cs" />
     <Compile Include="Classes\QuestionType.cs" />
     <Compile Include="Classes\Role.cs" />
     <Compile Include="Classes\SecurePasswordHasher.cs" />
