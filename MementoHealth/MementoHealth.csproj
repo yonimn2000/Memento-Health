@@ -186,6 +186,7 @@
     <Compile Include="Classes\QuestionType.cs" />
     <Compile Include="Classes\Role.cs" />
     <Compile Include="Classes\SecurePasswordHasher.cs" />
+    <Compile Include="Classes\UserExtensions.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\FormQuestionConditionsController.cs" />
     <Compile Include="Controllers\FormQuestionsController.cs" />
