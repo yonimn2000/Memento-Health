@@ -2,9 +2,13 @@
 using MementoHealth.Entities;
 using MementoHealth.Models;
 using Microsoft.AspNet.Identity;
+using System;
+using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
+using System.Web.Helpers;
 using System.Web.Mvc;
 
 namespace MementoHealth.Controllers
@@ -69,6 +73,13 @@ namespace MementoHealth.Controllers
                 return View("Editor", formQuestion);
             }
 
+            // Validate form question.
+            if (!IsQuestionJsonValid(formQuestion))
+            {
+                ModelState.AddModelError("", "Invalid form question.");
+                return View("Editor", formQuestion);
+            }
+
             FormQuestion newFormQuestion = new FormQuestion
             {
                 Question = formQuestion.Question,
@@ -90,6 +101,36 @@ namespace MementoHealth.Controllers
             form.Questions.Add(newFormQuestion);
             Db.SaveChanges();
             return RedirectToAction("Index", new { id = form.FormId });
+        }
+
+        private bool IsQuestionJsonValid(FormQuestion question)
+        {
+            try
+            {
+                switch (question.Type)
+                {
+                    case QuestionType.Text:
+                    case QuestionType.Number:
+                    case QuestionType.Date:
+                        return true;
+                    case QuestionType.Checkboxes:
+                    case QuestionType.Radiobuttons:
+                        DynamicJsonArray labelsJsonArr = System.Web.Helpers.Json.Decode(question.JsonData).labels as DynamicJsonArray;
+                        List<string> labels = labelsJsonArr.Select(l => l.ToString()).ToList();
+                        return labels.Count > 0 && labels.All(l => !string.IsNullOrWhiteSpace(l));
+                    case QuestionType.Image:
+                        dynamic image = System.Web.Helpers.Json.Decode(question.JsonData).image;
+                        return (image.url as string).Length < (double)3 / 4 * 5 * 1024 * 1024  // Base64 < 5MB
+                        && image.width > 0 && image.height > 0;
+                    default:
+                        return false;
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return false;
+            }
         }
 
         private Provider GetCurrentUserProvider()
@@ -122,15 +163,22 @@ namespace MementoHealth.Controllers
                 return View("Editor", newFormQuestion);
 
             // Check for duplicate questions.
-            if (Db.FormQuestions.Any(q => q.Question.Equals(formQuestion.Question) 
+            if (Db.FormQuestions.Any(q => q.Question.Equals(formQuestion.Question)
                     && q.FormId == formQuestion.FormId && q.QuestionId != formQuestion.QuestionId))
             {
                 ModelState.AddModelError("", $"The question '{formQuestion.Question}' already exists. Please change the question text.");
                 return View("Editor", formQuestion);
             }
 
+            // Validate form question.
+            if (!IsQuestionJsonValid(formQuestion))
+            {
+                ModelState.AddModelError("", $"Invalid form question.");
+                return View("Editor", formQuestion);
+            }
+
             if (formQuestion.Type != newFormQuestion.Type || formQuestion.JsonData != newFormQuestion.JsonData)
-                formQuestion.Conditions.Clear();
+                Db.FormQuestionConditions.RemoveRange(formQuestion.Conditions);
 
             formQuestion.TypeString = newFormQuestion.TypeString;
             formQuestion.Question = newFormQuestion.Question;
