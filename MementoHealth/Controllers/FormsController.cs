@@ -29,7 +29,8 @@ namespace MementoHealth.Controllers
                 FormId = form.FormId,
                 Name = form.Name,
                 NumberOfQuestions = form.Questions.Count,
-                NumberOfSubmissions = form.Submissions.Count
+                NumberOfSubmissions = form.Submissions.Count,
+                IsPublished = form.IsPublished
             };
         }
 
@@ -122,14 +123,7 @@ namespace MementoHealth.Controllers
         [Authorize(Roles = Role.ProviderAdmin)]
         public ActionResult Delete(int? id)
         {
-            if (id == null)
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-
-            Form form = FindForm_Restricted(id);
-            if (form == null)
-                return HttpNotFound();
-
-            return View(FormToViewModel(form));
+            return GetFormViewModelResult(id);
         }
 
         // POST: Forms/Delete/5
@@ -148,6 +142,52 @@ namespace MementoHealth.Controllers
         [Authorize(Roles = Role.ProviderAdmin)]
         public ActionResult Clone(int? id)
         {
+            return GetFormViewModelResult(id);
+        }
+
+
+        // POST: Forms/Clone/5
+        [HttpPost, ActionName("Clone")]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = Role.ProviderAdmin)]
+        public ActionResult CloneConfirmed(int id)
+        {
+            throw new NotImplementedException();
+            /*Form form = FindForm_Restricted(id);
+            // TODO: Implement
+            db.SaveChanges();
+            return RedirectToAction("Index");*/
+        }
+
+        // GET: Forms/Publish/5
+        [Authorize(Roles = Role.ProviderAdmin)]
+        public ActionResult Publish(int? id)
+        {
+            return GetFormViewModelResult(id);
+        }
+
+
+        // POST: Forms/Publish/5
+        [HttpPost, ActionName("Publish")]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = Role.ProviderAdmin)]
+        public ActionResult PublishConfirmed(int id)
+        {
+            Form form = FindForm_Restricted(id);
+            form.IsPublished = true;
+            Db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        // GET: Forms/Unpublish/5
+        [Authorize(Roles = Role.ProviderAdmin)]
+        public ActionResult Unpublish(int? id)
+        {
+            return GetFormViewModelResult(id);
+        }
+
+        private ActionResult GetFormViewModelResult(int? id)
+        {
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
@@ -159,17 +199,16 @@ namespace MementoHealth.Controllers
         }
 
 
-        // POST: Forms/Delete/5
-        [HttpPost, ActionName("Clone")]
+        // POST: Forms/Unpublish/5
+        [HttpPost, ActionName("Unpublish")]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = Role.ProviderAdmin)]
-        public ActionResult CloneConfirmed(int id)
+        public ActionResult UnpublishConfirmed(int id)
         {
-            throw new NotImplementedException();
-            /*Form form = FindForm_Restricted(id);
-            // TODO: Implement
-            db.SaveChanges();
-            return RedirectToAction("Index");*/
+            Form form = FindForm_Restricted(id);
+            form.IsPublished = false;
+            Db.SaveChanges();
+            return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)

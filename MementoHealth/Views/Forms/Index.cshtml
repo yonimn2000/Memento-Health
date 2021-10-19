@@ -21,34 +21,52 @@
         <th>Actions</th>
     </tr>
 
-    @foreach (var item in Model)
+    @foreach (var form in Model)
     {
         <tr>
-            <td>@Html.DisplayFor(modelItem => item.Name)</td>
+            <td>@Html.DisplayFor(modelItem => form.Name)</td>
             <td>
-                @Html.DisplayFor(modelItem => item.NumberOfQuestions)
-                (
-                @if (item.NumberOfQuestions == 0)
+                @Html.DisplayFor(modelItem => form.NumberOfQuestions)
+                @if (User.IsInRole(Role.ProviderAdmin))
                 {
-                    @Html.ActionLink("Add", "Add", "FormQuestions", new { id = item.FormId }, null)
+                    <span>(</span>
+                    if (form.NumberOfQuestions == 0)
+                    {
+                        @Html.ActionLink("Add", "Add", "FormQuestions", new { id = form.FormId }, null)
+                    }
+                    else
+                    {
+                        @Html.ActionLink("View", "Index", "FormQuestions", new { id = form.FormId }, null)
+                    }
+                    <span>)</span>
                 }
-                else
-                {
-                    @Html.ActionLink("View", "Index", "FormQuestions", new { id = item.FormId }, null)
-                }
-                )
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.NumberOfSubmissions)
-                (@Html.ActionLink("View", "Index", "FormSubmissions", new { id = item.FormId }, null))
+                @Html.DisplayFor(modelItem => form.NumberOfSubmissions)
+                (@Html.ActionLink("View", "Index", "FormSubmissions", new { id = form.FormId }, null))
             </td>
             <td>
                 @if (User.IsInRole(Role.ProviderAdmin))
                 {
                     <text>
-                        @Html.ActionLink("Clone", "Clone", new { id = item.FormId }) |
-                        @Html.ActionLink("Edit", "Edit", new { id = item.FormId }) |
-                        @Html.ActionLink("Delete", "Delete", new { id = item.FormId })
+                        @if (form.IsPublished)
+                        {
+                            if (form.NumberOfSubmissions > 0)
+                            {
+                                <span class="text-secondary">Unpublish</span>
+                            }
+                            else
+                            {
+                                @Html.ActionLink("Unpublish", "Unpublish", new { id = form.FormId })
+                            }
+                        }
+                        else
+                        {
+                            @Html.ActionLink("Publish", "Publish", new { id = form.FormId })
+                        } |
+                        @Html.ActionLink("Clone", "Clone", new { id = form.FormId }) |
+                        @Html.ActionLink("Edit name", "Edit", new { id = form.FormId }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = form.FormId })
                     </text>
                 }
             </td>
