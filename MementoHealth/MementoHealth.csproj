@@ -232,6 +232,10 @@
     <Compile Include="Migrations\202110162002487_ConditionV2.Designer.cs">
       <DependentUpon>202110162002487_ConditionV2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202110192114205_FormV2.cs" />
+    <Compile Include="Migrations\202110192114205_FormV2.Designer.cs">
+      <DependentUpon>202110192114205_FormV2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\FormViewModels.cs" />
@@ -436,6 +440,8 @@
     <Content Include="Views\FormQuestionConditions\Delete.cshtml" />
     <Content Include="Views\FormQuestionConditions\Editor.cshtml" />
     <Content Include="Views\FormQuestionConditions\Index.cshtml" />
+    <Content Include="Views\Forms\Publish.cshtml" />
+    <Content Include="Views\Forms\Unpublish.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -469,6 +475,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202110162002487_ConditionV2.resx">
       <DependentUpon>202110162002487_ConditionV2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202110192114205_FormV2.resx">
+      <DependentUpon>202110192114205_FormV2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

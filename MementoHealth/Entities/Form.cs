@@ -12,6 +12,8 @@ namespace MementoHealth.Entities
         [Required]
         public string Name { get; set; }
 
+        public bool IsPublished { get; set; }
+
         [ForeignKey("Provider")]
         public int ProviderId { get; set; }
         public virtual Provider Provider { get; set; }
