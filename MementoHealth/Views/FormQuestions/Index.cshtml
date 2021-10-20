@@ -86,10 +86,68 @@
     }
 
 </table>
+<div id="canvas"></div>
+<button id="redraw" onclick="redraw();" class="btn btn-sm btn-outline-info">Redraw</button>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/Scripts/Custom/FormQuestionDataConverter.js")
+    @Scripts.Render("~/Scripts/raphael.min.js")
+    @Scripts.Render("~/Scripts/dracula.min.js")
+
+    <script>
+        window.onload = function () {
+            let g = new Graph();
+            @foreach (FormQuestion question in Model)
+            {
+                int charLimit = 30;
+                string questionStr = question.Question.Truncate(charLimit);
+                <text>g.addNode('@questionStr');</text>
+                foreach (var edge in question.GraphEdges)
+                {
+                    string toQuestionStr = edge.Question?.Question.Truncate(charLimit) ?? "End";
+                    string label = "";
+
+                    if (edge.Condition == null)
+                    {
+                        label = question.Conditions.Count == 0 ? "Next" : "Else";
+                    }
+                    else
+                    {
+                        if (question.Conditions.Count > 1)
+                        {
+                            label += edge.Condition.Number + ". ";
+                        }
+                        label += edge.Condition.ToString(justCondition: true);
+                    }
+
+                    <text>
+                        g.addEdge('@questionStr', '@toQuestionStr', { directed: true, label: decodeHtml('@label') });
+                    </text>
+                }
+            }
+
+            /* layout the graph using the Spring layout implementation */
+            var layouter = new Graph.Layout.Spring(g);
+            layouter.layout();
+
+            /* draw the graph using the RaphaelJS draw implementation */
+            var width = $(document).width() - 20;
+            var renderer = new Graph.Renderer.Raphael('canvas', g, width, 500);
+            renderer.draw();
+
+            redraw = function () {
+                layouter.layout();
+                renderer.draw();
+            };
+        };
+
+        function decodeHtml(html) {
+            var txt = document.createElement("textarea");
+            txt.innerHTML = html;
+            return txt.value;
+        }
+    </script>
 }
 
 @section styles {

@@ -30,7 +30,7 @@ namespace MementoHealth.Entities
             return ToString(false);
         }
 
-        public string ToString(bool fullQuestion = false)
+        public string ToString(bool fullQuestion = false, bool justCondition = false)
         {
             dynamic jsonData = Json.Decode(JsonData);
             if (jsonData == null)
@@ -79,17 +79,23 @@ namespace MementoHealth.Entities
                 }
             }
 
-            stringBuilder.Append(", go to ");
-            if (GoToQuestion == null)
-                stringBuilder.Append("end of form");
+            if (justCondition)
+                stringBuilder.Append("...");
             else
             {
-                if (fullQuestion)
-                    stringBuilder.Append($"'{GoToQuestion.Question}'");
+                stringBuilder.Append(", go to ");
+                if (GoToQuestion == null)
+                    stringBuilder.Append("end of form");
                 else
-                    stringBuilder.Append($"question #{GoToQuestion.Number}");
+                {
+                    if (fullQuestion)
+                        stringBuilder.Append($"'{GoToQuestion.Question}'");
+                    else
+                        stringBuilder.Append($"question #{GoToQuestion.Number}");
+                }
+                stringBuilder.Append(".");
             }
-            stringBuilder.Append(".");
+
             return stringBuilder.ToString();
         }
     }
