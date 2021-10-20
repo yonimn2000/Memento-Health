@@ -30,18 +30,17 @@
             <select class="form-control" id="radiobuttons"></select>
             <div class="form-check" id="checkboxes"></div>
             <img id="image" class="img-fluid" />
-            @*<canvas id="image" class="mt-1 border border-dark" style="max-width:750px;" ></canvas>*@
         </div>
 
         <h5 class="mt-3">Go to</h5>
 
         <select class="form-control" id="goto">
+            <option value="0">end of form</option>
             @foreach (var question in Model.Question.Form.Questions
                 .Where(q => q.Number > Model.Question.Number).OrderBy(q => q.Number).ToList())
             {
                 <option value="@question.QuestionId">Q@(question.Number): @question.Question</option>
             }
-            <option value="0">End of form</option>
         </select>
 
         <br />
@@ -161,7 +160,8 @@
                     // Workaround. Wait a bit until the image is loaded before drawing areas.
                     setTimeout(() => $("#image").selectAreas('add', jsonData.imageAreas.map(getAbsoluteArea)), 100)
                 }
-                $("#goto").val($('#@Html.IdFor(m => m.GoToQuestionId)').val());
+                let gotoVal = $('#@Html.IdFor(m => m.GoToQuestionId)').val();
+                $("#goto").val(gotoVal.length == 0 ? 0 : gotoVal);
             }
 
             var targetNode = document.getElementById('inputs');

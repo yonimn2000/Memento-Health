@@ -2,7 +2,9 @@
 using MementoHealth.Entities;
 using MementoHealth.Models;
 using Microsoft.AspNet.Identity;
+using System;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
@@ -61,7 +63,7 @@ namespace MementoHealth.Controllers
             if (question == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            // Check for duplicate conditions.
+            // Check for duplicate conditions. Fixme: Needs more checks.
             if (Db.FormQuestionConditions.Any(c => c.JsonData.Equals(questionCondition.JsonData)
                 && c.QuestionId == question.QuestionId && c.ConditionId != questionCondition.ConditionId))
             {
@@ -69,10 +71,19 @@ namespace MementoHealth.Controllers
                 return View("Editor", questionCondition);
             }
 
+            if (!IsConditionJsonValid(questionCondition))
+            {
+                ModelState.AddModelError("", "Invalid question condition.");
+                return View("Editor", questionCondition);
+            }
+
             FormQuestionCondition newCondition = new FormQuestionCondition
             {
                 JsonData = questionCondition.JsonData,
-                GoToQuestionId = questionCondition.GoToQuestionId
+                GoToQuestionId = questionCondition.GoToQuestionId == 0
+                    || !question.Form.Questions.Any(q => q.QuestionId == questionCondition.GoToQuestionId)
+                    || question.Number > Db.FormQuestions.Find(questionCondition.GoToQuestionId).Number
+                    ? null : questionCondition.GoToQuestionId
             };
 
             if (questionCondition.ConditionId == 0) // If adding a question.
@@ -87,7 +98,10 @@ namespace MementoHealth.Controllers
 
             question.Conditions.Add(newCondition);
             Db.SaveChanges();
-            return RedirectToAction("Index", new { id = question.QuestionId });
+            return RedirectToAction("Index", new
+            {
+                id = question.QuestionId
+            });
         }
 
         private Provider GetCurrentUserProvider()
@@ -116,14 +130,37 @@ namespace MementoHealth.Controllers
         public ActionResult Edit([Bind(Include = "ConditionId,Number,JsonData,GoToQuestionId,QuestionId")] FormQuestionCondition newCondition)
         {
             FormQuestionCondition formQuestionCondition = FindFormQuestionCondition_Restricted(newCondition.ConditionId);
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
+                return View("Editor", newCondition);
+
+            if (!IsConditionJsonValid(newCondition))
             {
-                formQuestionCondition.JsonData = newCondition.JsonData;
-                formQuestionCondition.GoToQuestionId = newCondition.GoToQuestionId;
-                Db.SaveChanges();
-                return RedirectToAction("Index", new { id = formQuestionCondition.QuestionId });
+                ModelState.AddModelError("", "Invalid question condition.");
+                return View("Editor", newCondition);
             }
-            return View("Editor", newCondition);
+
+            formQuestionCondition.JsonData = newCondition.JsonData;
+            formQuestionCondition.GoToQuestionId = newCondition.GoToQuestionId == 0 
+                || !formQuestionCondition.Question.Form.Questions.Any(q => q.QuestionId == newCondition.GoToQuestionId)
+                || formQuestionCondition.Question.Number > Db.FormQuestions.Find(newCondition.GoToQuestionId).Number
+                ? null : newCondition.GoToQuestionId;
+
+            Db.SaveChanges();
+            return RedirectToAction("Index", new { id = formQuestionCondition.QuestionId });
+        }
+
+        private bool IsConditionJsonValid(FormQuestionCondition condition)
+        {
+            try
+            {
+                // TODO
+                return true;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return false;
+            }
         }
 
         // POST: FormQuestionConditions/MoveUp/5
