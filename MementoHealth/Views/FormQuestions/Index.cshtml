@@ -86,7 +86,7 @@
     }
 
 </table>
-<div id="canvas"></div>
+<div id="canvas" class="w-100"></div>
 <button id="redraw" onclick="redraw();" class="btn btn-sm btn-outline-info">Redraw</button>
 
 @section Scripts {
@@ -132,7 +132,7 @@
             layouter.layout();
 
             /* draw the graph using the RaphaelJS draw implementation */
-            var width = $(document).width() - 20;
+            var width = $('#canvas').width();
             var renderer = new Graph.Renderer.Raphael('canvas', g, width, 500);
             renderer.draw();
 
