@@ -61,7 +61,7 @@
 
 @section Scripts {
     @Scripts.Render("~/Scripts/jquery.selectareas.min.js")
-<script>
+    <script>
         let answerType = '@Model.Question.TypeString';
         let questionData;
         $(() => {
@@ -74,7 +74,7 @@
             switch (answerType) {
                 case '@QuestionType.Text.ToString()':
                     options.push('is', 'is not', 'has', 'does not have');
-                    $("#textbox").attr('type', 'text').attr('placeholder', 'text').show();
+                    $("#textbox").attr('type', 'text').show();
                     break;
                 case '@QuestionType.Number.ToString()':
                     options.push(
@@ -213,28 +213,55 @@
 
             jsonData.option = $("#options").val();
             if (jsonData.option != "is anything") {
-
+                let text = $("#textbox").val();
                 switch (answerType) {
                     case '@QuestionType.Text.ToString()':
-                        jsonData.text = $("#textbox").val();
+                        if (text.length == 0) {
+                            isValidForm = false;
+                            alert("Textbox cannot be empty.");
+                        }
+                        else
+                            jsonData.text = text;
                         break;
                     case '@QuestionType.Number.ToString()':
-                        jsonData.number = $("#textbox").val();
+                        if (text.length == 0 || isNaN(text)) {
+                            isValidForm = false;
+                            alert("Invalid number.");
+                        }
+                        else
+                            jsonData.number = text;
                         break;
                     case '@QuestionType.Date.ToString()':
-                        jsonData.date = $("#textbox").val();
+                        if ((new Date(text) === "Invalid Date") || isNaN(new Date(text))) {
+                            isValidForm = false;
+                            alert("Invalid date.");
+                        }
+                        else
+                            jsonData.date = text;
                         break;
                     case '@QuestionType.Checkboxes.ToString()':
                         jsonData.checkboxes = [];
                         $("#checkboxes :checked").each(function () {
                             jsonData.checkboxes.push($(this).val());
                         });
+                        if (jsonData.checkboxes.length == 0) {
+                            isValidForm = false;
+                            alert("At least one checkbox must be checked.");
+                        }
                         break;
                     case '@QuestionType.Radiobuttons.ToString()':
                         jsonData.radiobutton = $("#radiobuttons").val();
+                        if (jsonData.radiobutton.length == 0) {
+                            isValidForm = false;
+                            alert("Invalid radiobutton value.");
+                        }
                         break;
                     case '@QuestionType.Image.ToString()':
                         jsonData.imageAreas = $('#image').selectAreas('areas').map(getRelativeArea);
+                        if (jsonData.imageAreas.length == 0) {
+                            isValidForm = false;
+                            alert("At least one area must be selected.");
+                        }
                         break;
                 }
             }
@@ -245,5 +272,5 @@
                 $('#create-button').closest("form").submit();
             }
         };
-</script>
+    </script>
 }
