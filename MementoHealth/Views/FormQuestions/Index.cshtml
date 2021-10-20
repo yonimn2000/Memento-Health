@@ -1,7 +1,6 @@
 ﻿@using MementoHealth.Entities
 @model IEnumerable<FormQuestion>
 @{
-    int maxQuestionNumber = Model.Max(q => q.Number);
     Form form = Model.First().Form;
     ViewBag.Title = $"“{form.Name}” Form Questions";
     ViewBag.UseFullScreenWidth = true;
@@ -23,8 +22,6 @@
     </tr>
     @foreach (FormQuestion question in Model)
     {
-        bool isFirstRow = question.Number == 1;
-        bool isLastRow = question.Number == maxQuestionNumber;
         <tr>
             <td>@question.Number</td>
             <td>@question.Question</td>
@@ -55,30 +52,30 @@
                 }
             </td>
             <td>
-                @if (isFirstRow)
-                {
-                    <span class="text-secondary">Up</span>
-                }
-                else
+                @if (question.CanBeMovedUp)
                 {
                     using (Html.BeginForm("MoveUp", "FormQuestions", new { id = question.QuestionId }, FormMethod.Post))
                     {
                         @Html.AntiForgeryToken()
                         <a href="#" onclick="this.closest('form').submit();return false;">Up</a>
                     }
-                } |
-
-                @if (isLastRow)
-                {
-                    <span class="text-secondary">Down</span>
                 }
                 else
+                {
+                    <span class="text-secondary" title="@question.GetCannotMoveUpReason()">Up</span>
+                } |
+
+                @if (question.CanBeMovedDown)
                 {
                     using (Html.BeginForm("MoveDown", "FormQuestions", new { id = question.QuestionId }, FormMethod.Post))
                     {
                         @Html.AntiForgeryToken()
                         <a href="#" onclick="this.closest('form').submit();return false;">Down</a>
                     }
+                }
+                else
+                {
+                    <span class="text-secondary" title="@question.GetCannotMoveDownReason()">Down</span>
                 } |
 
                 @Html.ActionLink("Insert after", "Insert", new { id = question.QuestionId }) |

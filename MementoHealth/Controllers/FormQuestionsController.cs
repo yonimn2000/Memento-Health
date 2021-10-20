@@ -194,13 +194,16 @@ namespace MementoHealth.Controllers
         public ActionResult MoveUp(int id)
         {
             FormQuestion formQuestion = FindFormQuestion_Restricted(id);
-            FormQuestion prevQuestion = formQuestion.Form.Questions.Where(q => q.Number == formQuestion.Number - 1).SingleOrDefault();
-            if (prevQuestion == null)
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            if (formQuestion.CanBeMovedUp)
+            {
+                FormQuestion prevQuestion = formQuestion.Form.Questions.Where(q => q.Number == formQuestion.Number - 1).SingleOrDefault();
+                if (prevQuestion == null)
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            formQuestion.Number--;
-            prevQuestion.Number++;
-            Db.SaveChanges();
+                formQuestion.Number--;
+                prevQuestion.Number++;
+                Db.SaveChanges(); 
+            }
             return RedirectToAction("Index", new { id = formQuestion.FormId });
         }
 
@@ -210,13 +213,16 @@ namespace MementoHealth.Controllers
         public ActionResult MoveDown(int id)
         {
             FormQuestion formQuestion = FindFormQuestion_Restricted(id);
-            FormQuestion nextQuestion = formQuestion.Form.Questions.Where(q => q.Number == formQuestion.Number + 1).SingleOrDefault();
-            if (nextQuestion == null)
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            if (formQuestion.CanBeMovedDown)
+            {
+                FormQuestion nextQuestion = formQuestion.Form.Questions.Where(q => q.Number == formQuestion.Number + 1).SingleOrDefault();
+                if (nextQuestion == null)
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            formQuestion.Number++;
-            nextQuestion.Number--;
-            Db.SaveChanges();
+                formQuestion.Number++;
+                nextQuestion.Number--;
+                Db.SaveChanges(); 
+            }
             return RedirectToAction("Index", new { id = formQuestion.FormId });
         }
 
