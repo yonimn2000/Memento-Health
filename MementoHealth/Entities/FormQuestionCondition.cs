@@ -33,7 +33,7 @@ namespace MementoHealth.Entities
         public string ToString(bool fullQuestion = false)
         {
             dynamic jsonData = Json.Decode(JsonData);
-            if (jsonData == null || GoToQuestion == null)
+            if (jsonData == null)
                 return "Invalid condition";
 
             StringBuilder stringBuilder = new StringBuilder();
@@ -64,7 +64,7 @@ namespace MementoHealth.Entities
                         break;
                     case QuestionType.Image:
                         int numberOfAreas = (jsonData.imageAreas as DynamicJsonArray).Length;
-                        if(numberOfAreas == 1)
+                        if (numberOfAreas == 1)
                         {
                             stringBuilder.Append(numberOfAreas);
                             stringBuilder.Append(" area");
@@ -80,10 +80,15 @@ namespace MementoHealth.Entities
             }
 
             stringBuilder.Append(", go to ");
-            if(fullQuestion)
-                stringBuilder.Append($"'{GoToQuestion.Question}'");
+            if (GoToQuestion == null)
+                stringBuilder.Append("end of form");
             else
-                stringBuilder.Append($"question #{GoToQuestion.Number}");
+            {
+                if (fullQuestion)
+                    stringBuilder.Append($"'{GoToQuestion.Question}'");
+                else
+                    stringBuilder.Append($"question #{GoToQuestion.Number}");
+            }
             stringBuilder.Append(".");
             return stringBuilder.ToString();
         }

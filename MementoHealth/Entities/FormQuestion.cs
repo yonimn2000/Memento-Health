@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace MementoHealth.Entities
 {
@@ -45,6 +46,43 @@ namespace MementoHealth.Entities
         public virtual ICollection<FormQuestionCondition> Conditions { get; set; }
 
         [InverseProperty("GoToQuestion")]
-        public virtual ICollection<FormQuestionCondition> ConditionGoTos { get; set; }
+        public virtual ICollection<FormQuestionCondition> ConditionComeFroms { get; set; }
+
+        public bool CanBeMovedUp => !IsTopQuestion && ReferencedConditionOfAboveQuestion == null;
+        public bool CanBeMovedDown => !IsBottomQuestion && ConditionReferencingBottomQuestion == null;
+        
+        private bool IsTopQuestion => Number <= 1;
+        private bool IsBottomQuestion => Number == Form.Questions.Max(q => q.Number);
+
+        private FormQuestionCondition ReferencedConditionOfAboveQuestion =>
+            ConditionComeFroms.Where(c => c.Question.Number == Number - 1).FirstOrDefault();
+        private FormQuestionCondition ConditionReferencingBottomQuestion =>
+            Conditions.Where(c => c.GoToQuestion != null && c.GoToQuestion.Number == Number + 1).FirstOrDefault();
+
+        public string GetCannotMoveUpReason()
+        {
+            if (IsTopQuestion)
+                return "The current question is already the top question.";
+
+            FormQuestionCondition referencedCondition = ReferencedConditionOfAboveQuestion;
+            if (referencedCondition != null)
+                return $"The current question is referenced by condition #{referencedCondition.Number}" +
+                    " of the previous question.";
+
+            return null;
+        }
+
+        public string GetCannotMoveDownReason()
+        {
+            if (IsBottomQuestion)
+                return "The current question is already the bottom question.";
+
+            FormQuestionCondition referencingCondition = ConditionReferencingBottomQuestion;
+            if (referencingCondition != null)
+                return $"Condition #{referencingCondition.Number} of the current question" +
+                    $" is referencing the next question.";
+
+            return null;
+        }
     }
 }
