@@ -48,15 +48,64 @@ namespace MementoHealth.Entities
         [InverseProperty("GoToQuestion")]
         public virtual ICollection<FormQuestionCondition> ConditionComeFroms { get; set; }
 
-        public bool CanBeMovedUp => !IsTopQuestion && ReferencedConditionOfAboveQuestion == null;
-        public bool CanBeMovedDown => !IsBottomQuestion && ConditionReferencingBottomQuestion == null;
-        
-        private bool IsTopQuestion => Number <= 1;
-        private bool IsBottomQuestion => Number == Form.Questions.Max(q => q.Number);
+        [NotMapped]
+        public ICollection<FormQuestion> PossibleNextQuestions
+        {
+            get
+            {
+                ICollection<FormQuestion> questions = new HashSet<FormQuestion>();
+                foreach (FormQuestionCondition condition in Conditions)
+                    questions.Add(condition.GoToQuestion);
+                questions.Add(NextSequentialQuestion);
+                return questions;
+            }
+        }
 
-        private FormQuestionCondition ReferencedConditionOfAboveQuestion =>
+        [NotMapped]
+        public ICollection<FormQuestionEdge> GraphEdges
+        {
+            get
+            {
+                ICollection<FormQuestionEdge> edges = new HashSet<FormQuestionEdge>();
+                foreach (FormQuestionCondition condition in Conditions)
+                    edges.Add(new FormQuestionEdge
+                    {
+                        Question = condition.GoToQuestion,
+                        Condition = condition
+                    });
+                if (!edges.Any(e => e.Question == NextSequentialQuestion
+                    || e.Condition.ToString(justCondition: true).Equals("If answer is anything...")))
+                    edges.Add(new FormQuestionEdge
+                    {
+                        Question = NextSequentialQuestion,
+                        Condition = null
+                    });
+                return edges;
+            }
+        }
+
+        [NotMapped]
+        public FormQuestion NextSequentialQuestion
+            => Form.Questions.Where(q => q.Number == Number + 1).FirstOrDefault();
+
+        [NotMapped]
+        public bool CanBeMovedUp => !IsTopQuestion && ReferencedConditionOfAboveQuestion == null;
+        
+        [NotMapped]
+        public bool CanBeMovedDown => !IsBottomQuestion && ConditionReferencingBottomQuestion == null;
+
+        [NotMapped]
+        public bool IsTopQuestion => Number <= 1;
+        
+        [NotMapped]
+        public bool IsBottomQuestion => Number == (Form?.Questions.Max(q => q.Number) ?? 0);
+
+        [NotMapped]
+        public FormQuestionCondition ReferencedConditionOfAboveQuestion =>
             ConditionComeFroms.Where(c => c.Question.Number == Number - 1).FirstOrDefault();
-        private FormQuestionCondition ConditionReferencingBottomQuestion =>
+        
+        [NotMapped]
+        public FormQuestionCondition ConditionReferencingBottomQuestion =>
             Conditions.Where(c => c.GoToQuestion != null && c.GoToQuestion.Number == Number + 1).FirstOrDefault();
 
         public string GetCannotMoveUpReason()
@@ -84,5 +133,7 @@ namespace MementoHealth.Entities
 
             return null;
         }
+
+        public override string ToString() => Question;
     }
 }
