@@ -158,18 +158,18 @@
                             $(this).prop('checked', true);
                     });
                 else if (jsonData.imageAreas) {
-                    $("#image").selectAreas('add', jsonData.imageAreas.map(getAbsoluteArea));
+                    // Workaround. Wait a bit until the image is loaded before drawing areas.
+                    setTimeout(() => $("#image").selectAreas('add', jsonData.imageAreas.map(getAbsoluteArea)), 100)
                 }
                 $("#goto").val($('#@Html.IdFor(m => m.GoToQuestionId)').val());
             }
 
             var targetNode = document.getElementById('inputs');
             var observer = new MutationObserver(() => {
-                if (targetNode.style.display != 'none') {
+                if (targetNode.style.display != 'none')
                     $('#image').selectAreas({
                         minSize: [30, 30]
                     });
-                }
             });
             observer.observe(targetNode, { attributes: true, childList: true });
         });
