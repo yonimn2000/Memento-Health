@@ -86,8 +86,8 @@
     }
 
 </table>
-<div id="canvas"></div>
-<button id="redraw" onclick="redraw();" class="btn btn-sm btn-outline-info">Redraw</button>
+<div id="canvas" class="w-100"></div>
+<button id="redraw" onclick="redraw();" class="btn btn-sm btn-outline-info">Redraw graph</button>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
@@ -97,6 +97,10 @@
 
     <script>
         window.onload = function () {
+            redrawGraph();
+        };
+
+        let redrawGraph = () => {
             let g = new Graph();
             @foreach (FormQuestion question in Model)
             {
@@ -132,7 +136,8 @@
             layouter.layout();
 
             /* draw the graph using the RaphaelJS draw implementation */
-            var width = $(document).width() - 20;
+            $('#canvas').empty();
+            var width = $('#canvas').width() - 20;
             var renderer = new Graph.Renderer.Raphael('canvas', g, width, 500);
             renderer.draw();
 
@@ -140,9 +145,15 @@
                 layouter.layout();
                 renderer.draw();
             };
+        }
+
+        let doit;
+        window.onresize = () => {
+            clearTimeout(doit);
+            doit = setTimeout(redrawGraph, 100);
         };
 
-        function decodeHtml(html) {
+        let decodeHtml = (html) => {
             var txt = document.createElement("textarea");
             txt.innerHTML = html;
             return txt.value;
