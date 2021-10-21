@@ -23,7 +23,7 @@
                         </div>
                         <div class="form-group mt-4">
                             <div class="col-md-auto my-1 font-weight-bold" style="text-align: center">@Html.DisplayNameFor(model => model.ExternalPatientId)</div><hr style="margin: 0 0 0 0" />
-                            <div class="col-md-auto my-1">@Html.DisplayFor(model => model.ExternalPatientId)</div>
+                            <div class="col-md-auto my-1">@(Model.ExternalPatientId ?? "None")</div>
                         </div>
 
                         <p class="mt-4">
