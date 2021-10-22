@@ -50,10 +50,16 @@ namespace MementoHealth.Controllers
             return Db.Users.Find(userId).Provider.Patients.Where(f => f.PatientId == id).SingleOrDefault();
         }
 
-        private Patient FindPatientByExternal_Restricted(string externalId)
+        private Patient FindPatientByExternalId_Restricted(string externalId)
         {
             string userId = User.Identity.GetUserId();
-            return Db.Users.Find(userId).Provider.Patients.Where(f => f.ExternalPatientId == externalId).SingleOrDefault();
+            return Db.Users.Find(userId).Provider.Patients.Where(f => f.ExternalPatientId.Equals(externalId)).SingleOrDefault();
+        }
+
+        private Patient FindPatientByNameAndBirthday(string fullName, DateTime birthday)
+        {
+            string userId = User.Identity.GetUserId();
+            return Db.Users.Find(userId).Provider.Patients.Where(f => f.FullName.Equals(fullName) && f.Birthday.Equals(birthday)).SingleOrDefault();
         }
 
         // GET: Patients/Create
@@ -101,6 +107,7 @@ namespace MementoHealth.Controllers
                 if (patientsFile.ContentLength > 0)
                 {
                     StreamReader fileReader = new StreamReader(patientsFile.InputStream);
+                    int providerId = GetCurrentUserProvider().ProviderId;
 
                     while (!fileReader.EndOfStream)
                     {
@@ -109,7 +116,16 @@ namespace MementoHealth.Controllers
                         string[] currentPatient = fileReader.ReadLine().Split(',');
 
                         // Check if patient with external id exists already
-                        Patient testPatient = FindPatientByExternal_Restricted(currentPatient[0]);
+                        Patient testPatient; 
+
+                        if (currentPatient[0].Length > 0)
+                        {
+                            testPatient = FindPatientByExternalId_Restricted(currentPatient[0]);
+                        } else
+                        {
+                            testPatient = FindPatientByNameAndBirthday(currentPatient[1], DateTime.Parse(currentPatient[2]));
+                        }
+                        
 
                         // If statement checks that data being entered is not the header and doesnt exist already
                         if (!currentPatient[0].ToLower().Contains("externalid") && testPatient == null)
@@ -119,12 +135,12 @@ namespace MementoHealth.Controllers
                                 ExternalPatientId = currentPatient[0].Length > 0 ? currentPatient[0] : null,
                                 FullName = currentPatient[1],
                                 Birthday = DateTime.Parse(currentPatient[2]),
-                                ProviderId = GetCurrentUserProvider().ProviderId
+                                ProviderId = providerId
                             };
-                            Db.Patients.Add(newPatient);
-                            Db.SaveChanges();
+                            Db.Patients.Add(newPatient);       
                         }
                     }
+                    Db.SaveChanges();
                 }
 
                 ViewBag.Message = "File upload was successful";
@@ -132,7 +148,7 @@ namespace MementoHealth.Controllers
             }
             catch (Exception e)
             {
-                ViewBag.Message = "An error occurred" + e.Message;
+                ViewBag.Message = "An error occurred: " + e.Message;
                 return View();
             }
         }
