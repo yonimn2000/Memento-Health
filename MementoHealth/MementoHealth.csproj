@@ -182,9 +182,13 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Attributes\AllowThroughPinLockAttribute.cs" />
+    <Compile Include="Classes\FormQuestionEdge.cs" />
+    <Compile Include="Classes\HtmlExtensions.cs" />
     <Compile Include="Classes\QuestionType.cs" />
     <Compile Include="Classes\Role.cs" />
     <Compile Include="Classes\SecurePasswordHasher.cs" />
+    <Compile Include="Classes\StringExtensions.cs" />
+    <Compile Include="Classes\UserExtensions.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\FormQuestionConditionsController.cs" />
     <Compile Include="Controllers\FormQuestionsController.cs" />
@@ -230,6 +234,10 @@
     <Compile Include="Migrations\202110162002487_ConditionV2.Designer.cs">
       <DependentUpon>202110162002487_ConditionV2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202110192114205_FormV2.cs" />
+    <Compile Include="Migrations\202110192114205_FormV2.Designer.cs">
+      <DependentUpon>202110192114205_FormV2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\FormViewModels.cs" />
@@ -263,6 +271,7 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\Custom\FormQuestionDataConverter.js" />
+    <Content Include="Scripts\dracula.min.js" />
     <Content Include="Scripts\esm\popper-utils.js" />
     <Content Include="Scripts\esm\popper-utils.min.js" />
     <Content Include="Scripts\esm\popper.js" />
@@ -299,6 +308,7 @@
     <Content Include="Scripts\popper-utils.min.js" />
     <Content Include="Scripts\popper.js" />
     <Content Include="Scripts\popper.min.js" />
+    <Content Include="Scripts\raphael.min.js" />
     <Content Include="Scripts\src\index.js" />
     <Content Include="Scripts\src\methods\defaults.js" />
     <Content Include="Scripts\src\methods\destroy.js" />
@@ -435,6 +445,8 @@
     <Content Include="Views\FormQuestionConditions\Delete.cshtml" />
     <Content Include="Views\FormQuestionConditions\Editor.cshtml" />
     <Content Include="Views\FormQuestionConditions\Index.cshtml" />
+    <Content Include="Views\Forms\Publish.cshtml" />
+    <Content Include="Views\Forms\Unpublish.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -468,6 +480,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202110162002487_ConditionV2.resx">
       <DependentUpon>202110162002487_ConditionV2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202110192114205_FormV2.resx">
+      <DependentUpon>202110192114205_FormV2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

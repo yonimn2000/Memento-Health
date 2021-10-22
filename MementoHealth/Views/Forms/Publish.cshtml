@@ -1,0 +1,36 @@
+﻿@model MementoHealth.Models.FormViewModel
+
+@{
+    ViewBag.Title = "Publish Form";
+}
+
+<h2>@ViewBag.Title</h2>
+<h3>Are you sure you want to publish this form?</h3>
+<ul class="text-danger">
+    <li>You will not be able to edit the form after publishing it.</li>
+    <li>You will not be able to unpublish the form after a submission is started.</li>
+</ul>
+<hr />
+
+<div>
+    <dl class="dl-horizontal">
+        <dt>@Html.DisplayNameFor(model => model.Name)</dt>
+        <dd>@Html.DisplayFor(model => model.Name)</dd>
+
+        <dt>@Html.DisplayNameFor(model => model.NumberOfQuestions)</dt>
+        <dd>@Html.DisplayFor(model => model.NumberOfQuestions)</dd>
+
+        <dt>@Html.DisplayNameFor(model => model.NumberOfSubmissions)</dt>
+        <dd>@Html.DisplayFor(model => model.NumberOfSubmissions)</dd>
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Publish" class="btn btn-primary" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>
