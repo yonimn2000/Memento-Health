@@ -46,7 +46,6 @@ namespace MementoHealth.Entities
         public virtual ICollection<FormQuestionCondition> Conditions { get; set; }
 
         [InverseProperty("GoToQuestion")]
-<<<<<<< Updated upstream
         public virtual ICollection<FormQuestionCondition> ConditionComeFroms { get; set; }
 
         [NotMapped]
@@ -136,8 +135,5 @@ namespace MementoHealth.Entities
         }
 
         public override string ToString() => Question;
-=======
-        public virtual ICollection<FormQuestionCondition> ConditionGoTos { get; set; }
->>>>>>> Stashed changes
     }
 }

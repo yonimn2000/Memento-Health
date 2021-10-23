@@ -6,11 +6,7 @@
 }
 
 <h2>@ViewBag.Title</h2>
-<<<<<<< Updated upstream
 <h4>Question @Model.Question.Number: "@Model.Question.Question"</h4>
-=======
-<h4>Question: "@Model.Question.Question"</h4>
->>>>>>> Stashed changes
 <hr />
 
 @using (Html.BeginForm())
@@ -34,7 +30,6 @@
             <select class="form-control" id="radiobuttons"></select>
             <div class="form-check" id="checkboxes"></div>
             <img id="image" class="img-fluid" />
-<<<<<<< Updated upstream
         </div>
 
         <h5 class="mt-3">Go to</h5>
@@ -45,18 +40,6 @@
                 .Where(q => q.Number > Model.Question.Number).OrderBy(q => q.Number).ToList())
             {
                 <option value="@question.QuestionId">Q@(question.Number): @question.Question</option>
-=======
-            @*<canvas id="image" class="mt-1 border border-dark" style="max-width:750px;" ></canvas>*@
-        </div>
-
-        <h5 class="mt-3">Go to question</h5>
-
-        <select class="form-control" id="goto">
-            @foreach (var question in Model.Question.Form.Questions
-                .Where(q => q.Number > Model.Question.Number).OrderBy(q => q.Number).ToList())
-            {
-                <option value="@question.QuestionId">@question.Number. @question.Question</option>
->>>>>>> Stashed changes
             }
         </select>
 
@@ -77,11 +60,7 @@
 
 @section Scripts {
     @Scripts.Render("~/Scripts/jquery.selectareas.min.js")
-<<<<<<< Updated upstream
     <script>
-=======
-<script>
->>>>>>> Stashed changes
         let answerType = '@Model.Question.TypeString';
         let questionData;
         $(() => {
@@ -94,11 +73,7 @@
             switch (answerType) {
                 case '@QuestionType.Text.ToString()':
                     options.push('is', 'is not', 'has', 'does not have');
-<<<<<<< Updated upstream
                     $("#textbox").attr('type', 'text').show();
-=======
-                    $("#textbox").attr('type', 'text').attr('placeholder', 'text').show();
->>>>>>> Stashed changes
                     break;
                 case '@QuestionType.Number.ToString()':
                     options.push(
@@ -182,33 +157,19 @@
                             $(this).prop('checked', true);
                     });
                 else if (jsonData.imageAreas) {
-<<<<<<< Updated upstream
                     // Workaround. Wait a bit until the image is loaded before drawing areas.
                     setTimeout(() => $("#image").selectAreas('add', jsonData.imageAreas.map(getAbsoluteArea)), 100)
                 }
                 let gotoVal = $('#@Html.IdFor(m => m.GoToQuestionId)').val();
                 $("#goto").val(gotoVal.length == 0 ? 0 : gotoVal);
-=======
-                    $("#image").selectAreas('add', jsonData.imageAreas.map(getAbsoluteArea));
-                }
-                $("#goto").val($('#@Html.IdFor(m => m.GoToQuestionId)').val());
->>>>>>> Stashed changes
             }
 
             var targetNode = document.getElementById('inputs');
             var observer = new MutationObserver(() => {
-<<<<<<< Updated upstream
                 if (targetNode.style.display != 'none')
                     $('#image').selectAreas({
                         minSize: [30, 30]
                     });
-=======
-                if (targetNode.style.display != 'none') {
-                    $('#image').selectAreas({
-                        minSize: [30, 30]
-                    });
-                }
->>>>>>> Stashed changes
             });
             observer.observe(targetNode, { attributes: true, childList: true });
         });
@@ -252,7 +213,6 @@
 
             jsonData.option = $("#options").val();
             if (jsonData.option != "is anything") {
-<<<<<<< Updated upstream
                 let text = $("#textbox").val();
                 switch (answerType) {
                     case '@QuestionType.Text.ToString()':
@@ -278,25 +238,12 @@
                         }
                         else
                             jsonData.date = text;
-=======
-
-                switch (answerType) {
-                    case '@QuestionType.Text.ToString()':
-                        jsonData.text = $("#textbox").val();
-                        break;
-                    case '@QuestionType.Number.ToString()':
-                        jsonData.number = $("#textbox").val();
-                        break;
-                    case '@QuestionType.Date.ToString()':
-                        jsonData.date = $("#textbox").val();
->>>>>>> Stashed changes
                         break;
                     case '@QuestionType.Checkboxes.ToString()':
                         jsonData.checkboxes = [];
                         $("#checkboxes :checked").each(function () {
                             jsonData.checkboxes.push($(this).val());
                         });
-<<<<<<< Updated upstream
                         if (jsonData.checkboxes.length == 0) {
                             isValidForm = false;
                             alert("At least one checkbox must be checked.");
@@ -315,14 +262,6 @@
                             isValidForm = false;
                             alert("At least one area must be selected.");
                         }
-=======
-                        break;
-                    case '@QuestionType.Radiobuttons.ToString()':
-                        jsonData.radiobutton = $("#radiobuttons").val();
-                        break;
-                    case '@QuestionType.Image.ToString()':
-                        jsonData.imageAreas = $('#image').selectAreas('areas').map(getRelativeArea);
->>>>>>> Stashed changes
                         break;
                 }
             }
@@ -333,9 +272,5 @@
                 $('#create-button').closest("form").submit();
             }
         };
-<<<<<<< Updated upstream
     </script>
-=======
-</script>
->>>>>>> Stashed changes
 }

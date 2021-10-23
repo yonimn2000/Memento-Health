@@ -55,29 +55,14 @@
                 }
             </td>
             <td>
-<<<<<<< Updated upstream
                 @if (question.CanBeMovedUp)
-=======
-                @if (isFirstRow)
-                {
-                    <span class="text-secondary">Up</span>
-                }
-                else
->>>>>>> Stashed changes
                 {
                     using (Html.BeginForm("MoveUp", "FormQuestions", new { id = question.QuestionId }, FormMethod.Post))
                     {
                         @Html.AntiForgeryToken()
                         <a href="#" onclick="this.closest('form').submit();return false;">Up</a>
                     }
-<<<<<<< Updated upstream
-=======
-                } |
 
-                @if (isLastRow)
-                {
-                    <span class="text-secondary">Down</span>
->>>>>>> Stashed changes
                 }
                 else
                 {

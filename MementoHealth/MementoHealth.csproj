@@ -182,18 +182,12 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Attributes\AllowThroughPinLockAttribute.cs" />
-<<<<<<< Updated upstream
     <Compile Include="Classes\FormQuestionEdge.cs" />
-=======
->>>>>>> Stashed changes
     <Compile Include="Classes\HtmlExtensions.cs" />
     <Compile Include="Classes\QuestionType.cs" />
     <Compile Include="Classes\Role.cs" />
     <Compile Include="Classes\SecurePasswordHasher.cs" />
-<<<<<<< Updated upstream
     <Compile Include="Classes\StringExtensions.cs" />
-=======
->>>>>>> Stashed changes
     <Compile Include="Classes\UserExtensions.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\FormQuestionConditionsController.cs" />
@@ -448,27 +442,12 @@
     <Content Include="Views\FormQuestions\Delete.cshtml" />
     <Content Include="Views\FormQuestions\Index.cshtml" />
     <Content Include="Views\Account\_CaptchaPartial.cshtml" />
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
     <Content Include="Views\Patients\Search.cshtml" />
-=======
-=======
->>>>>>> baf43c2dc8787cec2b9a87056ca5d4fdfb39ee6a
->>>>>>> Stashed changes
     <Content Include="Views\FormQuestionConditions\Delete.cshtml" />
     <Content Include="Views\FormQuestionConditions\Editor.cshtml" />
     <Content Include="Views\FormQuestionConditions\Index.cshtml" />
     <Content Include="Views\Forms\Publish.cshtml" />
     <Content Include="Views\Forms\Unpublish.cshtml" />
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
->>>>>>> baf43c2dc8787cec2b9a87056ca5d4fdfb39ee6a
-=======
->>>>>>> baf43c2dc8787cec2b9a87056ca5d4fdfb39ee6a
->>>>>>> Stashed changes
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
