@@ -27,6 +27,30 @@
                     @Html.ActionLink("View Patients", "Index")
                     <br />
                     @ViewBag.Message
+                    <hr />
+                    @ViewBag.SuccessString
+                    <ul class="list-group">
+                        @if (ViewBag.Success != null)
+                        {
+                            foreach (var item in ViewBag.Success)
+                            {
+                                <li class="list-group-item">@item</li>
+                            }
+                        }
+                    </ul>
+                    <br />
+                    @ViewBag.FailureString
+                    <ul class="list-group">
+                        @if (ViewBag.Failure != null)
+                        {
+                            foreach (var item in ViewBag.Failure)
+                            {
+                                <li class="list-group-item">@item</li>
+                            }
+                        }
+                    </ul>
+                    @ViewBag.Exists
+
                 }
             </div>
         </div>
