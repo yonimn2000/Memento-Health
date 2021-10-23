@@ -3,7 +3,6 @@ using MementoHealth.Entities;
 using MementoHealth.Models;
 using Microsoft.AspNet.Identity;
 using System;
-using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
@@ -48,24 +47,6 @@ namespace MementoHealth.Controllers
             return Db.Users.Find(userId).Provider.Patients.Where(f => f.PatientId == id).SingleOrDefault();
         }
 
-        private IEnumerable<Patient> FindPatients_Name(string name)
-        {
-            string userId = User.Identity.GetUserId();
-            return Db.Users.Find(userId).Provider.Patients.Where(f => f.FullName == name).ToList();
-        }
-
-        private IEnumerable<Patient> FindPatients_Birthday(DateTime birthday)
-        {
-            string userId = User.Identity.GetUserId();
-            return Db.Users.Find(userId).Provider.Patients.Where(f => f.Birthday == birthday).ToList();
-        }
-
-        private IEnumerable<Patient> FindPatients_Both(string name, DateTime birthday)
-        {
-            string userId = User.Identity.GetUserId();
-            return Db.Users.Find(userId).Provider.Patients.Where(f => (f.FullName == name)&&(f.Birthday == birthday)).ToList();
-        }
-
         // GET: Patients/Create
         public ActionResult Create()
         {
@@ -100,78 +81,6 @@ namespace MementoHealth.Controllers
         public ActionResult Import()
         {
             throw new NotImplementedException();
-        }
-
-        public ActionResult Search()
-        {
-            return View();
-        }
-
-        // POST: Patients/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Search(PatientSearchModel patient)
-        {
-            if (ModelState.IsValid)
-            {
-                if ((patient.FullName == null) && (patient.Birthday == null))
-                {
-                    ModelState.AddModelError("", "Please enter patient infromation in at least one field.");
-                    return View(patient);
-                }
-                else if (patient.FullName == null)
-                {
-                    IEnumerable<Patient> foundPatients = FindPatients_Birthday((DateTime)patient.Birthday);
-                    if (foundPatients.Count() == 0)
-                    {
-                        return HttpNotFound();
-                    }
-                    if (foundPatients.Count() == 1)
-                    {
-                        return RedirectToAction("Details", new { id = foundPatients.SingleOrDefault().PatientId });
-                    }
-                    if (foundPatients.Count() > 1)
-                    {
-                        return View("Index", foundPatients);
-                    }
-                }
-                else if (patient.Birthday == null)
-                {
-                    IEnumerable<Patient> foundPatients = FindPatients_Name(patient.FullName);
-                    if (foundPatients.Count() == 0)
-                    {
-                        return HttpNotFound();
-                    }
-                    if (foundPatients.Count() == 1)
-                    {
-                        return RedirectToAction("Details", new { id = foundPatients.SingleOrDefault().PatientId });
-                    }
-                    if (foundPatients.Count() > 1)
-                    {
-                        return View("Index", foundPatients);
-                    }
-                }
-                else
-                {
-                    IEnumerable<Patient> foundPatients = FindPatients_Both(patient.FullName, (DateTime)patient.Birthday);
-                    if (foundPatients.Count() == 0)
-                    {
-                        return HttpNotFound();
-                    }
-                    if (foundPatients.Count() == 1)
-                    {
-                        return RedirectToAction("Details", new { id = foundPatients.SingleOrDefault().PatientId });
-                    }
-                    if (foundPatients.Count() > 1)
-                    {
-                        return View("Index", foundPatients);
-                    }
-                }
-            }
-
-            return View(patient);
         }
 
         // GET: Patients/Edit/5
