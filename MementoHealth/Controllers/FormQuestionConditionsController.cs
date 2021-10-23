@@ -2,9 +2,13 @@
 using MementoHealth.Entities;
 using MementoHealth.Models;
 using Microsoft.AspNet.Identity;
+<<<<<<< Updated upstream
 using System;
 using System.Data;
 using System.Diagnostics;
+=======
+using System.Data;
+>>>>>>> Stashed changes
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
@@ -63,7 +67,11 @@ namespace MementoHealth.Controllers
             if (question == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
+<<<<<<< Updated upstream
             // Check for duplicate conditions. Fixme: Needs more checks.
+=======
+            // Check for duplicate conditions.
+>>>>>>> Stashed changes
             if (Db.FormQuestionConditions.Any(c => c.JsonData.Equals(questionCondition.JsonData)
                 && c.QuestionId == question.QuestionId && c.ConditionId != questionCondition.ConditionId))
             {
@@ -71,6 +79,7 @@ namespace MementoHealth.Controllers
                 return View("Editor", questionCondition);
             }
 
+<<<<<<< Updated upstream
             if (!IsConditionJsonValid(questionCondition))
             {
                 ModelState.AddModelError("", "Invalid question condition.");
@@ -84,6 +93,12 @@ namespace MementoHealth.Controllers
                     || !question.Form.Questions.Any(q => q.QuestionId == questionCondition.GoToQuestionId)
                     || question.Number > Db.FormQuestions.Find(questionCondition.GoToQuestionId).Number
                     ? null : questionCondition.GoToQuestionId
+=======
+            FormQuestionCondition newCondition = new FormQuestionCondition
+            {
+                JsonData = questionCondition.JsonData,
+                GoToQuestionId = questionCondition.GoToQuestionId
+>>>>>>> Stashed changes
             };
 
             if (questionCondition.ConditionId == 0) // If adding a question.
@@ -98,10 +113,14 @@ namespace MementoHealth.Controllers
 
             question.Conditions.Add(newCondition);
             Db.SaveChanges();
+<<<<<<< Updated upstream
             return RedirectToAction("Index", new
             {
                 id = question.QuestionId
             });
+=======
+            return RedirectToAction("Index", new { id = question.QuestionId });
+>>>>>>> Stashed changes
         }
 
         private Provider GetCurrentUserProvider()
@@ -130,6 +149,7 @@ namespace MementoHealth.Controllers
         public ActionResult Edit([Bind(Include = "ConditionId,Number,JsonData,GoToQuestionId,QuestionId")] FormQuestionCondition newCondition)
         {
             FormQuestionCondition formQuestionCondition = FindFormQuestionCondition_Restricted(newCondition.ConditionId);
+<<<<<<< Updated upstream
             if (!ModelState.IsValid)
                 return View("Editor", newCondition);
 
@@ -161,6 +181,16 @@ namespace MementoHealth.Controllers
                 Debug.WriteLine(e.Message);
                 return false;
             }
+=======
+            if (ModelState.IsValid)
+            {
+                formQuestionCondition.JsonData = newCondition.JsonData;
+                formQuestionCondition.GoToQuestionId = newCondition.GoToQuestionId;
+                Db.SaveChanges();
+                return RedirectToAction("Index", new { id = formQuestionCondition.QuestionId });
+            }
+            return View("Editor", newCondition);
+>>>>>>> Stashed changes
         }
 
         // POST: FormQuestionConditions/MoveUp/5
