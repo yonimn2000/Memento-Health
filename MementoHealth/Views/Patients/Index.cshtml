@@ -13,8 +13,25 @@
     </div>
 </div>
 
+<<<<<<< Updated upstream
 <div class="container" style="overflow-y: auto; white-space: nowrap; min-width: 94.5%; text-align: center">
     @if (TempData["StatusMessage"] != null)
+=======
+<p>
+    @Html.ActionLink("Add", "Create") |
+    @Html.ActionLink("Import", "Import") |
+    @Html.ActionLink("Search", "Search")
+</p>
+<table class="table">
+    <tr>
+        <th>@Html.DisplayNameFor(model => model.FullName)</th>
+        <th>@Html.DisplayNameFor(model => model.Birthday)</th>
+        <th>@Html.DisplayNameFor(model => model.ExternalPatientId)</th>
+        <th>Actions</th>
+    </tr>
+
+    @foreach (var item in Model)
+>>>>>>> Stashed changes
     {
         <p class="text-info">@TempData["StatusMessage"]</p>
     }

@@ -170,6 +170,7 @@ namespace MementoHealth.Controllers
                 return View("Editor", formQuestion);
             }
 
+<<<<<<< Updated upstream
             // Validate form question.
             if (!IsQuestionJsonValid(formQuestion))
             {
@@ -179,6 +180,10 @@ namespace MementoHealth.Controllers
 
             if (formQuestion.Type != newFormQuestion.Type || formQuestion.JsonData != newFormQuestion.JsonData)
                 Db.FormQuestionConditions.RemoveRange(formQuestion.Conditions);
+=======
+            if (formQuestion.Type != newFormQuestion.Type || formQuestion.JsonData != newFormQuestion.JsonData)
+                formQuestion.Conditions.Clear();
+>>>>>>> Stashed changes
 
             formQuestion.TypeString = newFormQuestion.TypeString;
             formQuestion.Question = newFormQuestion.Question;
