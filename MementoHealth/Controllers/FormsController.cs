@@ -183,8 +183,11 @@ namespace MementoHealth.Controllers
         public ActionResult PublishConfirmed(int id)
         {
             Form form = FindForm_Restricted(id);
-            form.IsPublished = true;
-            Db.SaveChanges();
+            if(form.Questions.Count > 0)
+            {
+                form.IsPublished = true;
+                Db.SaveChanges();
+            }
             return RedirectToAction("Index");
         }
 
