@@ -26,5 +26,9 @@ namespace MementoHealth.Entities
         public virtual Provider Provider { get; set; }
 
         public virtual ICollection<FormSubmission> Submissions { get; set; }
+
+        public bool NameContains(string name) => FullName.ToLower().Contains(name.ToLower());
+        public bool ExtenalIdContains(string extId) => ExternalPatientId?.ToLower().Contains(extId.ToLower()) ?? false;
+        public bool BirthdayEquals(DateTime dateTime) => Birthday == dateTime.Date;
     }
 }

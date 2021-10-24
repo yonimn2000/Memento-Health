@@ -44,50 +44,42 @@ namespace MementoHealth.Controllers
 
         private Patient FindPatient_Restricted(int? id)
         {
-            string userId = User.Identity.GetUserId();
-            return Db.Users.Find(userId).Provider.Patients.Where(f => f.PatientId == id).SingleOrDefault();
+            return GetCurrentUserProvider().Patients.Where(p => p.PatientId == id).SingleOrDefault();
         }
 
-        private IEnumerable<Patient> FindPatients_Name(string name)
+        private IEnumerable<Patient> FindPatientsByName(string name)
         {
-            string userId = User.Identity.GetUserId();
-            return Db.Users.Find(userId).Provider.Patients.Where(f => f.FullName.StartsWith(name)).ToList();
+            return GetCurrentUserProvider().Patients.Where(p => p.NameContains(name)).ToList();
         }
 
-        private IEnumerable<Patient> FindPatients_Birthday(DateTime birthday)
+        private IEnumerable<Patient> FindPatientsByBirthday(DateTime birthday)
         {
-            string userId = User.Identity.GetUserId();
-            return Db.Users.Find(userId).Provider.Patients.Where(f => f.Birthday == birthday).ToList();
+            return GetCurrentUserProvider().Patients.Where(p => p.BirthdayEquals(birthday)).ToList();
         }
 
-        private IEnumerable<Patient> FindPatients_ExternalId(string ExtId)
+        private IEnumerable<Patient> FindPatientsByExternalId(string extId)
         {
-            string userId = User.Identity.GetUserId();
-            return Db.Users.Find(userId).Provider.Patients.Where(f => f.ExternalPatientId.StartsWith(ExtId)).ToList();
+            return GetCurrentUserProvider().Patients.Where(p => p.ExtenalIdContains(extId)).ToList();
         }
 
-        private IEnumerable<Patient> FindPatients_NameAndBirth(string name, DateTime birthday)
+        private IEnumerable<Patient> FindPatientsByNameAndBirth(string name, DateTime birthday)
         {
-            string userId = User.Identity.GetUserId();
-            return Db.Users.Find(userId).Provider.Patients.Where(f => (f.FullName.StartsWith(name))&&(f.Birthday == birthday)).ToList();
+            return GetCurrentUserProvider().Patients.Where(p => p.NameContains(name) && p.BirthdayEquals(birthday)).ToList();
         }
 
-        private IEnumerable<Patient> FindPatients_NameAndId(string name, string ExtId)
+        private IEnumerable<Patient> FindPatientsByNameAndId(string name, string extId)
         {
-            string userId = User.Identity.GetUserId();
-            return Db.Users.Find(userId).Provider.Patients.Where(f => (f.FullName.StartsWith(name)) && (f.ExternalPatientId.StartsWith(ExtId))).ToList();
+            return GetCurrentUserProvider().Patients.Where(p => p.NameContains(name) && p.ExtenalIdContains(extId)).ToList();
         }
 
-        private IEnumerable<Patient> FindPatients_BirthAndId(DateTime birthday, string ExtId)
+        private IEnumerable<Patient> FindPatientsByBirthAndExternalId(DateTime birthday, string extId)
         {
-            string userId = User.Identity.GetUserId();
-            return Db.Users.Find(userId).Provider.Patients.Where(f => (f.Birthday == birthday) && (f.ExternalPatientId.StartsWith(ExtId))).ToList();
+            return GetCurrentUserProvider().Patients.Where(p => p.BirthdayEquals(birthday) && p.ExtenalIdContains(extId)).ToList();
         }
 
-        private IEnumerable<Patient> FindPatients_All(string name, DateTime birthday, string ExtId)
+        private IEnumerable<Patient> FindPatients(string name, DateTime birthday, string extId)
         {
-            string userId = User.Identity.GetUserId();
-            return Db.Users.Find(userId).Provider.Patients.Where(f => (f.FullName.StartsWith(name)) && (f.Birthday == birthday) && (f.ExternalPatientId.StartsWith(ExtId))).ToList();
+            return GetCurrentUserProvider().Patients.Where(p => p.NameContains(name) && p.BirthdayEquals(birthday) && p.ExtenalIdContains(extId)).ToList();
         }
 
         // GET: Patients/Create
@@ -134,62 +126,56 @@ namespace MementoHealth.Controllers
         // POST: Patients/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Search(PatientSearchModel patient)
+        public ActionResult Search(PatientSearchModel model)
         {
             if (ModelState.IsValid)
             {
                 IEnumerable<Patient> foundPatients;
-                if ((patient.FullName == null) && (patient.Birthday == null) && (patient.ExternalPatientId == null))
+                if ((model.FullName == null) && (model.Birthday == null) && (model.ExternalPatientId == null))
                 {
                     ModelState.AddModelError("", "Please enter patient infromation in at least one field.");
-                    return View(patient);
+                    return View(model);
                 }
-                else if ((patient.FullName == null) && (patient.ExternalPatientId == null))
+                else if ((model.FullName == null) && (model.ExternalPatientId == null))
                 {
-                    foundPatients = FindPatients_Birthday((DateTime)patient.Birthday);
+                    foundPatients = FindPatientsByBirthday((DateTime)model.Birthday);
                 }
-                else if ((patient.Birthday == null) && (patient.ExternalPatientId == null))
+                else if ((model.Birthday == null) && (model.ExternalPatientId == null))
                 {
-                    foundPatients = FindPatients_Name(patient.FullName);
+                    foundPatients = FindPatientsByName(model.FullName);
                 }
-                else if ((patient.FullName == null) && (patient.Birthday == null))
+                else if ((model.FullName == null) && (model.Birthday == null))
                 {
-                    foundPatients = FindPatients_ExternalId(patient.ExternalPatientId);
+                    foundPatients = FindPatientsByExternalId(model.ExternalPatientId);
                 }
-                else if (patient.ExternalPatientId == null)
+                else if (model.ExternalPatientId == null)
                 {
-                    foundPatients = FindPatients_NameAndBirth(patient.FullName, (DateTime)patient.Birthday);
+                    foundPatients = FindPatientsByNameAndBirth(model.FullName, (DateTime)model.Birthday);
                 }
-                else if (patient.Birthday == null)
+                else if (model.Birthday == null)
                 {
-                    foundPatients = FindPatients_NameAndId(patient.FullName, patient.ExternalPatientId);
+                    foundPatients = FindPatientsByNameAndId(model.FullName, model.ExternalPatientId);
                 }
-                else if (patient.FullName == null)
+                else if (model.FullName == null)
                 {
-                    foundPatients = FindPatients_BirthAndId((DateTime)patient.Birthday, patient.ExternalPatientId);
+                    foundPatients = FindPatientsByBirthAndExternalId((DateTime)model.Birthday, model.ExternalPatientId);
                 }
                 else
                 {
-                    foundPatients = FindPatients_All(patient.FullName, (DateTime)patient.Birthday, patient.ExternalPatientId);
+                    foundPatients = FindPatients(model.FullName, (DateTime)model.Birthday, model.ExternalPatientId);
                 }
 
                 if (foundPatients.Count() == 0)
                 {
                     ModelState.AddModelError("", "Patient not found.");
+                    return View(model);
+                }
 
-                    return View(patient);
-                }
-                if (foundPatients.Count() == 1)
-                {
-                    return RedirectToAction("Details", new { id = foundPatients.SingleOrDefault().PatientId });
-                }
-                if (foundPatients.Count() > 1)
-                {
-                    return View("Index", foundPatients);
-                }
+                model.Results = foundPatients;
+                return View("Search", model);
             }
 
-            return View(patient);
+            return View(model);
         }
 
         // GET: Patients/Edit/5
