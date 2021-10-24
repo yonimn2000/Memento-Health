@@ -25,11 +25,11 @@
                                 (
                                 @if (patient.Submissions.Count > 0)
                                 {
-                                    @Html.ActionLink("View", "Patient", "FormSubmissions", new { id = patient.PatientId }, null)
+                                    @Html.ActionLink("View", "Patient", "Submissions", new { id = patient.PatientId }, null)
                                 }
                                 else
                                 {
-                                    @Html.ActionLink("Start new", "Start", "FormSubmissions", new { id = patient.PatientId }, null)
+                                    @Html.ActionLink("Start new", "Start", "Submissions", new { id = patient.PatientId }, null)
                                 }
                                 )
                             </td>
