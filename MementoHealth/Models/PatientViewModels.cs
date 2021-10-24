@@ -13,6 +13,7 @@ namespace MementoHealth.Models
 
         public DateTime? Birthday { get; set; }
 
-        public string ExternalId { get; set; }
+        [DisplayName("External Id")]
+        public string ExternalPatientId { get; set; }
     }
 }
