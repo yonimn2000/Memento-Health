@@ -448,6 +448,7 @@
     <Content Include="Views\FormQuestionConditions\Index.cshtml" />
     <Content Include="Views\Forms\Publish.cshtml" />
     <Content Include="Views\Forms\Unpublish.cshtml" />
+    <Content Include="Views\Patients\_PatientsTablePartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
