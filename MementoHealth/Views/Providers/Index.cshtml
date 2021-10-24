@@ -27,6 +27,15 @@
                         <th>
                             @Html.DisplayNameFor(model => model.Email)
                         </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Forms)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Patients)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Staff)
+                        </th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -45,6 +54,15 @@
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.Email)
+                            </td>
+                             <td>
+                                @item.Forms.Count
+                            </td>
+                            <td>
+                                @item.Patients.Count
+                            </td>
+                            <td>
+                                @item.Staff.Count
                             </td>
                             <td>
                                 @Html.ActionLink("Edit", "Edit", new { id = item.ProviderId }) |
