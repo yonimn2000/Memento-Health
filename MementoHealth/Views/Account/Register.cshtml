@@ -1,74 +1,80 @@
-﻿@model MementoHealth.Models.RegisterViewModel
+﻿@using CaptchaMvc.HtmlHelpers
+@model MementoHealth.Models.RegisterViewModel
 @{
     ViewBag.Title = "Register";
 }
 
-<h2>@ViewBag.Title.</h2>
-
 @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
     @Html.AntiForgeryToken()
-    <h4>Create a new account.</h4>
-    <hr />
-    @Html.ValidationSummary("", new { @class = "text-danger" })
-    <div class="form-group">
-        @Html.LabelFor(m => m.ProviderName, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.ProviderName, new { @class = "form-control" })
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.ProviderAddress, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.ProviderAddress, new { @class = "form-control" })
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.ProviderEmail, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.ProviderEmail, new { @class = "form-control" })
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.ProviderPhone, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.ProviderPhone, new { @class = "form-control" })
-        </div>
-    </div>
 
-    <div class="form-group">
-        @Html.LabelFor(m => m.AdminFullName, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.AdminFullName, new { @class = "form-control" })
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.AdminEmail, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.AdminEmail, new { @class = "form-control" })
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.AdminPhone, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.AdminPhone, new { @class = "form-control" })
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.AdminPassword, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.PasswordFor(m => m.AdminPassword, new { @class = "form-control" })
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.ConfirmAdminPassword, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.PasswordFor(m => m.ConfirmAdminPassword, new { @class = "form-control" })
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" class="btn btn-primary" value="Register" />
+    <div class="container-fluid">
+        <div class="row d-flex justify-content-center">
+            <div class="custom-form-div shadow bg-light">
+
+                <h3>Create a new account</h3>
+
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                <hr />
+                @Html.ValidationSummary("", new { @class = "text-danger" })
+                <div class="form-group">
+                    <div class="col-md-auto">
+                        @Html.TextBoxFor(m => m.ProviderName, new { @class = "form-control", placeholder = "Provider Name" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-auto">
+                        @Html.TextBoxFor(m => m.ProviderAddress, new { @class = "form-control", placeholder = "Provider Address" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-auto">
+                        @Html.TextBoxFor(m => m.ProviderEmail, new { @class = "form-control", placeholder = "Provider Email" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-auto">
+                        @Html.TextBoxFor(m => m.ProviderPhone, new { @class = "form-control", placeholder = "Provider Phone" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-auto">
+                        @Html.TextBoxFor(m => m.AdminFullName, new { @class = "form-control", placeholder = "Admin Full Name" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-auto">
+                        @Html.TextBoxFor(m => m.AdminEmail, new { @class = "form-control", placeholder = "Admin Email" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-auto">
+                        @Html.TextBoxFor(m => m.AdminPhone, new { @class = "form-control", placeholder = "Admin Phone" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-auto">
+                        @Html.PasswordFor(m => m.AdminPassword, new { @class = "form-control", placeholder = "Admin Password" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-auto">
+                        @Html.PasswordFor(m => m.ConfirmAdminPassword, new { @class = "form-control", placeholder = "Confirm Admin Password" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-auto">
+                        @Html.MathCaptcha("_CaptchaPartial")
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-auto">
+                        <input type="submit" class="btn btn-primary w-100" value="Register" />
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 }

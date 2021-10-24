@@ -1,8 +1,8 @@
 ﻿@{
-    ViewBag.Title = "Welcome";
+    ViewBag.Title = "Home";
     ViewBag.UseFullScreenWidth = true;
 }
-<section class="header">
+<section id="home-header" class="header">
 
     <div class="text-box">
         <h1>Something Catchy!</h1>
@@ -63,7 +63,7 @@
         <div class="col-md-6">
             <div class="row">
                 <div class="col-md-3">
-                    <img src="~/Images/yonatan.jpg" class="rounded-circle">
+                    <img src="~/Images/yonatan.jpg" class="rounded-circle my-3">
 
                 </div>
                 <div class="col-md-9">
@@ -84,7 +84,7 @@
         <div class="col-md-6">
             <div class="row">
                 <div class="col-md-3">
-                    <img src="~/Images/camron.png" class="rounded-circle">
+                    <img src="~/Images/camron.png" class="rounded-circle my-3">
 
                 </div>
                 <div class="col-md-9">
@@ -114,7 +114,6 @@
         * {
             margin: 0;
             padding: 0;
-            font-family: 'Poppins', sans-serif;
         }
 
         .body-content {
@@ -129,7 +128,14 @@
             background-position: center;
             background-size: cover;
             position: relative;
+            background-attachment: fixed;
             top: -16px;
+        }
+
+        .row {
+            margin-top: 25px;
+            display: flex;
+            justify-content: space-between;
         }
 
         .text-box {
@@ -157,7 +163,8 @@
             display: inline-block;
             text-decoration: none;
             color: #ffffff;
-            border: 1px solid #ffffff;
+            border: thin solid #ffffff;
+            border-radius: 12px;
             padding: 12px 34px;
             font-size: 13px;
             background: transparent;
@@ -166,10 +173,10 @@
         }
 
             .hero-btn:hover {
-                border: 1px solid #0094ff;
+                border: thin solid #4800ff;
                 color: #ffffff;
                 text-decoration: none;
-                background: #0094ff;
+                background: #4800ff;
                 transition: 1s;
             }
 
@@ -177,7 +184,7 @@
             width: 80%;
             margin: auto;
             text-align: center;
-            padding-top: 100px;
+            padding-top: 75px;
         }
 
             .features h1 {
@@ -187,20 +194,15 @@
 
                 .features h1::after {
                     content: '';
-                    width: 5%;
+                    width: 50px;
                     height: 3px;
                     background: #4800ff;
                     display: block;
                     margin: auto;
                     margin-top: 25px;
+                    margin-bottom: 50px;
                     position: center;
                 }
-
-        .row {
-            margin-top: 5%;
-            display: flex;
-            justify-content: space-between;
-        }
 
         .features-column {
             flex-basis: 31%;
@@ -247,12 +249,13 @@
 
                 .clients h1::after {
                     content: '';
-                    width: 5%;
+                    width: 50px;
                     height: 3px;
                     background: #4800ff;
                     display: block;
                     margin: auto;
                     margin-top: 25px;
+                    margin-bottom: -10px;
                     position: center;
                 }
     </style>

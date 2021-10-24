@@ -1,0 +1,32 @@
+﻿@model MementoHealth.Models.FormViewModel
+
+@{
+    ViewBag.Title = "Clone";
+}
+
+<h2>@ViewBag.Title</h2>
+<h3>Are you sure you want to clone this form?</h3>
+<hr />
+
+<div>
+    <dl class="dl-horizontal">
+        <dt>@Html.DisplayNameFor(model => model.Name)</dt>
+        <dd>@Html.DisplayFor(model => model.Name)</dd>
+
+        <dt>@Html.DisplayNameFor(model => model.NumberOfQuestions)</dt>
+        <dd>@Html.DisplayFor(model => model.NumberOfQuestions)</dd>
+
+        <dt>@Html.DisplayNameFor(model => model.NumberOfSubmissions)</dt>
+        <dd>@Html.DisplayFor(model => model.NumberOfSubmissions)</dd>
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Clone" class="btn btn-primary" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

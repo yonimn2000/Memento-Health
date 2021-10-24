@@ -1,64 +1,65 @@
 ﻿@model MementoHealth.Entities.Patient
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Edit Patient";
+    ViewBag.UseFullScreenWidth = true;
 }
 
-<h2>Edit</h2>
+<div class="row d-flex justify-content-center">
+    <div class="shadow bg-light text-center" style="border-radius: 12px">
+        <div class="page-title h2 font-weight-bold" style="padding-top: 25px;">@ViewBag.Title</div>
+        <div class="custom-form-div" style="margin-top: -50px; padding-bottom: 0px">
 
+            <div class="row">
+                <div class="col-md-auto">
+                    <section>
+                        @using (Html.BeginForm())
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            @Html.HiddenFor(model => model.PatientId)
 
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>Patient</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.PatientId)
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.ExternalPatientId, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.ExternalPatientId, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ExternalPatientId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.FullName, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.FullName, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.FullName, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Birthday, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Birthday, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Birthday, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.ProviderId, "ProviderId", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("ProviderId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.ProviderId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                            <div class="form-group">
+                                <div class="col-md-auto" style="text-align: left; padding: 0 0 0 0">
+                                    @Html.LabelFor(model => model.FullName, htmlAttributes: new { @class = "control-label col-md-auto" })
+                                </div>
+                                <div class="col-md-auto">
+                                    @Html.EditorFor(model => model.FullName, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.FullName, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-auto" style="text-align: left; padding: 0 0 0 0">
+                                    @Html.LabelFor(model => model.Birthday, htmlAttributes: new { @class = "control-label col-md-auto" })
+                                </div>
+                                <div class="col-md-auto">
+                                    @Html.TextBoxFor(model => model.Birthday, "{0:dd/MM/yyyy}", new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.Birthday, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-auto" style="text-align: left; padding: 0 0 0 0">
+                                    @Html.LabelFor(model => model.ExternalPatientId, htmlAttributes: new { @class = "control-label col-md-auto" })
+                                </div>
+                                <div class="col-md-auto">
+                                    @Html.EditorFor(model => model.ExternalPatientId, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.ExternalPatientId, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-auto my-4" style="text-align: center; padding-top: 5px">
+                                    <input type="submit" value="Save" class="btn btn-primary w-100" />
+                                </div>
+                            </div>
+                            <p>
+                                @Html.ActionLink("Back to Patient List", "Index")
+                            </p>
+                        }
+                    </section>
+                </div>
             </div>
         </div>
     </div>
-}
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
 </div>
 
 @section Scripts {

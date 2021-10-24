@@ -11,6 +11,8 @@ namespace MementoHealth.Models
         public bool HasPassword { get; set; }
         public IList<UserLoginInfo> Logins { get; set; }
         public string PhoneNumber { get; set; }
+        public string FullName { get; set; }
+        public string Role { get; set; }
         public bool TwoFactor { get; set; }
         public bool BrowserRemembered { get; set; }
     }
@@ -35,7 +37,7 @@ namespace MementoHealth.Models
         public string NewPassword { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm new password")]
+        [Display(Name = "Confirm password")]
         [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
     }
@@ -54,7 +56,7 @@ namespace MementoHealth.Models
         public string NewPassword { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm new password")]
+        [Display(Name = "Confirm password")]
         [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
     }
@@ -73,7 +75,7 @@ namespace MementoHealth.Models
         public string NewPin { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm new PIN")]
+        [Display(Name = "Confirm PIN")]
         [Compare("NewPin", ErrorMessage = "The new PIN and confirmation PIN do not match.")]
         public string ConfirmPin { get; set; }
 
@@ -83,10 +85,16 @@ namespace MementoHealth.Models
 
     public class AddPhoneNumberViewModel
     {
-        [Required]
         [Phone]
         [Display(Name = "Phone Number")]
         public string Number { get; set; }
+    }
+
+    public class ChangeFullNameViewModel
+    {
+        [Required]
+        [Display(Name = "Full Name")]
+        public string FullName { get; set; }
     }
 
     public class VerifyPhoneNumberViewModel

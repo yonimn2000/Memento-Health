@@ -1,9 +1,8 @@
-﻿@using Microsoft.AspNet.Identity
-@if (Request.IsAuthenticated)
+﻿@if (Request.IsAuthenticated)
 {
     <ul class="nav navbar-nav navbar-right">
         <li class="nav-item">
-            @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { @class = "nav-link", title = "Manage" })
+            @Html.ActionLink($"Hello, {User.GetFullName()}!", "Index", "Manage", routeValues: null, htmlAttributes: new { @class = "nav-link", title = "Manage" })
         </li>
     </ul>
     using (Html.BeginForm("PinLock", "Account", new { returnUrl = Request.Path }, FormMethod.Post, new { id = "lockForm", @class = "navbar-right" }))

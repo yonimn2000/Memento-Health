@@ -1,4 +1,5 @@
-﻿using MementoHealth.Attributes;
+﻿using CaptchaMvc.Attributes;
+using MementoHealth.Attributes;
 using MementoHealth.Entities;
 using MementoHealth.Exceptions;
 using MementoHealth.Filters;
@@ -71,11 +72,6 @@ namespace MementoHealth.Controllers
                         ModelState.AddModelError("", "The provided email address has not been verified yet. Please check your email for the verification link.");
                         return View(model);
                     }
-
-                    // Force enable 2FA for all users after first sign in.
-                    if (!await UserManager.GetTwoFactorEnabledAsync(userId))
-                        UserManager.SetTwoFactorEnabled(userId, true);
-
                     await UserManager.ResetPinAccessFailedCountAsync(userId);
                     return RedirectToLocal(returnUrl);
 
@@ -150,6 +146,7 @@ namespace MementoHealth.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
+        [CaptchaVerify("Invalid CAPTCHA")]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)

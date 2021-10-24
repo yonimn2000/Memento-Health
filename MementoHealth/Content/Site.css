@@ -24,6 +24,79 @@ textarea {
 
 #logo-img {
     height: 50px;
-    top: -3px;
+    top: -1px;
     position: relative;
 }
+
+.page-title {
+    display: flex;
+    flex-direction: row;
+    padding-bottom: 25px;
+    text-align: center;
+}
+
+.page-title:before, .page-title:after {
+    content: "";
+
+    flex: 1 1;
+    border-bottom: 1px solid;
+    margin: auto;
+    color: #e5e5e5;
+}
+
+.page-title:before {
+    margin-right: 10px;
+}
+
+.page-title:after {
+    margin-left: 10px;
+}
+
+.navbar {
+   -webkit-box-shadow: -1px 0 5px 0 rgba(0,0,0,.25);
+   box-shadow: -1px 0 5px 0 rgba(0,0,0,.25);
+}
+
+.custom-form-div {
+    border: 1px solid transparent;
+    border-radius: 20px;
+    margin-top: 30px;
+    margin-bottom: 50px;
+    padding-top: 50px;
+    padding-right: 150px;
+    padding-bottom: 50px;
+    padding-left: 150px;
+}
+
+@media only screen and (max-width: 768px) {
+    /* Mobile css */
+    .custom-form-div {
+        border: 1px solid transparent;
+        border-radius: 20px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        padding-top: 20px;
+        padding-right: 20px;
+        padding-bottom: 20px;
+        padding-left: 20px;
+    }
+}
+
+@media only screen and (max-width: 500px) {
+    #logo-img {
+        content: url('../Images/Mobile Memento Health-logo.svg');
+        top: -1px;
+    }
+}
+
+@media (hover: none) {
+    #home-header {
+        background-attachment: initial;
+    }
+}
+
+.table {
+    margin-bottom: 0;
+}
+
+

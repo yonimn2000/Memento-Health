@@ -7,7 +7,6 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using System;
-using System.Data.Entity;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
@@ -28,6 +27,11 @@ namespace MementoHealth
 
         public static async Task<bool> SendAsync(string destination, string subject, string body)
         {
+#if DEBUG
+            Debug.WriteLine($"Email to: {destination}");
+            Debug.WriteLine($"Subject: {subject}");
+            Debug.WriteLine($"Body: {body}");
+#endif
             string apiKey = Environment.GetEnvironmentVariable("MEMENTO_SENDGRID_KEY");
             MailMessage mail = new MailMessage();
             SmtpClient SmtpServer = new SmtpClient("smtp.sendgrid.net", 587)
@@ -63,17 +67,17 @@ namespace MementoHealth
     }
 
     // Configure the application user manager used in this application. UserManager is defined in ASP.NET Identity and is used by the application.
-    public class ApplicationUserManager : UserManager<ApplicationUser>
+    public class ApplicationUserManager : UserManager<ApplicationUser, string>
     {
         public const int MinPinLength = 4;
         public const int MaxPinLength = 8;
         public const int MaxPinAccessFailedCount = 3;
 
-        public ApplicationUserManager(IUserStore<ApplicationUser> store) : base(store) { }
+        public ApplicationUserManager(IUserStore<ApplicationUser, string> store) : base(store) { }
 
         public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context)
         {
-            var manager = new ApplicationUserManager(new UserStore<ApplicationUser>(context.Get<ApplicationDbContext>()));
+            var manager = new ApplicationUserManager(new UserStore<ApplicationUser, ApplicationRole, string, IdentityUserLogin, ApplicationUserRole, IdentityUserClaim>(context.Get<ApplicationDbContext>()));
             // Configure validation logic for usernames
             manager.UserValidator = new UserValidator<ApplicationUser>(manager)
             {
@@ -119,6 +123,19 @@ namespace MementoHealth
                     };
             }
             return manager;
+        }
+
+        public async Task<string> GetFullNameAsync(string userId)
+        {
+            ApplicationUser user = await FindByIdAsync(userId);
+            return user.FullName;
+        }
+
+        public async Task SetFullNameAsync(string userId, string fullName)
+        {
+            ApplicationUser user = await FindByIdAsync(userId);
+            user.FullName = fullName;
+            await UpdateAsync(user);
         }
 
         public async Task SetPinAsync(string userId, string pin)

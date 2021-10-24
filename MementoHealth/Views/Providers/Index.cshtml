@@ -27,6 +27,7 @@
                         <th>
                             @Html.DisplayNameFor(model => model.Email)
                         </th>
+<<<<<<< HEAD
                         <th>
                             @Html.DisplayNameFor(model => model.Forms)
                         </th>
@@ -37,12 +38,15 @@
                             @Html.DisplayNameFor(model => model.Staff)
                         </th>
 
+=======
+>>>>>>> e88d5f4ce2fd72839191403aad5279cad9135493
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var item in Model)
                     {
+<<<<<<< HEAD
                     <tr>
                         <td>
                             @Html.DisplayFor(modelItem => item.Name)
@@ -72,6 +76,27 @@
                             @Html.ActionLink("Delete", "Delete", new { id = item.ProviderId })
                         </td>
                     </tr>
+=======
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Phone)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Address)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Email)
+                            </td>
+                            <td>
+                                @Html.ActionLink("Edit", "Edit", new { id = item.ProviderId }) |
+                                @Html.ActionLink("Details", "Details", new { id = item.ProviderId }) |
+                                @Html.ActionLink("Delete", "Delete", new { id = item.ProviderId })
+                            </td>
+                        </tr>
+>>>>>>> e88d5f4ce2fd72839191403aad5279cad9135493
                     }
                 </tbody>
             </table>
