@@ -3,6 +3,7 @@ using MementoHealth.Entities;
 using MementoHealth.Models;
 using Microsoft.AspNet.Identity;
 using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
@@ -47,6 +48,48 @@ namespace MementoHealth.Controllers
             return Db.Users.Find(userId).Provider.Patients.Where(f => f.PatientId == id).SingleOrDefault();
         }
 
+        private IEnumerable<Patient> FindPatients_Name(string name)
+        {
+            string userId = User.Identity.GetUserId();
+            return Db.Users.Find(userId).Provider.Patients.Where(f => f.FullName.StartsWith(name)).ToList();
+        }
+
+        private IEnumerable<Patient> FindPatients_Birthday(DateTime birthday)
+        {
+            string userId = User.Identity.GetUserId();
+            return Db.Users.Find(userId).Provider.Patients.Where(f => f.Birthday == birthday).ToList();
+        }
+
+        private IEnumerable<Patient> FindPatients_ExternalId(string ExtId)
+        {
+            string userId = User.Identity.GetUserId();
+            return Db.Users.Find(userId).Provider.Patients.Where(f => f.ExternalPatientId.StartsWith(ExtId)).ToList();
+        }
+
+        private IEnumerable<Patient> FindPatients_NameAndBirth(string name, DateTime birthday)
+        {
+            string userId = User.Identity.GetUserId();
+            return Db.Users.Find(userId).Provider.Patients.Where(f => (f.FullName.StartsWith(name))&&(f.Birthday == birthday)).ToList();
+        }
+
+        private IEnumerable<Patient> FindPatients_NameAndId(string name, string ExtId)
+        {
+            string userId = User.Identity.GetUserId();
+            return Db.Users.Find(userId).Provider.Patients.Where(f => (f.FullName.StartsWith(name)) && (f.ExternalPatientId.StartsWith(ExtId))).ToList();
+        }
+
+        private IEnumerable<Patient> FindPatients_BirthAndId(DateTime birthday, string ExtId)
+        {
+            string userId = User.Identity.GetUserId();
+            return Db.Users.Find(userId).Provider.Patients.Where(f => (f.Birthday == birthday) && (f.ExternalPatientId.StartsWith(ExtId))).ToList();
+        }
+
+        private IEnumerable<Patient> FindPatients_All(string name, DateTime birthday, string ExtId)
+        {
+            string userId = User.Identity.GetUserId();
+            return Db.Users.Find(userId).Provider.Patients.Where(f => (f.FullName.StartsWith(name)) && (f.Birthday == birthday) && (f.ExternalPatientId.StartsWith(ExtId))).ToList();
+        }
+
         // GET: Patients/Create
         public ActionResult Create()
         {
@@ -81,6 +124,72 @@ namespace MementoHealth.Controllers
         public ActionResult Import()
         {
             throw new NotImplementedException();
+        }
+
+        public ActionResult Search()
+        {
+            return View();
+        }
+
+        // POST: Patients/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Search(PatientSearchModel patient)
+        {
+            if (ModelState.IsValid)
+            {
+                IEnumerable<Patient> foundPatients;
+                if ((patient.FullName == null) && (patient.Birthday == null) && (patient.ExternalPatientId == null))
+                {
+                    ModelState.AddModelError("", "Please enter patient infromation in at least one field.");
+                    return View(patient);
+                }
+                else if ((patient.FullName == null) && (patient.ExternalPatientId == null))
+                {
+                    foundPatients = FindPatients_Birthday((DateTime)patient.Birthday);
+                }
+                else if ((patient.Birthday == null) && (patient.ExternalPatientId == null))
+                {
+                    foundPatients = FindPatients_Name(patient.FullName);
+                }
+                else if ((patient.FullName == null) && (patient.Birthday == null))
+                {
+                    foundPatients = FindPatients_ExternalId(patient.ExternalPatientId);
+                }
+                else if (patient.ExternalPatientId == null)
+                {
+                    foundPatients = FindPatients_NameAndBirth(patient.FullName, (DateTime)patient.Birthday);
+                }
+                else if (patient.Birthday == null)
+                {
+                    foundPatients = FindPatients_NameAndId(patient.FullName, patient.ExternalPatientId);
+                }
+                else if (patient.FullName == null)
+                {
+                    foundPatients = FindPatients_BirthAndId((DateTime)patient.Birthday, patient.ExternalPatientId);
+                }
+                else
+                {
+                    foundPatients = FindPatients_All(patient.FullName, (DateTime)patient.Birthday, patient.ExternalPatientId);
+                }
+
+                if (foundPatients.Count() == 0)
+                {
+                    ModelState.AddModelError("", "Patient not found.");
+
+                    return View(patient);
+                }
+                if (foundPatients.Count() == 1)
+                {
+                    return RedirectToAction("Details", new { id = foundPatients.SingleOrDefault().PatientId });
+                }
+                if (foundPatients.Count() > 1)
+                {
+                    return View("Index", foundPatients);
+                }
+            }
+
+            return View(patient);
         }
 
         // GET: Patients/Edit/5
