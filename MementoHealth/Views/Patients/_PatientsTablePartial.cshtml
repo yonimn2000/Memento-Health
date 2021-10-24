@@ -9,6 +9,7 @@
                         <th>@Html.DisplayNameFor(model => model.FullName)</th>
                         <th>@Html.DisplayNameFor(model => model.Birthday)</th>
                         <th>@Html.DisplayNameFor(model => model.ExternalPatientId)</th>
+                        <th>@Html.DisplayNameFor(model => model.Submissions)</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -20,8 +21,20 @@
                             <td>@patient.Birthday.ToShortDateString()</td>
                             <td>@(patient.ExternalPatientId ?? "None")</td>
                             <td>
+                                @patient.Submissions.Count
+                                (
+                                @if (patient.Submissions.Count > 0)
+                                {
+                                    @Html.ActionLink("View", "Patient", "Submissions", new { id = patient.PatientId }, null)
+                                }
+                                else
+                                {
+                                    @Html.ActionLink("Start new", "Start", "Submissions", new { id = patient.PatientId }, null)
+                                }
+                                )
+                            </td>
+                            <td>
                                 @Html.ActionLink("Edit", "Edit", new { id = patient.PatientId }) |
-                                @Html.ActionLink("Details", "Details", new { id = patient.PatientId }) |
                                 @Html.ActionLink("Delete", "Delete", new { id = patient.PatientId })
                             </td>
                         </tr>
