@@ -3,6 +3,7 @@ using MementoHealth.Entities;
 using MementoHealth.Models;
 using Microsoft.AspNet.Identity;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Net;
@@ -18,7 +19,15 @@ namespace MementoHealth.Controllers
         // GET: Forms
         public ActionResult Index()
         {
-            return View(GetCurrentUserProvider().Forms.OrderBy(u => u.Name).ToList()
+            ICollection<Form> forms = GetCurrentUserProvider().Forms;
+            if (forms.Count == 0)
+            {
+                if (User.IsInRole(Role.ProviderAdmin))
+                    return RedirectToAction("Create");
+                return View();
+            }
+
+            return View(forms.OrderBy(u => u.Name).ToList()
                 .Select(f => FormToViewModel(f)).ToList());
         }
 
