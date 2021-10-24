@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -10,6 +11,7 @@ namespace MementoHealth.Entities
         [Key]
         public int SubmissionId { get; set; }
 
+        [DisplayName("Submission Date")]
         public DateTime? SubmissionDate { get; set; }
 
         [ForeignKey("Patient")]
@@ -21,5 +23,9 @@ namespace MementoHealth.Entities
         public virtual Form Form { get; set; }
 
         public virtual ICollection<FormQuestionAnswer> Answers { get; set; }
+
+        [NotMapped]
+        [DisplayName("Is Complete")]
+        public bool IsComplete => false; // TODO
     }
 }

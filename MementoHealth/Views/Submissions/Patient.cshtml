@@ -1,0 +1,15 @@
+﻿@using MementoHealth.Entities
+@model IEnumerable<FormSubmission>
+@{
+    Patient patient = Model.First().Patient;
+    ViewBag.Title = "Submissions by " + patient.FullName;
+    ViewBag.UseFullScreenWidth = true;
+    ViewBag.HidePatient = true;
+}
+
+<h2>@ViewBag.Title</h2>
+<hr />
+@Html.ActionLink("Back to Patients", "Index", "Patients") |
+@Html.ActionLink("Start new", "Start", "FormSubmissions", new { id = patient.PatientId }, null)
+
+@Html.Partial("_SubmissionsTablePartial", Model)

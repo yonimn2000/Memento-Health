@@ -193,6 +193,7 @@
     <Compile Include="Controllers\FormQuestionConditionsController.cs" />
     <Compile Include="Controllers\FormQuestionsController.cs" />
     <Compile Include="Controllers\FormsController.cs" />
+    <Compile Include="Controllers\SubmissionsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ProvidersController.cs" />
@@ -244,6 +245,7 @@
     <Compile Include="Models\FormViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\SubmissionViewModels.cs" />
     <Compile Include="Models\UsersViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -448,6 +450,13 @@
     <Content Include="Views\Forms\Publish.cshtml" />
     <Content Include="Views\Forms\Unpublish.cshtml" />
     <Content Include="Views\Patients\_PatientsTablePartial.cshtml" />
+    <Content Include="Views\Submissions\All.cshtml" />
+    <Content Include="Views\Submissions\_SubmissionsTablePartial.cshtml" />
+    <Content Include="Views\Submissions\Form.cshtml" />
+    <Content Include="Views\Submissions\Patient.cshtml" />
+    <Content Include="Views\Submissions\Start.cshtml" />
+    <Content Include="Views\Submissions\Answer.cshtml" />
+    <Content Include="Views\Submissions\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

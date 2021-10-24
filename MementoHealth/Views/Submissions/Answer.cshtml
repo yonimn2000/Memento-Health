@@ -1,0 +1,29 @@
+﻿@model MementoHealth.Models.AnswerViewModel
+@{
+    ViewBag.Title = "Answer";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(m => m.SubmissionId)
+
+    <div>@Model.Question.Question</div>
+    if (Model.Question.IsRequired)
+    {
+        <div class="text-danger">Answer is required.</div>
+    }
+
+    <div class="my-3">
+        <input type="submit" value="Next" class="btn btn-primary" />
+    </div>
+
+    <div class="progress" style="height: 36px;">
+        <div class="progress-bar bg-success" role="progressbar" style="width: @Model.GetProgress()%"><b>@Model.GetProgress()%</b></div>
+    </div>
+    <div>@Model.NumberOfRemainingQuestions questions or less remain.</div>
+}
