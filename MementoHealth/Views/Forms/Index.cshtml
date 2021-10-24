@@ -49,7 +49,12 @@ else
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => form.NumberOfSubmissions)
-                    (@Html.ActionLink("View", "Index", "FormSubmissions", new { id = form.FormId }, null))
+                    @if (form.NumberOfSubmissions > 0)
+                    {
+                        <text>
+                            (@Html.ActionLink("View", "Form", "FormSubmissions", new { id = form.FormId }, null))
+                        </text>
+                    }
                 </td>
                 <td>
                     @if (User.IsInRole(Role.ProviderAdmin))
