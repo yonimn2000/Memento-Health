@@ -2,8 +2,9 @@
 @{
     ViewBag.Title = "Answer";
 
+    bool isLast = Model.NumberOfRemainingQuestions == 0;
     string remainingQuestionsTest;
-    if (Model.NumberOfRemainingQuestions == 0)
+    if (isLast)
     {
         remainingQuestionsTest = "Last question";
     }
@@ -59,7 +60,7 @@
         {
             <button type="button" id="previous-button" class="btn btn-outline-primary" onclick="submitClicked(false)">Previous</button>
         }
-        <button type="button" id="next-button" class="btn btn-primary" onclick="submitClicked(true)">Next</button>
+        <button type="button" id="next-button" class="btn btn-@(isLast ? "success" : "primary")" onclick="submitClicked(true)">@(isLast ? "Complete" : "Next")</button>
     </div>
 
     <div>@remainingQuestionsTest</div>
@@ -125,13 +126,13 @@
 
             switch (answerType) {
                 case '@QuestionType.Text.ToString()':
-                    $("#textbox").attr('type', 'text').show().val(answerData.answer);
+                    $("#textbox").attr('type', 'text').show().val(answerData?.answer);
                     break;
                 case '@QuestionType.Number.ToString()':
-                    $("#textbox").attr('type', 'number').show().val(answerData.answer);
+                    $("#textbox").attr('type', 'number').show().val(answerData?.answer);
                     break;
                 case '@QuestionType.Date.ToString()':
-                    $("#textbox").attr('type', 'date').show().val(answerData.answer);
+                    $("#textbox").attr('type', 'date').show().val(answerData?.answer);
                     break;
                 case '@QuestionType.Checkboxes.ToString()':
                     $('#checkboxes').show();
@@ -149,10 +150,11 @@
                             }).html(" " + label)
                             ).append($('<br>'));
                     });
-                    $("#checkboxes input").each(function () {
-                        if (answerData.answer.includes($(this).val()))
-                            $(this).prop('checked', true);
-                    });
+                    if (answerData.answer)
+                        $("#checkboxes input").each(function () {
+                            if (answerData.answer.includes($(this).val()))
+                                $(this).prop('checked', true);
+                        });
                     break;
                 case '@QuestionType.Radiobuttons.ToString()':
                     $('#radiobuttons').show();
@@ -171,10 +173,11 @@
                                 }).html(" " + label)
                             ).append($('<br>'));
                     });
-                    $("#radiobuttons input").each(function () {
-                        if (answerData.answer.includes($(this).val()))
-                            $(this).prop('checked', true);
-                    });
+                    if (answerData.answer)
+                        $("#radiobuttons input").each(function () {
+                            if (answerData.answer.includes($(this).val()))
+                                $(this).prop('checked', true);
+                        });
                     break;
                 case '@QuestionType.Image.ToString()':
                     $('#image').show().attr('src', questionData.image.url)
@@ -182,8 +185,10 @@
                             // Lock image size.
                             $('#img-wrapper').width($("#image").width());
                             $('#img-wrapper').height($("#image").height());
-                            lastImageClick = answerData.answer;
-                            drawPointOnImage();
+                            if (answerData.answer) {
+                                lastImageClick = answerData.answer;
+                                drawPointOnImage();
+                            }
                         });
                     break;
             }

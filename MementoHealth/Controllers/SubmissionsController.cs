@@ -118,10 +118,13 @@ namespace MementoHealth.Controllers
 
         // GET: Submissions/Answer/5
         [AllowThroughPinLock]
-        public ActionResult Answer(int id)
+        public ActionResult Answer(int id, int? answerId)
         {
             FormSubmission submission = FindSubmission_Restricted(id);
-            if (submission == null)
+            FormQuestionAnswer answer = answerId == null ? null : submission.Answers.SingleOrDefault(a => a.AnswerId == answerId);
+            FormQuestion question;
+
+            if (submission == null || (answerId != null && answer == null))
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
             if (Db.Users.Find(User.Identity.GetUserId()).PinHash == null)
@@ -133,9 +136,28 @@ namespace MementoHealth.Controllers
             else
                 PinLockFilter.Enabled = true;
 
-            // TODO: Get next question.
-            FormQuestion question = submission.Form.Questions.OrderBy(q => Guid.NewGuid()).First();
-            FormQuestionAnswer answer = submission.Answers.Where(a => a.QuestionId == question.QuestionId).SingleOrDefault();
+            if (answer == null)
+            {
+                if (submission.Answers.Count == 0)
+                    question = submission.Form.Questions.OrderBy(q => q.Number).First();
+                else
+                {
+                    // TODO: Get correct next question.
+                    FormQuestion lastAnsweredQuestion = submission.Answers.OrderBy(a => a.Question.Number).Last().Question;
+                    question = submission.Form.Questions.Where(q => q.Number > lastAnsweredQuestion.Number).OrderBy(q => q.Number).FirstOrDefault();
+
+                    // If reached the end of the form:
+                    if (question == null)
+                        // TODO: Return a "Check-in Complete" View.
+                        return RedirectToAction("Patient", new { id = submission.PatientId });
+                }
+
+                answer = submission.Answers.SingleOrDefault(a => a.QuestionId == question.QuestionId);
+            }
+            else
+            {
+                question = answer.Question;
+            }
 
             return View(new AnswerViewModel
             {
@@ -143,8 +165,8 @@ namespace MementoHealth.Controllers
                 QuestionId = question.QuestionId,
                 Patient = submission.Patient,
                 Question = question,
-                CurrentQuestionNumber = question.Number - 1,
-                NumberOfRemainingQuestions = submission.Form.Questions.Count - question.Number,
+                CurrentQuestionNumber = question.Number - 1, // TODO
+                NumberOfRemainingQuestions = submission.Form.Questions.Count - question.Number, // TODO
                 JsonData = answer?.JsonData
             });
         }
@@ -174,7 +196,13 @@ namespace MementoHealth.Controllers
 
             Db.SaveChanges();
 
-            return RedirectToAction("Answer", new { id = model.SubmissionId });
+            return RedirectToAction("Answer", new
+            {
+                id = model.SubmissionId,
+                answerId = model.GoNext ?
+                submission.Answers.Where(a => a.Question.Number > question.Number).OrderBy(a => a.Question.Number).FirstOrDefault()?.AnswerId
+                : submission.Answers.Where(a => a.Question.Number < question.Number).OrderBy(a => a.Question.Number).Last().AnswerId
+            });
         }
 
         // GET: Submissions/Details/5
