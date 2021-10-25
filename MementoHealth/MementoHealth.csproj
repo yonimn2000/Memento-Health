@@ -205,6 +205,10 @@
     <Compile Include="Entities\FormQuestionCondition.cs" />
     <Compile Include="Entities\FormSubmission.cs" />
     <Compile Include="Entities\Patient.cs" />
+    <Compile Include="Migrations\202110251359554_AnswerV2.cs" />
+    <Compile Include="Migrations\202110251359554_AnswerV2.Designer.cs">
+      <DependentUpon>202110251359554_AnswerV2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\PatientViewModels.cs" />
     <Compile Include="Entities\Provider.cs" />
     <Compile Include="Exceptions\ExceededMaxPinAccessFailedCountException.cs" />
@@ -493,6 +497,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202110192114205_FormV2.resx">
       <DependentUpon>202110192114205_FormV2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202110251359554_AnswerV2.resx">
+      <DependentUpon>202110251359554_AnswerV2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
