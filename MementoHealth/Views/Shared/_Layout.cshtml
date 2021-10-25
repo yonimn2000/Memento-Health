@@ -1,6 +1,7 @@
 ﻿@{
     bool isFullScreen = ViewBag.UseFullScreenWidth != null && ViewBag.UseFullScreenWidth;
     string containerClass = "container" + (isFullScreen ? "-fluid" : "");
+    bool isPinLock = MementoHealth.Filters.PinLockFilter.Enabled;
 }
 
 <!DOCTYPE html>
@@ -19,7 +20,7 @@
     <nav class="navbar navbar-expand-lg bg-light navbar-light">
         <div class="@containerClass">
             <div class="navbar-header">
-                <a href="@Url.Action("Index", "Home")" class="navbar-brand">
+                <a href="@(isPinLock ? "#" : Url.Action("Index", "Home"))" class="navbar-brand">
                     <img src="~/Images/Memento Health-logo.svg" id="logo-img" title="Home" alt="Home" />
                 </a>
             </div>
@@ -27,7 +28,7 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div id="navbarSupportedContent" class="navbar-collapse collapse">
-                @if (!MementoHealth.Filters.PinLockFilter.Enabled)
+                @if (!isPinLock)
                 {
                     <ul class="navbar-nav mr-auto">
                         @if (User.Identity.IsAuthenticated)
