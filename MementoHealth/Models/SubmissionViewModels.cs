@@ -29,6 +29,9 @@ namespace MementoHealth.Models
         public int SubmissionId { get; set; }
 
         [Required]
+        public int QuestionId { get; set; }
+
+        [Required]
         public string JsonData { get; set; }
 
         [Required]

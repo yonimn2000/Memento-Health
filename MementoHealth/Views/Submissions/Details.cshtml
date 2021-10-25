@@ -1,0 +1,14 @@
+﻿@model IEnumerable<MementoHealth.Entities.FormQuestionAnswer>
+@{
+    ViewBag.Title = "Submission Details";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@foreach (var answer in Model)
+{
+    <div><b>@answer.Question.Question</b></div>
+    <div>@answer.JsonData</div>
+}
+
+<div>@Html.ActionLink("Back to Submission List", "Index")</div>

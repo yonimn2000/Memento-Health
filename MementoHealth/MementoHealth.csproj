@@ -461,6 +461,7 @@
     <Content Include="Views\Submissions\Start.cshtml" />
     <Content Include="Views\Submissions\Answer.cshtml" />
     <Content Include="Views\Submissions\Delete.cshtml" />
+    <Content Include="Views\Submissions\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

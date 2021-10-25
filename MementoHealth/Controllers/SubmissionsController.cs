@@ -134,14 +134,18 @@ namespace MementoHealth.Controllers
                 PinLockFilter.Enabled = true;
 
             // TODO: Get next question.
-            FormQuestion question = submission.Form.Questions.Where(q => q.Number == 6).OrderBy(q => Guid.NewGuid()).First();
+            FormQuestion question = submission.Form.Questions.OrderBy(q => Guid.NewGuid()).First();
+            FormQuestionAnswer answer = submission.Answers.Where(a => a.QuestionId == question.QuestionId).SingleOrDefault();
+
             return View(new AnswerViewModel
             {
                 SubmissionId = id,
+                QuestionId = question.QuestionId,
                 Patient = submission.Patient,
                 Question = question,
                 CurrentQuestionNumber = question.Number - 1,
-                NumberOfRemainingQuestions = submission.Form.Questions.Count - question.Number
+                NumberOfRemainingQuestions = submission.Form.Questions.Count - question.Number,
+                JsonData = answer?.JsonData
             });
         }
 
@@ -151,7 +155,25 @@ namespace MementoHealth.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Answer(AnswerViewModel model)
         {
-            // TODO: Save answer.
+            FormSubmission submission = FindSubmission_Restricted(model.SubmissionId);
+            FormQuestion question = submission.Form.Questions.Where(q => q.QuestionId == model.QuestionId).SingleOrDefault();
+
+            if (question == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            FormQuestionAnswer answer = submission.Answers.Where(a => a.QuestionId == model.QuestionId).SingleOrDefault();
+
+            if (answer != null)
+                answer.JsonData = model.JsonData;
+            else
+                submission.Answers.Add(new FormQuestionAnswer
+                {
+                    JsonData = model.JsonData,
+                    QuestionId = model.QuestionId
+                });
+
+            Db.SaveChanges();
+
             return RedirectToAction("Answer", new { id = model.SubmissionId });
         }
 
@@ -162,7 +184,7 @@ namespace MementoHealth.Controllers
             if (submission == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            return View(); // TODO: Return details.
+            return View(submission.Answers.OrderBy(a => a.AnswerId).ToList());
         }
 
         // GET: Submissions/Delete/5
