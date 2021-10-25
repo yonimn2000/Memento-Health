@@ -210,7 +210,7 @@ namespace MementoHealth.Controllers
                     if (model.LockAfterChangingPin)
                     {
                         PinLockFilter.Enabled = true;
-                        return RedirectToAction("PinUnlock", "Account", new { returnUrl = model.ReturnUrl });
+                        return RedirectToLocal(model.ReturnUrl);
                     }
                     PinLockFilter.Enabled = false;
                     if (string.IsNullOrWhiteSpace(model.ReturnUrl))
