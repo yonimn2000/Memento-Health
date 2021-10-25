@@ -1,9 +1,33 @@
 ﻿@model MementoHealth.Models.AnswerViewModel
 @{
     ViewBag.Title = "Answer";
+
+    string remainingQuestionsTest;
+    if (Model.NumberOfRemainingQuestions == 0)
+    {
+        remainingQuestionsTest = "Last question";
+    }
+    else if (Model.NumberOfRemainingQuestions == 1)
+    {
+        remainingQuestionsTest = "One more question or less remain.";
+    }
+    else
+    {
+        remainingQuestionsTest = Model.NumberOfRemainingQuestions + " questions or less remain.";
+    }
 }
 
-<h2>@ViewBag.Title</h2>
+<div class="text-secondary">
+    <b>Patient: </b> @Model.Patient.FullName |
+    <b>Birthday: </b> @Model.Patient.Birthday.ToShortDateString()
+    @if (Model.Patient.ExternalPatientId != null)
+    {
+        <text>|</text>
+        <b>External ID: </b> @Model.Patient.ExternalPatientId
+    }
+</div>
+<h1>Answer the question below:</h1>
+<hr />
 
 @using (Html.BeginForm())
 {
@@ -11,19 +35,228 @@
 
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     @Html.HiddenFor(m => m.SubmissionId)
+    @Html.HiddenFor(m => m.Question.JsonData)
+    @Html.HiddenFor(m => m.JsonData)
+    @Html.HiddenFor(m => m.GoNext)
 
-    <div>@Model.Question.Question</div>
+    <h2>@Model.Question.Question</h2>
+
+    <input class="form-control" id="textbox" style="display:none;">
+    <div class="form-check" id="radiobuttons" style="display:none;"></div>
+    <div class="form-check" id="checkboxes" style="display:none;"></div>
+    <div id="img-wrapper">
+        <img id="image" class="img-fluid" style="display:none;" onclick="imgClicked(event)" />
+    </div>
+
     if (Model.Question.IsRequired)
     {
         <div class="text-danger">Answer is required.</div>
     }
 
-    <div class="my-3">
-        <input type="submit" value="Next" class="btn btn-primary" />
+    <div class="my-3 text-right">
+        @if (Model.Question.Number != 1)
+        {
+            <button type="button" id="previous-button" class="btn btn-outline-primary" onclick="submitClicked(false)">Previous</button>
+        }
+        <button type="button" id="next-button" class="btn btn-primary" onclick="submitClicked(true)">Next</button>
     </div>
 
+    <div>@remainingQuestionsTest</div>
     <div class="progress" style="height: 36px;">
         <div class="progress-bar bg-success" role="progressbar" style="width: @Model.GetProgress()%"><b>@Model.GetProgress()%</b></div>
     </div>
-    <div>@Model.NumberOfRemainingQuestions questions or less remain.</div>
+}
+
+@section styles
+{
+    <style>
+        #img-wrapper {
+            position: relative;
+        }
+
+        .img-point {
+            position: absolute;
+            top: 0;
+            right: 0;
+            display: block;
+            width: 0px;
+            height: 0px;
+            font-size: 0;
+        }
+
+        .img-point:before,
+        .img-point:after {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 10px;
+            height: 75px;
+            background-color: red;
+            transform: rotate(45deg) translate(-50%, -50%);
+            transform-origin: top left;
+            content: '';
+            outline-offset: -2px;
+            outline-width: 2px;
+            outline-color: yellow;
+            outline-style: dotted;
+        }
+
+        .img-point:after {
+            transform: rotate(-45deg) translate(-50%, -50%);
+        }
+    </style>
+}
+
+@section scripts
+{
+    <script>
+        let answerType = '@Model.Question.TypeString';
+        let lastImageClick = {};
+
+        $(() => {
+            if ($("#Question_JsonData").val().length > 0)
+                questionData = JSON.parse($("#Question_JsonData").val());
+
+            switch (answerType) {
+                case '@QuestionType.Text.ToString()':
+                    $("#textbox").attr('type', 'text').show();
+                    break;
+                case '@QuestionType.Number.ToString()':
+                    $("#textbox").attr('type', 'number').show();
+                    break;
+                case '@QuestionType.Date.ToString()':
+                    $("#textbox").attr('type', 'date').show();
+                    break;
+                case '@QuestionType.Checkboxes.ToString()':
+                    $('#checkboxes').show();
+                    $.each(questionData.labels, function (i, label) {
+                        $('#checkboxes').append(
+                            $('<input>').prop({
+                                type: 'checkbox',
+                                id: 'checkbox-' + i,
+                                class: 'form-check-input',
+                                value: label
+                            })).append(
+                            $('<label>').prop({
+                                for: 'checkbox-' + i,
+                                class: 'form-check-label'
+                            }).html(" " + label)
+                            ).append($('<br>'));
+                    });
+                    break;
+                case '@QuestionType.Radiobuttons.ToString()':
+                    $('#radiobuttons').show();
+                    $.each(questionData.labels, function (i, label) {
+                        $('#radiobuttons').append(
+                            $('<input>').prop({
+                                type: 'radio',
+                                id: 'radio-' + i,
+                                name: 'radiobuttons',
+                                class: 'form-check-input',
+                                value: label
+                            })).append(
+                                $('<label>').prop({
+                                    for: 'radio-' + i,
+                                    class: 'form-check-label'
+                                }).html(" " + label)
+                            ).append($('<br>'));
+                    });
+                    break;
+                case '@QuestionType.Image.ToString()':
+                    $('#image').show().attr('src', questionData.image.url)
+                        .on('load', () => {
+                            // Lock image size.
+                            $('#img-wrapper').width($("#image").width());
+                            $('#img-wrapper').height($("#image").height());
+                        });
+                    break;
+            }
+        });
+
+        let imgClicked = (event) => {
+            const x = (event.pageX - $("#image").offset().left);
+            const y = (event.pageY - $("#image").offset().top);
+
+            $('.img-point').remove();
+            let img = $('#img-wrapper');
+            let point = $('<div class="img-point"></div>');
+
+            point.css({
+                left: x + "px",
+                top: y + "px"
+            });
+            point.appendTo(img);
+            lastImageClick.x = x / $("#image").width();
+            lastImageClick.y = y / $("#image").height();
+            console.log(lastImageClick);
+        }
+
+        let submitClicked = async (goNext) => {
+            let jsonData = {};
+            let isValidForm = true;
+
+            @*jsonData.option = $("#options").val();
+            if (jsonData.option != "is anything") {
+                let text = $("#textbox").val();
+                switch (answerType) {
+                    case '@QuestionType.Text.ToString()':
+                        if (text.length == 0) {
+                            isValidForm = false;
+                            alert("Textbox cannot be empty.");
+                        }
+                        else
+                            jsonData.text = text;
+                        break;
+                    case '@QuestionType.Number.ToString()':
+                        if (text.length == 0 || isNaN(text)) {
+                            isValidForm = false;
+                            alert("Invalid number.");
+                        }
+                        else
+                            jsonData.number = text;
+                        break;
+                    case '@QuestionType.Date.ToString()':
+                        if ((new Date(text) === "Invalid Date") || isNaN(new Date(text))) {
+                            isValidForm = false;
+                            alert("Invalid date.");
+                        }
+                        else
+                            jsonData.date = text;
+                        break;
+                    case '@QuestionType.Checkboxes.ToString()':
+                        jsonData.checkboxes = [];
+                        $("#checkboxes :checked").each(function () {
+                            jsonData.checkboxes.push($(this).val());
+                        });
+                        if (jsonData.checkboxes.length == 0) {
+                            isValidForm = false;
+                            alert("At least one checkbox must be checked.");
+                        }
+                        break;
+                    case '@QuestionType.Radiobuttons.ToString()':
+                        jsonData.radiobutton = $("#radiobuttons").val();
+                        if (jsonData.radiobutton.length == 0) {
+                            isValidForm = false;
+                            alert("Invalid radiobutton value.");
+                        }
+                        break;
+                    case '@QuestionType.Image.ToString()':
+                        jsonData.imageAreas = $('#image').selectAreas('areas').map(getRelativeArea);
+                        if (jsonData.imageAreas.length == 0) {
+                            isValidForm = false;
+                            alert("At least one area must be selected.");
+                        }
+                        break;
+                }
+            }*@
+
+            if (isValidForm) {
+                @*$('#@Html.IdFor(m => m.GoToQuestionId)').val($("#goto").val());
+                $('#@Html.IdFor(m => m.JsonData)').val(jQuery.isEmptyObject(jsonData) ? "" : JSON.stringify(jsonData));
+                    *@
+                $('#@Html.IdFor(m => m.GoNext)').val(goNext);
+                $('#next-button').closest("form").submit();
+            }
+        };
+    </script>
 }

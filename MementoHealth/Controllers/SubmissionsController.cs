@@ -1,4 +1,5 @@
-﻿using MementoHealth.Classes;
+﻿using MementoHealth.Attributes;
+using MementoHealth.Classes;
 using MementoHealth.Entities;
 using MementoHealth.Filters;
 using MementoHealth.Models;
@@ -116,26 +117,37 @@ namespace MementoHealth.Controllers
         }
 
         // GET: Submissions/Answer/5
+        [AllowThroughPinLock]
         public ActionResult Answer(int id)
         {
             FormSubmission submission = FindSubmission_Restricted(id);
             if (submission == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            // PinLockFilter.Enabled = true;
+            if (Db.Users.Find(User.Identity.GetUserId()).PinHash == null)
+                return RedirectToAction("ChangePin", "Manage", new
+                {
+                    returnUrl = Url.Action("Answer", new { id = submission.SubmissionId }),
+                    lockAfterChangingPin = true
+                });
+            else
+                PinLockFilter.Enabled = true;
 
             // TODO: Get next question.
+            FormQuestion question = submission.Form.Questions.Where(q => q.Number == 6).OrderBy(q => Guid.NewGuid()).First();
             return View(new AnswerViewModel
             {
                 SubmissionId = id,
-                Question = submission.Form.Questions.OrderBy(q => Guid.NewGuid()).First(),
-                CurrentQuestionNumber = 1,
-                NumberOfRemainingQuestions = 3
+                Patient = submission.Patient,
+                Question = question,
+                CurrentQuestionNumber = question.Number - 1,
+                NumberOfRemainingQuestions = submission.Form.Questions.Count - question.Number
             });
         }
 
         // POST: Submissions/Answer/5
         [HttpPost]
+        [AllowThroughPinLock]
         [ValidateAntiForgeryToken]
         public ActionResult Answer(AnswerViewModel model)
         {

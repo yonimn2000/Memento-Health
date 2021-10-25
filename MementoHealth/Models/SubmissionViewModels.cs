@@ -1,6 +1,7 @@
 ﻿using MementoHealth.Entities;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace MementoHealth.Models
 {
@@ -16,10 +17,21 @@ namespace MementoHealth.Models
 
     public class AnswerViewModel
     {
-        public int SubmissionId { get; set; }
+        // These are to pass data to the page
         public FormQuestion Question { get; set; }
+        public Patient Patient { get; set; }
         public int CurrentQuestionNumber { get; set; }
         public int NumberOfRemainingQuestions { get; set; }
         public int GetProgress() => 100 * CurrentQuestionNumber / (CurrentQuestionNumber + NumberOfRemainingQuestions);
+        
+        // These are to gather data from the page.
+        [Required]
+        public int SubmissionId { get; set; }
+
+        [Required]
+        public string JsonData { get; set; }
+
+        [Required]
+        public bool GoNext { get; set; }
     }
 }
