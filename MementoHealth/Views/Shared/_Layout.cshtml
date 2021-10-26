@@ -70,7 +70,8 @@
     </nav>
     <div class="@containerClass body-content mt-3">
         @RenderBody()
-        <hr />
+    </div>
+    <hr />
         <footer class="@(isFullScreen ? "mx-3" : "") d-block d-sm-flex">
             @if (User.Identity.IsAuthenticated)
             {
@@ -78,7 +79,6 @@
             }
             <div class="ml-auto mt-2 mt-sm-0">&copy; @DateTime.Now.Year - Memento Health</div>
         </footer>
-    </div>
 
     <script>
         if ('serviceWorker' in navigator) {
