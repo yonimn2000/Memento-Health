@@ -204,6 +204,7 @@
     <Compile Include="Entities\FormQuestionCondition.cs" />
     <Compile Include="Entities\FormSubmission.cs" />
     <Compile Include="Entities\Patient.cs" />
+    <Compile Include="Models\PatientViewModels.cs" />
     <Compile Include="Entities\Provider.cs" />
     <Compile Include="Exceptions\ExceededMaxPinAccessFailedCountException.cs" />
     <Compile Include="Filters\PinLockFilter.cs" />
@@ -441,11 +442,13 @@
     <Content Include="Views\FormQuestions\Delete.cshtml" />
     <Content Include="Views\FormQuestions\Index.cshtml" />
     <Content Include="Views\Account\_CaptchaPartial.cshtml" />
+    <Content Include="Views\Patients\Search.cshtml" />
     <Content Include="Views\FormQuestionConditions\Delete.cshtml" />
     <Content Include="Views\FormQuestionConditions\Editor.cshtml" />
     <Content Include="Views\FormQuestionConditions\Index.cshtml" />
     <Content Include="Views\Forms\Publish.cshtml" />
     <Content Include="Views\Forms\Unpublish.cshtml" />
+    <Content Include="Views\Patients\_PatientsTablePartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,0 +1,33 @@
+﻿@model IEnumerable<MementoHealth.Entities.Patient>
+
+<div class="container" style="overflow-y: auto; white-space: nowrap; min-width: 94.5%; text-align: center">
+    <div class="card shadow">
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.FullName)</th>
+                        <th>@Html.DisplayNameFor(model => model.Birthday)</th>
+                        <th>@Html.DisplayNameFor(model => model.ExternalPatientId)</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var patient in Model)
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => patient.FullName)</td>
+                            <td>@patient.Birthday.ToShortDateString()</td>
+                            <td>@(patient.ExternalPatientId ?? "None")</td>
+                            <td>
+                                @Html.ActionLink("Edit", "Edit", new { id = patient.PatientId }) |
+                                @Html.ActionLink("Details", "Details", new { id = patient.PatientId }) |
+                                @Html.ActionLink("Delete", "Delete", new { id = patient.PatientId })
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
