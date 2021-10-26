@@ -1,6 +1,6 @@
 ﻿@{
     bool isFullScreen = ViewBag.UseFullScreenWidth != null && ViewBag.UseFullScreenWidth;
-    string containerClass = "container" + (isFullScreen ? "-fluid" : "");
+    string containerClass = "container-fluid";
 }
 
 <!DOCTYPE html>
@@ -61,7 +61,7 @@
         @RenderBody()
     </div>
     <hr />
-        <footer class="@(isFullScreen ? "mx-3" : "") d-block d-sm-flex">
+        <footer id="footer" class="@(isFullScreen ? "mx-3" : "") d-block d-sm-flex">
             @if (User.Identity.IsAuthenticated)
             {
                 <div><b>Current user role:</b> @User.GetRole()</div>
