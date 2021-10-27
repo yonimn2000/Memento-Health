@@ -2,10 +2,15 @@
 @model IEnumerable<FormQuestion>
 @{
     Form form = Model.First().Form;
+    bool editsAllowed = !form.Submissions.Any() && User.IsInRole(Role.ProviderAdmin);
     ViewBag.Title = $"“{form.Name}” Form Questions";
 }
 
 <h2>@ViewBag.Title</h2>
+@if (!editsAllowed)
+{
+    <h4 class="text-info">Edits are not allowed as the form already has some submissions.</h4>
+}
 <hr />
 @Html.ActionLink("Back to Forms", "Index", "Forms")
 
@@ -17,7 +22,10 @@
         <th>Answer Type</th>
         <th>Data</th>
         <th>Conditions</th>
-        <th>Actions</th>
+        @if (editsAllowed)
+        {
+            <th>Actions</th>
+        }
     </tr>
     @foreach (FormQuestion question in Model)
     {
@@ -30,7 +38,12 @@
             <td>
                 @if (question.Conditions.Count == 0)
                 {
-                    @Html.ActionLink("Add condition", "Add", "FormQuestionConditions", new { id = question.QuestionId }, null)
+                    if (editsAllowed)
+                    {
+                        <text>
+                            @Html.ActionLink("Add condition", "Add", "FormQuestionConditions", new { id = question.QuestionId }, null)
+                        </text>
+                    }
                 }
                 else if (question.Conditions.Count > 0)
                 {
@@ -47,40 +60,48 @@
                             }
                         </ol>
                     }
-                    @Html.ActionLink("Edit conditions", "Index", "FormQuestionConditions", new { id = question.QuestionId }, null)
-                }
-            </td>
-            <td>
-                @if (question.CanBeMovedUp)
-                {
-                    using (Html.BeginForm("MoveUp", "FormQuestions", new { id = question.QuestionId }, FormMethod.Post))
+                    if (editsAllowed)
                     {
-                        @Html.AntiForgeryToken()
-                        <a href="#" onclick="this.closest('form').submit();return false;">Up</a>
+                        <text>
+                            @Html.ActionLink("Edit conditions", "Index", "FormQuestionConditions", new { id = question.QuestionId }, null)
+                        </text>
                     }
                 }
-                else
-                {
-                    <span class="text-secondary" title="@question.GetCannotMoveUpReason()">Up</span>
-                } |
-
-                @if (question.CanBeMovedDown)
-                {
-                    using (Html.BeginForm("MoveDown", "FormQuestions", new { id = question.QuestionId }, FormMethod.Post))
-                    {
-                        @Html.AntiForgeryToken()
-                        <a href="#" onclick="this.closest('form').submit();return false;">Down</a>
-                    }
-                }
-                else
-                {
-                    <span class="text-secondary" title="@question.GetCannotMoveDownReason()">Down</span>
-                } |
-
-                @Html.ActionLink("Insert after", "Insert", new { id = question.QuestionId }) |
-                @Html.ActionLink("Edit question", "Edit", new { id = question.QuestionId }) |
-                @Html.ActionLink("Delete", "Delete", new { id = question.QuestionId })
             </td>
+            @if (editsAllowed)
+            {
+                <td>
+                    @if (question.CanBeMovedUp)
+                    {
+                        using (Html.BeginForm("MoveUp", "FormQuestions", new { id = question.QuestionId }, FormMethod.Post))
+                        {
+                            @Html.AntiForgeryToken()
+                            <a href="#" onclick="this.closest('form').submit();return false;">Up</a>
+                        }
+                    }
+                    else
+                    {
+                        <span class="text-secondary" title="@question.GetCannotMoveUpReason()">Up</span>
+                    } |
+
+                    @if (question.CanBeMovedDown)
+                    {
+                        using (Html.BeginForm("MoveDown", "FormQuestions", new { id = question.QuestionId }, FormMethod.Post))
+                        {
+                            @Html.AntiForgeryToken()
+                            <a href="#" onclick="this.closest('form').submit();return false;">Down</a>
+                        }
+                    }
+                    else
+                    {
+                        <span class="text-secondary" title="@question.GetCannotMoveDownReason()">Down</span>
+                    } |
+
+                    @Html.ActionLink("Insert after", "Insert", new { id = question.QuestionId }) |
+                    @Html.ActionLink("Edit question", "Edit", new { id = question.QuestionId }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = question.QuestionId })
+                </td>
+            }
         </tr>
     }
 

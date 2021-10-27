@@ -1,3 +1,7 @@
+﻿@{
+    bool isPinLock = MementoHealth.Filters.PinLockFilter.Enabled;
+}
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,7 +18,7 @@
     <nav class="navbar navbar-expand-lg bg-light navbar-light">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a href="@Url.Action("Index", "Home")" class="navbar-brand">
+                <a href="@(isPinLock ? "#" : Url.Action("Index", "Home"))" class="navbar-brand">
                     <img src="~/Images/Memento Health-logo.svg" id="logo-img" title="Home" alt="Home" />
                 </a>
             </div>
@@ -22,34 +26,44 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div id="navbarSupportedContent" class="navbar-collapse collapse">
-                <ul class="navbar-nav mr-auto">
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                        if (User.IsInRole(Role.SysAdmin))
+                @if (!isPinLock)
+                {
+                    <ul class="navbar-nav mr-auto">
+                        @if (User.Identity.IsAuthenticated)
                         {
-                            <li class="nav-item">@Html.ActionLink("Providers", "Index", "Providers", new { Area = "" }, new { @class = "nav-link" })</li>
-                        }
+                            if (User.IsInRole(Role.SysAdmin))
+                            {
+                                <li class="nav-item">@Html.ActionLink("Providers", "Index", "Providers", new { Area = "" }, new { @class = "nav-link" })</li>
+                            }
 
-                        if (User.IsInRole(Role.SysAdmin) || User.IsInRole(Role.ProviderAdmin))
-                        {
-                            <li class="nav-item">@Html.ActionLink("Users", "Index", "Users", new { Area = "" }, new { @class = "nav-link" })</li>
-                        }
+                            if (User.IsInRole(Role.SysAdmin) || User.IsInRole(Role.ProviderAdmin))
+                            {
+                                <li class="nav-item">@Html.ActionLink("Users", "Index", "Users", new { Area = "" }, new { @class = "nav-link" })</li>
+                            }
 
-                        if (User.IsInRole(Role.ProviderAdmin) || User.IsInRole(Role.Doctor) || User.IsInRole(Role.Assistant))
-                        {
-                            <li class="nav-item">@Html.ActionLink("Forms", "Index", "Forms", new { Area = "" }, new { @class = "nav-link" })</li>
-                            <li class="nav-item">@Html.ActionLink("Patients", "Index", "Patients", new { Area = "" }, new { @class = "nav-link" })</li>
-                            <li class="nav-item">@Html.ActionLink("Submissions", "Index", "Submissions", new { Area = "" }, new { @class = "nav-link" })</li>
+                            if (User.IsInRole(Role.ProviderAdmin) || User.IsInRole(Role.Doctor) || User.IsInRole(Role.Assistant))
+                            {
+                                <li class="nav-item">@Html.ActionLink("Forms", "Index", "Forms", new { Area = "" }, new { @class = "nav-link" })</li>
+                                <li class="nav-item">@Html.ActionLink("Patients", "Index", "Patients", new { Area = "" }, new { @class = "nav-link" })</li>
+                                <li class="nav-item">@Html.ActionLink("Submissions", "Index", "Submissions", new { Area = "" }, new { @class = "nav-link" })</li>
+                            }
                         }
-                    }
-                    else
-                    {
-                        <li class="nav-item">@Html.ActionLink("Home", "Index", "Home", new { Area = "" }, new { @class = "nav-link" })</li>
-                        <li class="nav-item">@Html.ActionLink("About", "About", "Home", new { Area = "" }, new { @class = "nav-link" })</li>
-                        <li class="nav-item">@Html.ActionLink("Contact", "Contact", "Home", new { Area = "" }, new { @class = "nav-link" })</li>
-                    }
-                </ul>
-                @Html.Partial("_LoginPartial")
+                        else
+                        {
+                            <li class="nav-item">@Html.ActionLink("Home", "Index", "Home", new { Area = "" }, new { @class = "nav-link" })</li>
+                            <li class="nav-item">@Html.ActionLink("About", "About", "Home", new { Area = "" }, new { @class = "nav-link" })</li>
+                            <li class="nav-item">@Html.ActionLink("Contact", "Contact", "Home", new { Area = "" }, new { @class = "nav-link" })</li>
+                        }
+                    </ul>
+                    @Html.Partial("_LoginPartial")
+                }
+                else
+                {
+                    string returnUrl = ViewBag.PatientId == null ? Url.Action("Index", "Submissions") : Url.Action("Patient", "Submissions", new { id = ViewBag.PatientId });
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">@Html.ActionLink("Unlock", "PinUnlock", "Account", new { returnUrl, Area = "" }, new { @class = "nav-link" })</li>
+                    </ul>
+                }
             </div>
         </div>
     </nav>

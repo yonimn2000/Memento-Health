@@ -1,0 +1,60 @@
+﻿@using MementoHealth.Entities
+@model IEnumerable<FormSubmission>
+
+@{
+    bool hidePatient = ViewBag.HidePatient != null && ViewBag.HidePatient == true;
+    bool hideForm = ViewBag.HideForm != null && ViewBag.HideForm == true;
+}
+
+@if (Model.Count() == 0)
+{
+    <span class="text-danger">No submissions yet...</span>
+    <div>@Html.ActionLink("View all patients", "Index", "Patients")</div>
+    <div>@Html.ActionLink("View all forms", "Index", "Forms")</div>
+}
+else
+{
+    <table class="table">
+        <tr>
+            <th>Date</th>
+            @if (!hidePatient)
+            {
+                <th>Patient</th>
+            }
+            @if (!hideForm)
+            {
+                <th>Form</th>
+            }
+            <th>Complete</th>
+            <th>Actions</th>
+        </tr>
+        @foreach (FormSubmission submission in Model)
+        {
+            <tr>
+                <td>@submission.SubmissionDate</td>
+                @if (!hidePatient)
+                {
+                    <td>@submission.Patient.FullName</td>
+                }
+                @if (!hideForm)
+                {
+                    <td>@submission.Form.Name</td>
+                }
+                <td>@submission.IsComplete</td>
+                <td>
+                    @Html.ActionLink(submission.IsComplete ? "Edit" : "Continue", "Answer", new { id = submission.SubmissionId }) |
+                    @Html.ActionLink("Details", "Details", new { id = submission.SubmissionId }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = submission.SubmissionId })
+                </td>
+            </tr>
+        }
+    </table>
+}
+
+@section styles {
+    <style>
+        form {
+            display: inline-block;
+        }
+    </style>
+}

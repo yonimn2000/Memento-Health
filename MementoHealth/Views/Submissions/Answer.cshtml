@@ -1,0 +1,246 @@
+﻿@model MementoHealth.Models.AnswerViewModel
+@{
+    ViewBag.Title = "Answer";
+    ViewBag.PatientId = Model.Patient.PatientId;
+
+    bool isLast = Model.NumberOfRemainingQuestions == 0;
+    string remainingQuestionsTest;
+    if (isLast)
+    {
+        remainingQuestionsTest = "Last question";
+    }
+    else if (Model.NumberOfRemainingQuestions == 1)
+    {
+        remainingQuestionsTest = "One more question or less remain.";
+    }
+    else
+    {
+        remainingQuestionsTest = Model.NumberOfRemainingQuestions + " questions or less remain.";
+    }
+}
+
+@Html.Partial("_PatientDetailsPartial", Model.Patient)
+
+<h1>Answer the question below:</h1>
+<hr />
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(m => m.SubmissionId)
+    @Html.HiddenFor(m => m.Question.JsonData)
+    @Html.HiddenFor(m => m.QuestionId)
+    @Html.HiddenFor(m => m.JsonData)
+    @Html.HiddenFor(m => m.NextAction)
+
+    <h2>@Model.Question.Question</h2>
+
+    <input class="form-control" id="textbox" style="display:none;" autocomplete="off">
+    <div class="form-check" id="radiobuttons" style="display:none;"></div>
+    <div class="form-check" id="checkboxes" style="display:none;"></div>
+    <div id="img-wrapper">
+        <img id="image" class="img-fluid" style="display:none;" onclick="imgClicked(event)" />
+    </div>
+
+    if (Model.Question.IsRequired)
+    {
+        <div class="text-danger">Answer is required.</div>
+    }
+
+    <div class="my-3 text-right">
+        @if (Model.Question.Number != 1)
+        {
+            <button type="button" id="previous-button" class="btn btn-outline-primary" onclick="submitClicked('previous')">Previous</button>
+        }
+        <button type="button" id="next-button" class="btn btn-primary" onclick="submitClicked('next')">@(isLast ? "Review" : "Next")</button>
+        @if (!isLast && Model.IsComplete)
+        {
+            <button type="button" id="review-button" class="btn btn-info" onclick="submitClicked('review')">Review</button>
+        }
+    </div>
+
+    <div>@remainingQuestionsTest</div>
+    <div class="progress" style="height: 36px;">
+        <div class="progress-bar" role="progressbar" style="width: @Model.GetProgress()%"><b>@Model.GetProgress()%</b></div>
+    </div>
+}
+
+@section scripts
+{
+    <script>
+        let answerType = '@Model.Question.TypeString';
+        let lastImageClick = {};
+
+        $(() => {
+            let answerData = {};
+
+            if ($("#Question_JsonData").val().length > 0)
+                questionData = JSON.parse($("#Question_JsonData").val());
+
+            if ($("#JsonData").val().length > 0)
+                answerData = JSON.parse($("#JsonData").val());
+
+            switch (answerType) {
+                case '@QuestionType.Text.ToString()':
+                    $("#textbox").attr('type', 'text').show().val(answerData?.answer);
+                    break;
+                case '@QuestionType.Number.ToString()':
+                    $("#textbox").attr('type', 'number').show().val(answerData?.answer);
+                    break;
+                case '@QuestionType.Date.ToString()':
+                    $("#textbox").attr('type', 'date').show().val(answerData?.answer);
+                    break;
+                case '@QuestionType.Checkboxes.ToString()':
+                    $('#checkboxes').show();
+                    $.each(questionData.labels, function (i, label) {
+                        $('#checkboxes').append(
+                            $('<input>').prop({
+                                type: 'checkbox',
+                                id: 'checkbox-' + i,
+                                class: 'form-check-input',
+                                value: label
+                            })).append(
+                            $('<label>').prop({
+                                for: 'checkbox-' + i,
+                                class: 'form-check-label'
+                            }).html(" " + label)
+                            ).append($('<br>'));
+                    });
+                    if (answerData.answer)
+                        $("#checkboxes input").each(function () {
+                            if (answerData.answer.includes($(this).val()))
+                                $(this).prop('checked', true);
+                        });
+                    break;
+                case '@QuestionType.Radiobuttons.ToString()':
+                    $('#radiobuttons').show();
+                    $.each(questionData.labels, function (i, label) {
+                        $('#radiobuttons').append(
+                            $('<input>').prop({
+                                type: 'radio',
+                                id: 'radio-' + i,
+                                name: 'radiobuttons',
+                                class: 'form-check-input',
+                                value: label
+                            })).append(
+                                $('<label>').prop({
+                                    for: 'radio-' + i,
+                                    class: 'form-check-label'
+                                }).html(" " + label)
+                            ).append($('<br>'));
+                    });
+                    if (answerData.answer)
+                        $("#radiobuttons input").each(function () {
+                            if (answerData.answer.includes($(this).val()))
+                                $(this).prop('checked', true);
+                        });
+                    break;
+                case '@QuestionType.Image.ToString()':
+                    $('#image').show().attr('src', questionData.image.url)
+                        .on('load', () => {
+                            if (answerData.answer) {
+                                lastImageClick = answerData.answer;
+                                drawPointOnImage();
+                            }
+                        });
+                    break;
+            }
+        });
+
+        let doit;
+        window.onresize = () => {
+            if (lastImageClick) {
+                clearTimeout(doit);
+                doit = setTimeout(drawPointOnImage, 100);
+            }
+        };
+
+        let imgClicked = (event) => {
+            const x = (event.pageX - $("#image").offset().left);
+            const y = (event.pageY - $("#image").offset().top);
+            lastImageClick.x = x / $("#image").width();
+            lastImageClick.y = y / $("#image").height();
+            drawPointOnImage();
+        }
+
+        let drawPointOnImage = () => {
+            $('.img-point').remove();
+            let img = $('#img-wrapper');
+            let point = $('<div class="img-point"></div>');
+
+            let x = lastImageClick.x * $("#image").width();
+            let y = lastImageClick.y * $("#image").height();
+            point.css({
+                left: x + "px",
+                top: y + "px"
+            });
+            point.appendTo(img);
+        }
+
+        let submitClicked = async (nextAction) => {
+            let jsonData = {};
+            let isValidForm = true;
+            let isRequired = @Model.Question.IsRequired.ToString().ToLower();
+            let text = $("#textbox").val();
+
+            switch (answerType) {
+                case '@QuestionType.Text.ToString()':
+                    if (isRequired && text.length == 0) {
+                        isValidForm = false;
+                        alert("Textbox cannot be empty.");
+                    }
+                    else
+                        jsonData.answer = text;
+                    break;
+                case '@QuestionType.Number.ToString()':
+                    if (isRequired && (text.length == 0 || isNaN(text))) {
+                        isValidForm = false;
+                        alert("Invalid number.");
+                    }
+                    else
+                        jsonData.answer = text;
+                    break;
+                case '@QuestionType.Date.ToString()':
+                    if (isRequired && ((new Date(text) === "Invalid Date") || isNaN(new Date(text)))) {
+                        isValidForm = false;
+                        alert("Invalid date.");
+                    }
+                    else
+                        jsonData.answer = text;
+                    break;
+                case '@QuestionType.Checkboxes.ToString()':
+                    jsonData.answer = [];
+                    $("#checkboxes :checked").each(function () {
+                        jsonData.answer.push($(this).val());
+                    });
+                    if (isRequired && jsonData.answer.length == 0) {
+                        isValidForm = false;
+                        alert("At least one checkbox must be checked.");
+                    }
+                    break;
+                case '@QuestionType.Radiobuttons.ToString()':
+                    jsonData.answer = $("#radiobuttons :checked").val();
+                    if (isRequired && jsonData.answer.length == 0) {
+                        isValidForm = false;
+                        alert("Invalid radiobutton value.");
+                    }
+                    break;
+                case '@QuestionType.Image.ToString()':
+                    jsonData.answer = lastImageClick;
+                    if (isRequired && (!lastImageClick.x || !lastImageClick.y)) {
+                        isValidForm = false;
+                        alert("At least one area must be selected.");
+                    }
+                    break;
+            }
+
+            if (isValidForm) {
+                $('#@Html.IdFor(m => m.JsonData)').val(jQuery.isEmptyObject(jsonData) ? "" : JSON.stringify(jsonData));
+                $('#@Html.IdFor(m => m.NextAction)').val(nextAction);
+                $('#next-button').closest("form").submit();
+            }
+        };
+    </script>
+}

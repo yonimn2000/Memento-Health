@@ -1,0 +1,10 @@
+﻿@using MementoHealth.Entities
+@model IEnumerable<FormSubmission>
+@{
+    ViewBag.Title = "All Form Submissions";
+    ViewBag.UseFullScreenWidth = true;
+}
+
+<h2>@ViewBag.Title</h2>
+<hr />
+@Html.Partial("_SubmissionsTablePartial", Model)

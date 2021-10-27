@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<MementoHealth.Models.FormViewModel>
 
 @{
-    ViewBag.Title = "Forms";    
+    ViewBag.Title = "Forms";
 }
 
 <div class="box" style="text-align: center">
@@ -29,7 +29,10 @@
                             <th>@Html.DisplayNameFor(model => model.Name)</th>
                             <th>@Html.DisplayNameFor(model => model.NumberOfQuestions)</th>
                             <th>@Html.DisplayNameFor(model => model.NumberOfSubmissions)</th>
-                            <th>Actions</th>
+                            @if (User.IsInRole(Role.ProviderAdmin))
+                            {
+                                <th>Actions</th>
+                            }
                         </tr>
                     </thead>
                     <tbody>
@@ -52,6 +55,15 @@
                                         }
                                         <span>)</span>
                                     }
+                                    else
+                                    {
+                                        if (form.NumberOfQuestions > 0)
+                                        {
+                                            <span>(</span>
+                                            @Html.ActionLink("View", "Index", "FormQuestions", new { id = form.FormId }, null)
+                                            <span>)</span>
+                                        }
+                                    }
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => form.NumberOfSubmissions)
@@ -62,9 +74,9 @@
                                         </text>
                                     }
                                 </td>
-                                <td>
-                                    @if (User.IsInRole(Role.ProviderAdmin))
-                                    {
+                                @if (User.IsInRole(Role.ProviderAdmin))
+                                {
+                                    <td>
                                         <text>
                                             @if (form.IsPublished && form.NumberOfSubmissions == 0)
                                             {
@@ -80,8 +92,8 @@
                                             @Html.ActionLink("Edit Name", "Edit", new { id = form.FormId }) |
                                             @Html.ActionLink("Delete", "Delete", new { id = form.FormId })
                                         </text>
-                                    }
-                                </td>
+                                    </td>
+                                }
                             </tr>
                         }
                     </tbody>
