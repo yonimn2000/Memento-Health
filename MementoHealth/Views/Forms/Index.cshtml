@@ -56,27 +56,27 @@
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => form.NumberOfSubmissions)
-                                    (@Html.ActionLink("View", "Index", "FormSubmissions", new { id = form.FormId }, null))
+                                    @if (form.NumberOfSubmissions > 0)
+                                    {
+                                        <text>
+                                            (@Html.ActionLink("View", "Form", "Submissions", new { id = form.FormId }, null))
+                                        </text>
+                                    }
                                 </td>
                                 <td>
                                     @if (User.IsInRole(Role.ProviderAdmin))
                                     {
                                         <text>
-                                            @if (form.IsPublished)
+                                            @if (form.IsPublished && form.NumberOfSubmissions == 0)
                                             {
-                                                if (form.NumberOfSubmissions > 0)
-                                                {
-                                                    <span class="text-secondary">Unpublish</span>
-                                                }
-                                                else
-                                                {
-                                                    @Html.ActionLink("Unpublish", "Unpublish", new { id = form.FormId })
-                                                }
+                                                @Html.ActionLink("Unpublish", "Unpublish", new { id = form.FormId })
+                                                <text>|</text>
                                             }
-                                            else
+                                            else if (!form.IsPublished && form.NumberOfQuestions > 0)
                                             {
                                                 @Html.ActionLink("Publish", "Publish", new { id = form.FormId })
-                                            } |
+                                                <text>|</text>
+                                            }
                                             @Html.ActionLink("Clone", "Clone", new { id = form.FormId }) |
                                             @Html.ActionLink("Edit Name", "Edit", new { id = form.FormId }) |
                                             @Html.ActionLink("Delete", "Delete", new { id = form.FormId })
@@ -89,5 +89,5 @@
                 </table>
             </div>
         </div>
-        }
-    </div>
+    }
+</div>
