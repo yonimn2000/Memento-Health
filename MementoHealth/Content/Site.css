@@ -35,26 +35,25 @@ textarea {
     text-align: center;
 }
 
-.page-title:before, .page-title:after {
-    content: "";
+    .page-title:before, .page-title:after {
+        content: "";
+        flex: 1 1;
+        border-bottom: 1px solid;
+        margin: auto;
+        color: #e5e5e5;
+    }
 
-    flex: 1 1;
-    border-bottom: 1px solid;
-    margin: auto;
-    color: #e5e5e5;
-}
+    .page-title:before {
+        margin-right: 10px;
+    }
 
-.page-title:before {
-    margin-right: 10px;
-}
-
-.page-title:after {
-    margin-left: 10px;
-}
+    .page-title:after {
+        margin-left: 10px;
+    }
 
 .navbar {
-   -webkit-box-shadow: -1px 0 5px 0 rgba(0,0,0,.25);
-   box-shadow: -1px 0 5px 0 rgba(0,0,0,.25);
+    -webkit-box-shadow: -1px 0 5px 0 rgba(0,0,0,.25);
+    box-shadow: -1px 0 5px 0 rgba(0,0,0,.25);
 }
 
 .custom-form-div {
@@ -82,10 +81,14 @@ textarea {
     }
 }
 
-@media only screen and (max-width: 500px) {
+@media only screen and (max-width: 575px) {
     #logo-img {
         content: url('../Images/Mobile Memento Health-logo.svg');
         top: -1px;
+    }
+
+    .body-content {
+        min-height: calc(100vh - 200px) !important;
     }
 }
 
@@ -99,4 +102,50 @@ textarea {
     margin-bottom: 0;
 }
 
+.body-content {
+    min-height: calc(100vh - 170px);
+}
 
+footer {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+/****** The following are for the selected point on the picture answer ******/
+
+#img-wrapper {
+    position: relative;
+}
+
+.img-point {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: block;
+    width: 0px;
+    height: 0px;
+    font-size: 0;
+}
+
+    .img-point:before,
+    .img-point:after {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 10px;
+        height: 75px;
+        background-color: red;
+        transform: rotate(45deg) translate(-50%, -50%);
+        transform-origin: top left;
+        content: '';
+        outline-offset: -2px;
+        outline-width: 2px;
+        outline-color: yellow;
+        outline-style: dotted;
+    }
+
+    .img-point:after {
+        transform: rotate(-45deg) translate(-50%, -50%);
+    }
+
+/*********************** Up to here ************************/

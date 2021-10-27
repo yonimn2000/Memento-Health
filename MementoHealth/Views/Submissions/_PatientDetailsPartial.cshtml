@@ -1,0 +1,11 @@
+﻿@model MementoHealth.Entities.Patient
+
+<div class="text-secondary">
+    <b>Patient: </b> @Model.FullName |
+    <b>Birthday: </b> @Model.Birthday.ToShortDateString()
+    @if (Model.ExternalPatientId != null)
+    {
+        <text>|</text>
+        <b>External ID: </b> @Model.ExternalPatientId
+    }
+</div>

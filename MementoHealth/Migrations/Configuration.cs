@@ -47,6 +47,8 @@ namespace MementoHealth.Migrations
                 string providerAdminEmail = email;
                 string systemAdminEmail = email.Replace("@", "+admin@");
                 string providerEmail = email.Replace("@", "+provider@");
+                string doctorEmail = email.Replace("@", "+doctor@");
+                string assistantEmail = email.Replace("@", "+assistant@");
                 const string initialPassword = "P@ssw0rd";
 
                 using (DbContextTransaction transaction = context.Database.BeginTransaction())
@@ -62,7 +64,7 @@ namespace MementoHealth.Migrations
                     {
                         ApplicationUser sysAdmin = new ApplicationUser
                         {
-                            FullName = "System Administrator",
+                            FullName = "System Admin",
                             Email = systemAdminEmail,
                             UserName = systemAdminEmail,
                             EmailConfirmed = true,
@@ -74,19 +76,23 @@ namespace MementoHealth.Migrations
                         userManager.AddToRole(sysAdmin.Id, Role.SysAdmin);
                     }
 
-                    if (!context.Users.Any(u => u.Email == providerAdminEmail))
+                    Provider provider = context.Providers.SingleOrDefault(p => p.Email.Equals(providerEmail));
+                    if (provider == null)
                     {
-                        Provider provider = new Provider
+                        provider = new Provider
                         {
                             Email = providerEmail,
                             Address = "115 Library Dr, Rochester, MI 48309",
                             Name = "My Provider",
                             Phone = "(999) 555-1234",
                         };
+                    }
 
+                    if (!context.Users.Any(u => u.Email == providerAdminEmail))
+                    {
                         ApplicationUser providerAdmin = new ApplicationUser
                         {
-                            FullName = "Provider Administrator",
+                            FullName = "Provider Admin",
                             Email = providerAdminEmail,
                             UserName = providerAdminEmail,
                             EmailConfirmed = true,
@@ -98,6 +104,41 @@ namespace MementoHealth.Migrations
                         userManager.Create(providerAdmin);
                         userManager.AddToRole(providerAdmin.Id, Role.ProviderAdmin);
                     }
+
+                    if (!context.Users.Any(u => u.Email == doctorEmail))
+                    {
+                        ApplicationUser doctor = new ApplicationUser
+                        {
+                            FullName = "Doctor",
+                            Email = doctorEmail,
+                            UserName = doctorEmail,
+                            EmailConfirmed = true,
+                            SecurityStamp = Guid.NewGuid().ToString("D"),
+                            PasswordHash = userManager.PasswordHasher.HashPassword(initialPassword),
+                            LockoutEnabled = true,
+                            Provider = provider
+                        };
+                        userManager.Create(doctor);
+                        userManager.AddToRole(doctor.Id, Role.Doctor);
+                    }
+
+                    if (!context.Users.Any(u => u.Email == assistantEmail))
+                    {
+                        ApplicationUser assistant = new ApplicationUser
+                        {
+                            FullName = "Assistant",
+                            Email = assistantEmail,
+                            UserName = assistantEmail,
+                            EmailConfirmed = true,
+                            SecurityStamp = Guid.NewGuid().ToString("D"),
+                            PasswordHash = userManager.PasswordHasher.HashPassword(initialPassword),
+                            LockoutEnabled = true,
+                            Provider = provider
+                        };
+                        userManager.Create(assistant);
+                        userManager.AddToRole(assistant.Id, Role.Assistant);
+                    }
+
                     transaction.Commit();
                 }
             }

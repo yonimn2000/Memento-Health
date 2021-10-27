@@ -1,32 +1,43 @@
 ﻿@model MementoHealth.Models.FormViewModel
 
 @{
-    ViewBag.Title = "Clone";
+    ViewBag.Title = "Clone";    
 }
 
-<h2>@ViewBag.Title</h2>
-<h3>Are you sure you want to clone this form?</h3>
-<hr />
+<div class="row d-flex justify-content-center">
+    <div class="shadow bg-light text-center" style="border-radius: 12px">
+        <div class="page-title h2 font-weight-bold" style="padding-top: 25px;">Clone this Form?</div>
+        <div class="custom-form-div" style="margin-top: -50px; padding-bottom: 0px">
 
-<div>
-    <dl class="dl-horizontal">
-        <dt>@Html.DisplayNameFor(model => model.Name)</dt>
-        <dd>@Html.DisplayFor(model => model.Name)</dd>
+            <div class="row">
+                <div class="col-md-auto">
+                    <section>
+                        <div class="form-group mt-2">
+                            <div class="col-md-auto my-1 font-weight-bold" style="text-align: center">@Html.DisplayNameFor(model => model.Name)</div><hr style="margin: 0 0 0 0" />
+                            <div class="col-md-auto my-1">@Html.DisplayFor(model => model.Name)</div>
+                        </div>
+                        <div class="form-group mt-4">
+                            <div class="col-md-auto my-1 font-weight-bold" style="text-align: center">@Html.DisplayNameFor(model => model.NumberOfQuestions)</div><hr style="margin: 0 0 0 0" />
+                            <div class="col-md-auto my-1">@Html.DisplayFor(model => model.NumberOfQuestions)</div>
+                        </div>
+                        <div class="form-group mt-4">
+                            <div class="col-md-auto my-1 font-weight-bold" style="text-align: center">@Html.DisplayNameFor(model => model.NumberOfSubmissions)</div><hr style="margin: 0 0 0 0" />
+                            <div class="col-md-auto my-1">@Html.DisplayFor(model => model.NumberOfSubmissions)</div>
+                        </div>
 
-        <dt>@Html.DisplayNameFor(model => model.NumberOfQuestions)</dt>
-        <dd>@Html.DisplayFor(model => model.NumberOfQuestions)</dd>
+                        @using (Html.BeginForm())
+                        {
+                            @Html.AntiForgeryToken()
 
-        <dt>@Html.DisplayNameFor(model => model.NumberOfSubmissions)</dt>
-        <dd>@Html.DisplayFor(model => model.NumberOfSubmissions)</dd>
-    </dl>
+                            <div class="form-actions no-color my-4" style="text-align: center">
+                                <input type="submit" value="Clone" class="btn btn-primary w-100" />
 
-    @using (Html.BeginForm())
-    {
-        @Html.AntiForgeryToken()
-
-        <div class="form-actions no-color">
-            <input type="submit" value="Clone" class="btn btn-primary" /> |
-            @Html.ActionLink("Back to List", "Index")
+                            </div>
+                            <div style="text-align: center">@Html.ActionLink("Back to Form List", "Index")</div>
+                        }
+                    </section>
+                </div>
+            </div>
         </div>
-    }
+    </div>
 </div>

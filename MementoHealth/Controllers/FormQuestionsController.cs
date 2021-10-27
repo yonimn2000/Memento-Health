@@ -13,7 +13,7 @@ using System.Web.Mvc;
 
 namespace MementoHealth.Controllers
 {
-    [Authorize(Roles = Role.ProviderAdmin)]
+    [Authorize(Roles = Role.ProviderAdmin + "," + Role.Doctor + "," + Role.Assistant)]
     public class FormQuestionsController : Controller
     {
         private ApplicationDbContext Db { get; } = new ApplicationDbContext();
@@ -43,6 +43,7 @@ namespace MementoHealth.Controllers
         }
 
         // GET: FormQuestions/Add/5
+        [Authorize(Roles = Role.ProviderAdmin)]
         public ActionResult Add(int id, int insertAfterId = 0)
         {
             Form form = FindForm_Restricted(id);
@@ -57,6 +58,7 @@ namespace MementoHealth.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = Role.ProviderAdmin)]
         public ActionResult Add([Bind(Include = "QuestionId,Question,TypeString,JsonData,IsRequired,FormId")] FormQuestion formQuestion)
         {
             if (!ModelState.IsValid)
@@ -139,6 +141,7 @@ namespace MementoHealth.Controllers
         }
 
         // GET: FormQuestions/Edit/5
+        [Authorize(Roles = Role.ProviderAdmin)]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -156,6 +159,7 @@ namespace MementoHealth.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = Role.ProviderAdmin)]
         public ActionResult Edit([Bind(Include = "QuestionId,Question,JsonData,IsRequired,TypeString")] FormQuestion newFormQuestion)
         {
             FormQuestion formQuestion = FindFormQuestion_Restricted(newFormQuestion.QuestionId);
@@ -191,6 +195,7 @@ namespace MementoHealth.Controllers
         // POST: FormQuestions/MoveUp/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = Role.ProviderAdmin)]
         public ActionResult MoveUp(int id)
         {
             FormQuestion formQuestion = FindFormQuestion_Restricted(id);
@@ -210,6 +215,7 @@ namespace MementoHealth.Controllers
         // POST: FormQuestions/MoveDown/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = Role.ProviderAdmin)]
         public ActionResult MoveDown(int id)
         {
             FormQuestion formQuestion = FindFormQuestion_Restricted(id);
@@ -227,6 +233,7 @@ namespace MementoHealth.Controllers
         }
 
         // GET: FormQuestions/Insert/5
+        [Authorize(Roles = Role.ProviderAdmin)]
         public ActionResult Insert(int? id)
         {
             if (id == null)
@@ -240,6 +247,7 @@ namespace MementoHealth.Controllers
         }
 
         // GET: FormQuestions/Delete/5
+        [Authorize(Roles = Role.ProviderAdmin)]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -255,6 +263,7 @@ namespace MementoHealth.Controllers
         // POST: FormQuestions/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = Role.ProviderAdmin)]
         public ActionResult DeleteConfirmed(int id)
         {
             FormQuestion formQuestion = FindFormQuestion_Restricted(id);

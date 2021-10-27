@@ -3,6 +3,7 @@ using MementoHealth.Entities;
 using MementoHealth.Models;
 using Microsoft.AspNet.Identity;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Net;
@@ -18,7 +19,15 @@ namespace MementoHealth.Controllers
         // GET: Forms
         public ActionResult Index()
         {
-            return View(GetCurrentUserProvider().Forms.OrderBy(u => u.Name).ToList()
+            ICollection<Form> forms = GetCurrentUserProvider().Forms;
+            if (forms.Count == 0)
+            {
+                if (User.IsInRole(Role.ProviderAdmin))
+                    return RedirectToAction("Create");
+                return View();
+            }
+
+            return View(forms.OrderBy(u => u.Name).ToList()
                 .Select(f => FormToViewModel(f)).ToList());
         }
 
@@ -133,6 +142,7 @@ namespace MementoHealth.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Form form = FindForm_Restricted(id);
+            Db.FormSubmissions.RemoveRange(form.Submissions);
             Db.Forms.Remove(form);
             Db.SaveChanges();
             return RedirectToAction("Index");
@@ -174,8 +184,11 @@ namespace MementoHealth.Controllers
         public ActionResult PublishConfirmed(int id)
         {
             Form form = FindForm_Restricted(id);
-            form.IsPublished = true;
-            Db.SaveChanges();
+            if(form.Questions.Count > 0)
+            {
+                form.IsPublished = true;
+                Db.SaveChanges();
+            }
             return RedirectToAction("Index");
         }
 

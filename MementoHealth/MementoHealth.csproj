@@ -193,6 +193,7 @@
     <Compile Include="Controllers\FormQuestionConditionsController.cs" />
     <Compile Include="Controllers\FormQuestionsController.cs" />
     <Compile Include="Controllers\FormsController.cs" />
+    <Compile Include="Controllers\SubmissionsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ProvidersController.cs" />
@@ -204,6 +205,11 @@
     <Compile Include="Entities\FormQuestionCondition.cs" />
     <Compile Include="Entities\FormSubmission.cs" />
     <Compile Include="Entities\Patient.cs" />
+    <Compile Include="Migrations\202110251359554_AnswerV2.cs" />
+    <Compile Include="Migrations\202110251359554_AnswerV2.Designer.cs">
+      <DependentUpon>202110251359554_AnswerV2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PatientViewModels.cs" />
     <Compile Include="Entities\Provider.cs" />
     <Compile Include="Exceptions\ExceededMaxPinAccessFailedCountException.cs" />
     <Compile Include="Filters\PinLockFilter.cs" />
@@ -243,6 +249,7 @@
     <Compile Include="Models\FormViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\SubmissionViewModels.cs" />
     <Compile Include="Models\UsersViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -270,6 +277,7 @@
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\Custom\FormAnswerDataConverter.js" />
     <Content Include="Scripts\Custom\FormQuestionDataConverter.js" />
     <Content Include="Scripts\dracula.min.js" />
     <Content Include="Scripts\esm\popper-utils.js" />
@@ -432,7 +440,6 @@
     <Content Include="Views\Forms\Clone.cshtml" />
     <Content Include="Views\Patients\Create.cshtml" />
     <Content Include="Views\Patients\Delete.cshtml" />
-    <Content Include="Views\Patients\Details.cshtml" />
     <Content Include="Views\Patients\Edit.cshtml" />
     <Content Include="Views\Patients\Index.cshtml" />
     <Content Include="Views\Manage\ChangeFullName.cshtml" />
@@ -442,11 +449,25 @@
     <Content Include="Views\FormQuestions\Index.cshtml" />
     <Content Include="Views\Account\_CaptchaPartial.cshtml" />
     <Content Include="Views\Patients\Import.cshtml" />
+    <Content Include="Views\Patients\Search.cshtml" />
     <Content Include="Views\FormQuestionConditions\Delete.cshtml" />
     <Content Include="Views\FormQuestionConditions\Editor.cshtml" />
     <Content Include="Views\FormQuestionConditions\Index.cshtml" />
     <Content Include="Views\Forms\Publish.cshtml" />
     <Content Include="Views\Forms\Unpublish.cshtml" />
+    <Content Include="Views\Patients\_PatientsTablePartial.cshtml" />
+    <Content Include="Views\Submissions\All.cshtml" />
+    <Content Include="Views\Submissions\_SubmissionsTablePartial.cshtml" />
+    <Content Include="Views\Submissions\Form.cshtml" />
+    <Content Include="Views\Submissions\Patient.cshtml" />
+    <Content Include="Views\Submissions\Start.cshtml" />
+    <Content Include="Views\Submissions\Answer.cshtml" />
+    <Content Include="Views\Submissions\Delete.cshtml" />
+    <Content Include="Views\Submissions\Details.cshtml" />
+    <Content Include="Views\Submissions\Review.cshtml" />
+    <Content Include="Views\Submissions\_PatientDetailsPartial.cshtml" />
+    <Content Include="Views\Submissions\_SubmissionDetailsPartial.cshtml" />
+    <Content Include="Views\Submissions\ThankYou.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -483,6 +504,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202110192114205_FormV2.resx">
       <DependentUpon>202110192114205_FormV2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202110251359554_AnswerV2.resx">
+      <DependentUpon>202110251359554_AnswerV2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

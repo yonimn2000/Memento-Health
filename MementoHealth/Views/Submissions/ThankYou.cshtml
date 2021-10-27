@@ -1,0 +1,12 @@
+﻿@model MementoHealth.Entities.FormSubmission
+@{
+    ViewBag.Title = "Thank You";
+    ViewBag.PatientId = Model.Patient.PatientId;
+}
+
+<h2>@ViewBag.Title</h2>
+@Html.Partial("_PatientDetailsPartial", Model.Patient)
+<hr />
+
+<h4>Thank you for completing the form.</h4>
+<h5>Please let the staff know you completed the form.</h5>

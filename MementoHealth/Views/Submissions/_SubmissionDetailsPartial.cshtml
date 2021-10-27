@@ -1,0 +1,29 @@
+﻿@model MementoHealth.Entities.FormSubmission
+@{
+    bool showChangeAnswerLinks = ViewBag.ShowChangeAnswerLinks != null && ViewBag.ShowChangeAnswerLinks == true;
+}
+
+<table class="table table-striped">
+    <tr>
+        <th>Question</th>
+        <th>Your Answer</th>
+        @if (showChangeAnswerLinks)
+        {
+            <th></th>
+        }
+    </tr>
+    @foreach (var answer in Model.Answers.OrderBy(a => a.AnswerId).ToList())
+    {
+        <tr>
+            <td>@answer.Question.Question</td>
+            <td class="json-data"
+                data-question-type="@answer.Question.TypeString"
+                data-json-question="@answer.Question.JsonData"
+                data-json-answer="@answer.JsonData"></td>
+            @if (showChangeAnswerLinks)
+            {
+                <td>@Html.ActionLink("Change answer", "Answer", new { id = Model.SubmissionId, answerId = answer.AnswerId })</td>
+            }
+        </tr>
+    }
+</table>

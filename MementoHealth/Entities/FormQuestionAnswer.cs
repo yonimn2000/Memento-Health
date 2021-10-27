@@ -8,6 +8,9 @@ namespace MementoHealth.Entities
         [Key]
         public int AnswerId { get; set; }
 
+        [Required]
+        public string JsonData { get; set; }
+
         [ForeignKey("FormSubmission")]
         public int SubmissionId { get; set; }
         public virtual FormSubmission FormSubmission { get; set; }
