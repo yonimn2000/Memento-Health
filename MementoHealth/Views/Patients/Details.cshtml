@@ -1,12 +1,13 @@
 ﻿@model MementoHealth.Entities.Patient
 
 @{
-    ViewBag.Title = "Delete Patient";    
+    ViewBag.Title = "Patient Details";
+    
 }
 
 <div class="row d-flex justify-content-center">
     <div class="shadow bg-light text-center" style="border-radius: 12px">
-        <div class="text-danger page-title h2 font-weight-bold" style="padding-top: 25px;">Delete this Patient?</div>
+        <div class="page-title h2 font-weight-bold" style="padding-top: 25px;">Patient Details</div>
         <div class="custom-form-div" style="margin-top: -50px; padding-bottom: 0px">
 
             <div class="row">
@@ -16,32 +17,19 @@
                             <div class="col-md-auto my-1 font-weight-bold" style="text-align: center">@Html.DisplayNameFor(model => model.FullName)</div><hr style="margin: 0 0 0 0" />
                             <div class="col-md-auto my-1">@Html.DisplayFor(model => model.FullName)</div>
                         </div>
-
                         <div class="form-group mt-4">
                             <div class="col-md-auto my-1 font-weight-bold" style="text-align: center">@Html.DisplayNameFor(model => model.Birthday)</div><hr style="margin: 0 0 0 0" />
                             <div class="col-md-auto my-1">@Model.Birthday.ToShortDateString()</div>
                         </div>
-
                         <div class="form-group mt-4">
                             <div class="col-md-auto my-1 font-weight-bold" style="text-align: center">@Html.DisplayNameFor(model => model.ExternalPatientId)</div><hr style="margin: 0 0 0 0" />
                             <div class="col-md-auto my-1">@(Model.ExternalPatientId ?? "None")</div>
                         </div>
 
-                        <div class="form-group mt-4">
-                            <div class="col-md-auto my-1 font-weight-bold" style="text-align: center">@Html.DisplayNameFor(model => model.Submissions)</div><hr style="margin: 0 0 0 0" />
-                            <div class="col-md-auto my-1">@Model.Submissions.Count</div>
-                        </div>
-
-                        @using (Html.BeginForm())
-                        {
-                            @Html.AntiForgeryToken()
-
-                            <div class="form-actions no-color my-4" style="text-align: center">
-                                <input type="submit" value="Delete" class="btn btn-danger w-100" />
-
-                            </div>
-                            <div style="text-align: center">@Html.ActionLink("Back to Patient List", "Index")</div>
-                        }
+                        <p class="mt-4">
+                            @Html.ActionLink("Edit", "Edit", new { id = Model.PatientId }) |
+                            @Html.ActionLink("Back to Patient List", "Index")
+                        </p>
                     </section>
                 </div>
             </div>
