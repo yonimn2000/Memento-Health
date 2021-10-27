@@ -232,6 +232,7 @@ namespace MementoHealth.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Patient patient = FindPatient_Restricted(id);
+            Db.FormSubmissions.RemoveRange(patient.Submissions);
             Db.Patients.Remove(patient);
             Db.SaveChanges();
             return RedirectToAction("Index");
