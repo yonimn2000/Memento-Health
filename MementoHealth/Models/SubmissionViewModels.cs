@@ -20,6 +20,7 @@ namespace MementoHealth.Models
         // These are to pass data to the page
         public FormQuestion Question { get; set; }
         public Patient Patient { get; set; }
+        public bool IsComplete { get; set; }
         public int CurrentQuestionNumber { get; set; }
         public int NumberOfRemainingQuestions { get; set; }
         public int GetProgress() => 100 * CurrentQuestionNumber / (CurrentQuestionNumber + NumberOfRemainingQuestions);
@@ -34,7 +35,6 @@ namespace MementoHealth.Models
         [Required]
         public string JsonData { get; set; }
 
-        [Required]
-        public bool GoNext { get; set; }
+        public string NextAction { get; set; }
     }
 }

@@ -25,7 +25,7 @@ else
             {
                 <th>Form</th>
             }
-            <th>Is Complete</th>
+            <th>Complete</th>
             <th>Actions</th>
         </tr>
         @foreach (FormSubmission submission in Model)
@@ -42,12 +42,7 @@ else
                 }
                 <td>@submission.IsComplete</td>
                 <td>
-                    @if (!submission.IsComplete)
-                    {
-                        <text>
-                            @Html.ActionLink("Continue", "Answer", new { id = submission.SubmissionId }) |
-                        </text>
-                    }
+                    @Html.ActionLink(submission.IsComplete ? "Edit" : "Continue", "Answer", new { id = submission.SubmissionId }) |
                     @Html.ActionLink("Details", "Details", new { id = submission.SubmissionId }) |
                     @Html.ActionLink("Delete", "Delete", new { id = submission.SubmissionId })
                 </td>

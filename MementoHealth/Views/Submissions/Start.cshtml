@@ -9,20 +9,7 @@
             <div class="row">
                 <div class="col-md-auto">
                     <section>
-                        <div class="form-group mt-2">
-                            <div class="col-md-auto my-1 font-weight-bold" style="text-align: center">@Html.DisplayNameFor(model => model.Patient.FullName)</div><hr style="margin: 0 0 0 0" />
-                            <div class="col-md-auto my-1">@Html.DisplayFor(model => model.Patient.FullName)</div>
-                        </div>
-
-                        <div class="form-group mt-4">
-                            <div class="col-md-auto my-1 font-weight-bold" style="text-align: center">@Html.DisplayNameFor(model => model.Patient.Birthday)</div><hr style="margin: 0 0 0 0" />
-                            <div class="col-md-auto my-1">@Model.Patient.Birthday.ToShortDateString()</div>
-                        </div>
-
-                        <div class="form-group mt-4">
-                            <div class="col-md-auto my-1 font-weight-bold" style="text-align: center">@Html.DisplayNameFor(model => model.Patient.ExternalPatientId)</div><hr style="margin: 0 0 0 0" />
-                            <div class="col-md-auto my-1">@(Model.Patient.ExternalPatientId ?? "None")</div>
-                        </div>
+                        @Html.Partial("_PatientDetailsPartial", Model.Patient)
 
                         @using (Html.BeginForm())
                         {
@@ -46,7 +33,7 @@
                             </div>
 
                             <div class="form-actions no-color my-4" style="text-align: center">
-                                <input type="submit" value="Start" class="btn btn-success w-100" />
+                                <input type="submit" value="Start" class="btn btn-primary w-100" />
                             </div>
                         }
                     </section>

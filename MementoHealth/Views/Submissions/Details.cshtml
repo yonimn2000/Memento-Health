@@ -1,14 +1,17 @@
-﻿@model IEnumerable<MementoHealth.Entities.FormQuestionAnswer>
+﻿@model MementoHealth.Entities.FormSubmission
 @{
     ViewBag.Title = "Submission Details";
 }
 
 <h2>@ViewBag.Title</h2>
+@Html.Partial("_PatientDetailsPartial", Model.Patient)
+<hr />
 
-@foreach (var answer in Model)
-{
-    <div><b>@answer.Question.Question</b></div>
-    <div>@answer.JsonData</div>
-}
+@Html.Partial("_SubmissionDetailsPartial", Model)
 
 <div>@Html.ActionLink("Back to Submission List", "Index")</div>
+
+@section scripts
+{
+    @Scripts.Render("~/Scripts/Custom/FormAnswerDataConverter.js")
+}

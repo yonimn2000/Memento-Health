@@ -1,6 +1,7 @@
 ﻿@model MementoHealth.Models.AnswerViewModel
 @{
     ViewBag.Title = "Answer";
+    ViewBag.PatientId = Model.Patient.PatientId;
 
     bool isLast = Model.NumberOfRemainingQuestions == 0;
     string remainingQuestionsTest;
@@ -18,15 +19,8 @@
     }
 }
 
-<div class="text-secondary">
-    <b>Patient: </b> @Model.Patient.FullName |
-    <b>Birthday: </b> @Model.Patient.Birthday.ToShortDateString()
-    @if (Model.Patient.ExternalPatientId != null)
-    {
-        <text>|</text>
-        <b>External ID: </b> @Model.Patient.ExternalPatientId
-    }
-</div>
+@Html.Partial("_PatientDetailsPartial", Model.Patient)
+
 <h1>Answer the question below:</h1>
 <hr />
 
@@ -39,11 +33,11 @@
     @Html.HiddenFor(m => m.Question.JsonData)
     @Html.HiddenFor(m => m.QuestionId)
     @Html.HiddenFor(m => m.JsonData)
-    @Html.HiddenFor(m => m.GoNext)
+    @Html.HiddenFor(m => m.NextAction)
 
     <h2>@Model.Question.Question</h2>
 
-    <input class="form-control" id="textbox" style="display:none;">
+    <input class="form-control" id="textbox" style="display:none;" autocomplete="off">
     <div class="form-check" id="radiobuttons" style="display:none;"></div>
     <div class="form-check" id="checkboxes" style="display:none;"></div>
     <div id="img-wrapper">
@@ -58,55 +52,19 @@
     <div class="my-3 text-right">
         @if (Model.Question.Number != 1)
         {
-            <button type="button" id="previous-button" class="btn btn-outline-primary" onclick="submitClicked(false)">Previous</button>
+            <button type="button" id="previous-button" class="btn btn-outline-primary" onclick="submitClicked('previous')">Previous</button>
         }
-        <button type="button" id="next-button" class="btn btn-@(isLast ? "success" : "primary")" onclick="submitClicked(true)">@(isLast ? "Complete" : "Next")</button>
+        <button type="button" id="next-button" class="btn btn-primary" onclick="submitClicked('next')">@(isLast ? "Review" : "Next")</button>
+        @if (!isLast && Model.IsComplete)
+        {
+            <button type="button" id="review-button" class="btn btn-info" onclick="submitClicked('review')">Review</button>
+        }
     </div>
 
     <div>@remainingQuestionsTest</div>
     <div class="progress" style="height: 36px;">
         <div class="progress-bar" role="progressbar" style="width: @Model.GetProgress()%"><b>@Model.GetProgress()%</b></div>
     </div>
-}
-
-@section styles
-{
-    <style>
-        #img-wrapper {
-            position: relative;
-        }
-
-        .img-point {
-            position: absolute;
-            top: 0;
-            right: 0;
-            display: block;
-            width: 0px;
-            height: 0px;
-            font-size: 0;
-        }
-
-        .img-point:before,
-        .img-point:after {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 10px;
-            height: 75px;
-            background-color: red;
-            transform: rotate(45deg) translate(-50%, -50%);
-            transform-origin: top left;
-            content: '';
-            outline-offset: -2px;
-            outline-width: 2px;
-            outline-color: yellow;
-            outline-style: dotted;
-        }
-
-        .img-point:after {
-            transform: rotate(-45deg) translate(-50%, -50%);
-        }
-    </style>
 }
 
 @section scripts
@@ -182,9 +140,6 @@
                 case '@QuestionType.Image.ToString()':
                     $('#image').show().attr('src', questionData.image.url)
                         .on('load', () => {
-                            // Lock image size.
-                            $('#img-wrapper').width($("#image").width());
-                            $('#img-wrapper').height($("#image").height());
                             if (answerData.answer) {
                                 lastImageClick = answerData.answer;
                                 drawPointOnImage();
@@ -193,6 +148,14 @@
                     break;
             }
         });
+
+        let doit;
+        window.onresize = () => {
+            if (lastImageClick) {
+                clearTimeout(doit);
+                doit = setTimeout(drawPointOnImage, 100);
+            }
+        };
 
         let imgClicked = (event) => {
             const x = (event.pageX - $("#image").offset().left);
@@ -216,7 +179,7 @@
             point.appendTo(img);
         }
 
-        let submitClicked = async (goNext) => {
+        let submitClicked = async (nextAction) => {
             let jsonData = {};
             let isValidForm = true;
             let isRequired = @Model.Question.IsRequired.ToString().ToLower();
@@ -275,7 +238,7 @@
 
             if (isValidForm) {
                 $('#@Html.IdFor(m => m.JsonData)').val(jQuery.isEmptyObject(jsonData) ? "" : JSON.stringify(jsonData));
-                $('#@Html.IdFor(m => m.GoNext)').val(goNext);
+                $('#@Html.IdFor(m => m.NextAction)').val(nextAction);
                 $('#next-button').closest("form").submit();
             }
         };

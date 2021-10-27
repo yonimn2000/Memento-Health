@@ -59,8 +59,9 @@
                 }
                 else
                 {
+                    string returnUrl = ViewBag.PatientId == null ? Url.Action("Index", "Submissions") : Url.Action("Patient", "Submissions", new { id = ViewBag.PatientId });
                     <ul class="navbar-nav ml-auto">
-                        <li class="nav-item">@Html.ActionLink("Unlock", "PinUnlock", "Account", new { returnUrl = Url.Action("Index", "Submissions"), Area = "" }, new { @class = "nav-link" })</li>
+                        <li class="nav-item">@Html.ActionLink("Unlock", "PinUnlock", "Account", new { returnUrl, Area = "" }, new { @class = "nav-link" })</li>
                     </ul>
                 }
             </div>

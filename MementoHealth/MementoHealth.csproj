@@ -277,6 +277,7 @@
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\Custom\FormAnswerDataConverter.js" />
     <Content Include="Scripts\Custom\FormQuestionDataConverter.js" />
     <Content Include="Scripts\dracula.min.js" />
     <Content Include="Scripts\esm\popper-utils.js" />
@@ -462,6 +463,10 @@
     <Content Include="Views\Submissions\Answer.cshtml" />
     <Content Include="Views\Submissions\Delete.cshtml" />
     <Content Include="Views\Submissions\Details.cshtml" />
+    <Content Include="Views\Submissions\Review.cshtml" />
+    <Content Include="Views\Submissions\_PatientDetailsPartial.cshtml" />
+    <Content Include="Views\Submissions\_SubmissionDetailsPartial.cshtml" />
+    <Content Include="Views\Submissions\ThankYou.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

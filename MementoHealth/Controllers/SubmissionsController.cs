@@ -142,14 +142,13 @@ namespace MementoHealth.Controllers
                     question = submission.Form.Questions.OrderBy(q => q.Number).First();
                 else
                 {
-                    // TODO: Get correct next question.
-                    FormQuestion lastAnsweredQuestion = submission.Answers.OrderBy(a => a.Question.Number).Last().Question;
-                    question = submission.Form.Questions.Where(q => q.Number > lastAnsweredQuestion.Number).OrderBy(q => q.Number).FirstOrDefault();
+                    question = submission.GetNextQuestion();
 
                     // If reached the end of the form:
                     if (question == null)
                         // TODO: Return a "Check-in Complete" View.
-                        return RedirectToAction("Patient", new { id = submission.PatientId });
+                        return View("Review", submission);
+                    //return RedirectToAction("Patient", new { id = submission.PatientId });
                 }
 
                 answer = submission.Answers.SingleOrDefault(a => a.QuestionId == question.QuestionId);
@@ -165,7 +164,8 @@ namespace MementoHealth.Controllers
                 QuestionId = question.QuestionId,
                 Patient = submission.Patient,
                 Question = question,
-                CurrentQuestionNumber = question.Number - 1, // TODO
+                IsComplete = submission.IsComplete,
+                CurrentQuestionNumber = question.Number, // TODO
                 NumberOfRemainingQuestions = submission.Form.Questions.Count - question.Number, // TODO
                 JsonData = answer?.JsonData
             });
@@ -196,13 +196,43 @@ namespace MementoHealth.Controllers
 
             Db.SaveChanges();
 
+            int? goToAnswerId = null;
+            if (model.NextAction != null)
+            {
+                switch (model.NextAction)
+                {
+                    case "next":
+                        goToAnswerId = submission.Answers.Where(a => a.Question.Number > question.Number)
+                        .OrderBy(a => a.Question.Number).FirstOrDefault()?.AnswerId;
+                        break;
+                    case "previous":
+                        goToAnswerId = submission.Answers.Where(a => a.Question.Number < question.Number)
+                        .OrderBy(a => a.Question.Number).Last().AnswerId;
+                        break;
+                    case "review": break;
+                    default:
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+            }
+
             return RedirectToAction("Answer", new
             {
                 id = model.SubmissionId,
-                answerId = model.GoNext ?
-                submission.Answers.Where(a => a.Question.Number > question.Number).OrderBy(a => a.Question.Number).FirstOrDefault()?.AnswerId
-                : submission.Answers.Where(a => a.Question.Number < question.Number).OrderBy(a => a.Question.Number).Last().AnswerId
+                answerId = goToAnswerId
             });
+        }
+
+        // POST: Submissions/Submit/5
+        [HttpPost]
+        [AllowThroughPinLock]
+        [ValidateAntiForgeryToken]
+        public ActionResult Submit(int id)
+        {
+            FormSubmission submission = FindSubmission_Restricted(id);
+            if (submission == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            return View("ThankYou", submission);
         }
 
         // GET: Submissions/Details/5
@@ -212,7 +242,7 @@ namespace MementoHealth.Controllers
             if (submission == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            return View(submission.Answers.OrderBy(a => a.AnswerId).ToList());
+            return View(submission);
         }
 
         // GET: Submissions/Delete/5
