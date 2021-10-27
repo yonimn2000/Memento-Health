@@ -2,7 +2,7 @@
 @model IEnumerable<FormQuestion>
 @{
     Form form = Model.First().Form;
-    bool editsAllowed = !form.Submissions.Any();
+    bool editsAllowed = !form.Submissions.Any() && User.IsInRole(Role.ProviderAdmin);
     ViewBag.Title = $"“{form.Name}” Form Questions";
 }
 
