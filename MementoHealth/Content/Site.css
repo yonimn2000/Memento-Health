@@ -107,7 +107,7 @@ textarea {
     min-height: calc(100vh - 170px);
 }
 
-#footer {
+footer {
     padding-left: 20px;
     padding-right: 20px;
 }

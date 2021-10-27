@@ -62,7 +62,7 @@
         @RenderBody()
     </div>
     <hr />
-        <footer id="footer" class="@(isFullScreen ? "mx-3" : "") d-block d-sm-flex">
+        <footer class="@(isFullScreen ? "mx-3" : "") d-block d-sm-flex">
             @if (User.Identity.IsAuthenticated)
             {
                 <div><b>Current user role:</b> @User.GetRole()</div>
