@@ -1,8 +1,3 @@
-﻿@{
-    bool isFullScreen = ViewBag.UseFullScreenWidth != null && ViewBag.UseFullScreenWidth;
-    string containerClass = "container" + (isFullScreen ? "-fluid" : "");
-}
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,7 +12,7 @@
 </head>
 <body>
     <nav class="navbar navbar-expand-lg bg-light navbar-light">
-        <div class="@containerClass">
+        <div class="container-fluid">
             <div class="navbar-header">
                 <a href="@Url.Action("Index", "Home")" class="navbar-brand">
                     <img src="~/Images/Memento Health-logo.svg" id="logo-img" title="Home" alt="Home" />
@@ -58,11 +53,11 @@
             </div>
         </div>
     </nav>
-    <div class="@containerClass body-content mt-3">
+    <div class="container-fluid body-content mt-3">
         @RenderBody()
     </div>
     <hr />
-        <footer class="@(isFullScreen ? "mx-3" : "") d-block d-sm-flex">
+        <footer class="mx-3 d-block d-sm-flex">
             @if (User.Identity.IsAuthenticated)
             {
                 <div><b>Current user role:</b> @User.GetRole()</div>
