@@ -8,6 +8,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using System.Data.Entity.SqlServer.Utilities;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -17,6 +18,8 @@ namespace MementoHealth.Controllers
     [Authorize]
     public class AccountController : Controller
     {
+        private ApplicationDbContext Db { get; } = new ApplicationDbContext();
+
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
@@ -151,31 +154,36 @@ namespace MementoHealth.Controllers
         {
             if (ModelState.IsValid)
             {
-                Provider provider = new Provider
+                if (!Db.Providers.Any(f => f.Name.Equals(model.ProviderName)))
                 {
-                    Email = model.ProviderEmail,
-                    Address = model.ProviderAddress,
-                    Name = model.ProviderName,
-                    Phone = model.ProviderPhone,
-                };
+                    Provider provider = new Provider
+                    {
+                        Email = model.ProviderEmail,
+                        Address = model.ProviderAddress,
+                        Name = model.ProviderName,
+                        Phone = model.ProviderPhone,
+                    };
 
-                ApplicationUser user = new ApplicationUser
-                {
-                    UserName = model.AdminEmail,
-                    Email = model.AdminEmail,
-                    FullName = model.AdminFullName,
-                    PhoneNumber = model.AdminPhone,
-                    Provider = provider
-                };
+                    ApplicationUser user = new ApplicationUser
+                    {
+                        UserName = model.AdminEmail,
+                        Email = model.AdminEmail,
+                        FullName = model.AdminFullName,
+                        PhoneNumber = model.AdminPhone,
+                        Provider = provider
+                    };
 
-                var result = await UserManager.CreateAsync(user, model.AdminPassword);
-                if (result.Succeeded)
-                {
-                    UserManager.AddToRole(user.Id, "ProviderAdmin");
-                    await SendEmailConfiramtion(user);
-                    return View("RegisterSuccess");
+                    var result = await UserManager.CreateAsync(user, model.AdminPassword);
+                    if (result.Succeeded)
+                    {
+                        UserManager.AddToRole(user.Id, "ProviderAdmin");
+                        await SendEmailConfiramtion(user);
+                        return View("RegisterSuccess");
+                    }
+                    AddErrors(result);
                 }
-                AddErrors(result);
+                ModelState.AddModelError("", $"A provider with the name of '{model.ProviderName}' already exists." +
+                    "Please pick a different name.");
             }
 
             // If we got this far, something failed, redisplay form
