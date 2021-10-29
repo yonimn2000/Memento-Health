@@ -5,6 +5,7 @@ using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -65,7 +66,7 @@ namespace MementoHealth.Controllers
             return GetCurrentUserProvider().Patients.Where(p => p.ExtenalIdContains(extId)).ToList();
         }
 
-        private IEnumerable<Patient> FindPatientsByNameAndBirth(string name, DateTime birthday)
+        private IEnumerable<Patient> FindPatientsByNameAndBirthday(string name, DateTime birthday)
         {
             return GetCurrentUserProvider().Patients.Where(p => p.NameContains(name) && p.BirthdayEquals(birthday)).ToList();
         }
@@ -83,18 +84,6 @@ namespace MementoHealth.Controllers
         private IEnumerable<Patient> FindPatients(string name, DateTime birthday, string extId)
         {
             return GetCurrentUserProvider().Patients.Where(p => p.NameContains(name) && p.BirthdayEquals(birthday) && p.ExtenalIdContains(extId)).ToList();
-        }
-
-        private Patient FindPatientByExternalId_Restricted(string externalId)
-        {
-            string userId = User.Identity.GetUserId();
-            return Db.Users.Find(userId).Provider.Patients.Where(f => f.ExternalPatientId.Equals(externalId)).SingleOrDefault();
-        }
-
-        private Patient FindPatientByNameAndBirthday(string fullName, DateTime birthday)
-        {
-            string userId = User.Identity.GetUserId();
-            return Db.Users.Find(userId).Provider.Patients.Where(f => f.FullName.Equals(fullName) && f.Birthday.Equals(birthday)).SingleOrDefault();
         }
 
         // GET: Patients/Create
@@ -133,78 +122,97 @@ namespace MementoHealth.Controllers
             return View();
         }
 
+        // POST: Patients/Import
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Import(HttpPostedFileBase patientsFile)
         {
-            ImportPatientResultsViewModel model = new ImportPatientResultsViewModel();
+            ImportPatientsResultsViewModel model = new ImportPatientsResultsViewModel();
+            StreamReader fileReader = new StreamReader(patientsFile.InputStream);
 
             try
             {
-                if (patientsFile.ContentLength > 0)
+                // Skip first line.
+                fileReader.ReadLine();
+
+                int currentProviderId = GetCurrentUserProvider().ProviderId;
+
+                while (!fileReader.EndOfStream)
                 {
-                    StreamReader fileReader = new StreamReader(patientsFile.InputStream);
-                    int providerId = GetCurrentUserProvider().ProviderId;
+                    string currentLine = fileReader.ReadLine();
 
+                    // Each line is turned into an array.
+                    string[] currentLineTokens = new Regex(",(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))")
+                        .Split(currentLine).Select(t => t.Trim('"').Trim()).ToArray();
 
-                    while (!fileReader.EndOfStream)
+                    string patientExternalId = currentLineTokens[0];
+                    string patientName = currentLineTokens[1];
+                    string patientBirthdayString = currentLineTokens[2];
+
+                    // Validate name and birthday.
+                    if (string.IsNullOrWhiteSpace(patientName) || !DateTime.TryParse(patientBirthdayString, out DateTime patientBirthday))
                     {
-
-                        //  Each line is turned into currentPatient array in the loop
-                        string currentPatient = fileReader.ReadLine();
-                        string[] currentPatientArray = new Regex(",(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))").Split(currentPatient);
-
-                        for (int i = 0; i < currentPatientArray.Length; i++)
-                        {
-                            currentPatientArray[i] = currentPatientArray[i].Trim('"');
-                        }
-
-                        // Validating each line before performing operations
-                        if (currentPatientArray[1].Length > 0 && DateTime.TryParse(currentPatientArray[2], out DateTime testDate))
-                        {
-                            // Check if patient with external id exists already
-                            Patient testPatient = FindPatientByNameAndBirthday(currentPatientArray[1], testDate);
-
-                            // If statement checks that data being entered is not the header and doesnt exist already (or if it does checks that it updates a record)
-                            if ((!currentPatientArray[0].ToLower().Contains("externalid") && testPatient == null) ||
-                                (!currentPatientArray[0].ToLower().Contains("externalid") && testPatient != null && 
-                                (testPatient.FullName != currentPatientArray[1] || testPatient.Birthday != testDate)))
-                            {
-                                Patient newPatient = new Patient
-                                {
-                                    ExternalPatientId = currentPatientArray[0].Length > 0 ? currentPatientArray[0] : null,
-                                    FullName = currentPatientArray[1],
-                                    Birthday = testDate,
-                                    ProviderId = providerId
-                                };
-                                Db.Patients.Add(newPatient);
-                                model.SuccessList.Add(currentPatient);
-                            } else 
-                            {
-                                model.ExistsCounter++;
-                            }
-                        } else
-                        {
-                            model.ErrorList.Add(currentPatient);
-                        }                                           
+                        model.ErrorLines.Add(currentLine);
+                        continue;
                     }
-                    Db.SaveChanges();
+
+                    // If external ID is given:
+                    if (!string.IsNullOrWhiteSpace(patientExternalId))
+                    {
+                        // Try to find the patient.
+                        Patient patient = FindPatientsByExternalId(patientExternalId).FirstOrDefault();
+
+                        // If found:
+                        if (patient != null)
+                        {
+                            // Update patient details if needed:
+                            if (patient.Birthday != patientBirthday || !patient.FullName.Equals(patientName))
+                            {
+                                patient.Birthday = patientBirthday;
+                                patient.FullName = patientName;
+                                model.UpdatedLines.Add(currentLine);
+                                continue;
+                            }
+
+                            // Else:
+                            model.ExistingLines.Add(currentLine);
+                            continue;
+                        }
+                    }
+
+                    // If not found by the external ID, try by name and birthday:
+                    if (FindPatientsByNameAndBirthday(patientName, patientBirthday).Any())
+                    {
+                        model.ExistingLines.Add(currentLine);
+                        continue;
+                    }
+
+                    // If not found by name and birthday, create a new patient
+                    Patient newPatient = new Patient
+                    {
+                        ExternalPatientId = patientExternalId,
+                        FullName = patientName,
+                        Birthday = patientBirthday,
+                        ProviderId = currentProviderId
+                    };
+
+                    Db.Patients.Add(newPatient);
+                    model.ImportedLines.Add(currentLine);
                 }
 
-                // Remove header from errors list
-                model.ErrorList.RemoveAt(0);
-                model.Message = "File upload was successful";
-                model.Exists = model.ExistsCounter > 0 ? model.ExistsCounter + " record(s) already exist" : "";
-                model.SuccessHeader = model.SuccessList.Count() > 0 ? "Successfuly added records: " : "";                    
-                model.ErrorHeader = model.ErrorList.Count() > 0 ? "The following records failed to import: " : "";            
-
-                return View("ImportResults", model);
+                Db.SaveChanges();
             }
             catch (Exception e)
             {
-                model.Message = "An error occurred: " + e.Message;
-                return View("ImportResults", model);
+                Debug.WriteLine(e.Message);
+                model.ExceptionThrown = true;
             }
+            finally
+            {
+                fileReader.Close();
+            }
+
+            return View("ImportResults", model);
         }
 
         public ActionResult Search()
@@ -239,7 +247,7 @@ namespace MementoHealth.Controllers
                 }
                 else if (model.ExternalPatientId == null)
                 {
-                    foundPatients = FindPatientsByNameAndBirth(model.FullName, (DateTime)model.Birthday);
+                    foundPatients = FindPatientsByNameAndBirthday(model.FullName, (DateTime)model.Birthday);
                 }
                 else if (model.Birthday == null)
                 {

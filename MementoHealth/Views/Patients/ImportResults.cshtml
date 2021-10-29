@@ -1,42 +1,58 @@
-﻿@model MementoHealth.Models.ImportPatientResultsViewModel
+﻿@model MementoHealth.Models.ImportPatientsResultsViewModel
 
 @{
     ViewBag.Title = "ImportResults";
+
+    string CountToString(int count, string singular, string plural)
+    {
+        return count + " " + (count == 1 ? singular : plural);
+    }
 }
 
 <div class="row d-flex justify-content-center">
-
     <div class="custom-form-div shadow bg-light text-center">
-        <h2>Import Patients CSV File:</h2>
+        <h2>Patient Import Results</h2>
         <hr />
+
         <div class="row">
             <div class="col-md-auto w-100">
-                @Model.Message
-                <br />
-                @Model.SuccessHeader
-                <ul class="list-group">
-                    @if (Model.SuccessList != null)
-                    {
-                        foreach (var item in Model.SuccessList)
-                        {
-                            <li class="list-group-item">@item</li>
-                        }
-                    }
-                </ul>
-                <br />
-                @Model.ErrorHeader
-                <ul class="list-group">
-                    @if (Model.ErrorList != null)
-                    {
-                        foreach (var item in Model.ErrorList)
-                        {
-                            <li class="list-group-item">@item</li>
-                        }
-                    }
-                </ul>
-                @Model.Exists
-                <br />
-                @Html.ActionLink("Back to Patients", "Index")
+                @if (Model.ExceptionThrown)
+                {
+                    <div class="text-danger">An error has occurred.</div>
+                }
+
+                @if (Model.ErrorLines.Count > 0)
+                {
+                    <div class="border border-danger">
+
+                        <div class="text-danger">@CountToString(Model.ErrorLines.Count, "line is", "lines are") invalid:</div>
+                        <pre><code>@string.Join("\n", Model.ErrorLines)</code></pre>
+                    </div>
+                }
+
+                @if (Model.UpdatedLines.Count > 0)
+                {
+                    <div class="border border-warning">
+                        <div class="text-warning">@CountToString(Model.UpdatedLines.Count, "patient", "patients") updated successfully.</div>
+                        <pre><code>@string.Join("\n", Model.UpdatedLines)</code></pre>
+                    </div>
+                }
+
+                @if (Model.ImportedLines.Count > 0)
+                {
+                    <div class="border border-success">
+
+                        <div class="text-success">@CountToString(Model.ImportedLines.Count, "patient", "patients") imported successfully.</div>
+                        <pre><code>@string.Join("\n", Model.ImportedLines)</code></pre>
+                    </div>
+                }
+
+                @if (Model.ExistingLines.Count > 0)
+                {
+                    <div class="text-info">@CountToString(Model.ExistingLines.Count, "patient", "patients") already exist.</div>
+                }
+
+                @Html.ActionLink("Back to Patient List", "Index")
             </div>
         </div>
     </div>

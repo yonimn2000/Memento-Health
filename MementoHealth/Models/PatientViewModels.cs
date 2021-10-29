@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 
 namespace MementoHealth.Models
 {
@@ -20,15 +19,12 @@ namespace MementoHealth.Models
         public IEnumerable<Patient> Results { get; set; }
     }
 
-    public class ImportPatientResultsViewModel
+    public class ImportPatientsResultsViewModel
     {
-        public bool Success { get; set; } 
-        public string Message { get; set; }
-        public string SuccessHeader { get; set;  }
-        public string ErrorHeader { get; set; }
-        public int ExistsCounter { get; set; } = 0;
-        public string Exists { get; set; }
-        public List<string> SuccessList { get; set; } = new List<String>();
-        public List<string> ErrorList { get; set; } = new List<string>();
+        public bool ExceptionThrown { get; set; }
+        public List<string> ExistingLines { get; set; } = new List<string>();
+        public List<string> ImportedLines { get; set; } = new List<string>();
+        public List<string> UpdatedLines { get; set; } = new List<string>();
+        public List<string> ErrorLines { get; set; } = new List<string>();
     }
 }

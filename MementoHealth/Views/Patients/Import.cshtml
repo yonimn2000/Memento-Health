@@ -1,30 +1,30 @@
-﻿
-@{
-    ViewBag.Title = "Import";
+﻿@{
+    ViewBag.Title = "Import Patient";
 }
 
 <div class="row d-flex justify-content-center">
 
     <div class="custom-form-div shadow bg-light text-center">
-        <h2>Import Patients CSV File:</h2>
+        <h2>Import Patients CSV File</h2>
         <hr />
+
         <div class="row">
             <div class="col-md-auto">
                 @using (Html.BeginForm("Import", "Patients", FormMethod.Post, new { enctype = "multipart/form-data" }))
                 {
                     @Html.AntiForgeryToken()
-                    <p class="text-left">
-                        In order to import patients using a file, create a CSV file with headers ExternalID, FullName,
-                        Birthday. Add one patient per row and separate the columns for the headers using commas. If a patient does
-                        not have an external id leave the column blank.
+                    <p class="text-info">
+                        Import a patients file with the columns "External ID", "Full Name", and "Birthday".
+                        Data for the External ID column is optional but the column must exist.
+                        The first line is always skipped.
                     </p>
                     <input type="file" name="patientsFile" accept=".csv"/>
                     <br />
+
+                    <input type="submit" value="Import" class="btn btn-primary w-100" />
                     <br />
-                    <input type="submit" value="Upload" class="btn btn-primary w-100" />
-                    <br />
-                    <br />
-                    @Html.ActionLink("View Patients", "Index")
+
+                    @Html.ActionLink("Back to Patient List", "Index")
                 }
             </div>
         </div>
