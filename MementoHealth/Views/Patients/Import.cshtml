@@ -18,39 +18,13 @@
                         Birthday. Add one patient per row and separate the columns for the headers using commas. If a patient does
                         not have an external id leave the column blank.
                     </p>
-                    <input type="file" name="patientsFile" />
+                    <input type="file" name="patientsFile" accept=".csv"/>
                     <br />
                     <br />
                     <input type="submit" value="Upload" class="btn btn-primary w-100" />
                     <br />
                     <br />
                     @Html.ActionLink("View Patients", "Index")
-                    <br />
-                    @ViewBag.Message
-                    <hr />
-                    @ViewBag.SuccessString
-                    <ul class="list-group">
-                        @if (ViewBag.Success != null)
-                        {
-                            foreach (var item in ViewBag.Success)
-                            {
-                                <li class="list-group-item">@item</li>
-                            }
-                        }
-                    </ul>
-                    <br />
-                    @ViewBag.FailureString
-                    <ul class="list-group">
-                        @if (ViewBag.Failure != null)
-                        {
-                            foreach (var item in ViewBag.Failure)
-                            {
-                                <li class="list-group-item">@item</li>
-                            }
-                        }
-                    </ul>
-                    @ViewBag.Exists
-
                 }
             </div>
         </div>

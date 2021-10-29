@@ -8,6 +8,7 @@ using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 
@@ -136,9 +137,7 @@ namespace MementoHealth.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Import(HttpPostedFileBase patientsFile)
         {
-            List<string> successList = new List<String>();
-            List<string> errorList = new List<string>();
-            int existsCounter = 0;
+            ImportPatientResultsViewModel model = new ImportPatientResultsViewModel();
 
             try
             {
@@ -152,55 +151,59 @@ namespace MementoHealth.Controllers
                     {
 
                         //  Each line is turned into currentPatient array in the loop
-                        string[] currentPatient = fileReader.ReadLine().Split(',');
+                        string currentPatient = fileReader.ReadLine();
+                        string[] currentPatientArray = new Regex(",(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))").Split(currentPatient);
 
+                        for (int i = 0; i < currentPatientArray.Length; i++)
+                        {
+                            currentPatientArray[i] = currentPatientArray[i].Trim('"');
+                        }
 
                         // Validating each line before performing operations
-                        if (currentPatient[1].Length > 0 && !currentPatient[1].Any(char.IsDigit) && DateTime.TryParse(currentPatient[2], out DateTime testDate))
+                        if (currentPatientArray[1].Length > 0 && DateTime.TryParse(currentPatientArray[2], out DateTime testDate))
                         {
                             // Check if patient with external id exists already
-                            Patient testPatient = FindPatientByNameAndBirthday(currentPatient[1], DateTime.Parse(currentPatient[2]));
+                            Patient testPatient = FindPatientByNameAndBirthday(currentPatientArray[1], testDate);
 
                             // If statement checks that data being entered is not the header and doesnt exist already (or if it does checks that it updates a record)
-                            if ((!currentPatient[0].ToLower().Contains("externalid") && testPatient == null) ||
-                                (!currentPatient[0].ToLower().Contains("externalid") && testPatient != null && 
-                                (testPatient.FullName != currentPatient[1] || testPatient.Birthday != DateTime.Parse(currentPatient[2]))))
+                            if ((!currentPatientArray[0].ToLower().Contains("externalid") && testPatient == null) ||
+                                (!currentPatientArray[0].ToLower().Contains("externalid") && testPatient != null && 
+                                (testPatient.FullName != currentPatientArray[1] || testPatient.Birthday != testDate)))
                             {
                                 Patient newPatient = new Patient
                                 {
-                                    ExternalPatientId = currentPatient[0].Length > 0 ? currentPatient[0] : null,
-                                    FullName = currentPatient[1],
-                                    Birthday = DateTime.Parse(currentPatient[2]),
+                                    ExternalPatientId = currentPatientArray[0].Length > 0 ? currentPatientArray[0] : null,
+                                    FullName = currentPatientArray[1],
+                                    Birthday = testDate,
                                     ProviderId = providerId
                                 };
                                 Db.Patients.Add(newPatient);
-                                successList.Add(string.Join(",", currentPatient));
+                                model.SuccessList.Add(currentPatient);
                             } else 
                             {
-                                existsCounter++;
+                                model.ExistsCounter++;
                             }
                         } else
                         {
-                            errorList.Add(string.Join(",", currentPatient));
+                            model.ErrorList.Add(currentPatient);
                         }                                           
                     }
                     Db.SaveChanges();
                 }
 
-                ViewBag.Message = "File upload was successful";
-                ViewBag.Exists = existsCounter > 0 ? existsCounter + " records already exist" : "";
-                ViewBag.SuccessString = successList.Count() > 0 ? "Successfuly added records: " : "";
-                ViewBag.Success = successList;
                 // Remove header from errors list
-                errorList.RemoveAt(0);
-                ViewBag.FailureString = errorList.Count() > 0 ? "The following records failed to import: " : "";
-                ViewBag.Failure = errorList;
-                return View();
+                model.ErrorList.RemoveAt(0);
+                model.Message = "File upload was successful";
+                model.Exists = model.ExistsCounter > 0 ? model.ExistsCounter + " record(s) already exist" : "";
+                model.SuccessHeader = model.SuccessList.Count() > 0 ? "Successfuly added records: " : "";                    
+                model.ErrorHeader = model.ErrorList.Count() > 0 ? "The following records failed to import: " : "";            
+
+                return View("ImportResults", model);
             }
             catch (Exception e)
             {
-                ViewBag.Message = "An error occurred: " + e.Message;
-                return View();
+                model.Message = "An error occurred: " + e.Message;
+                return View("ImportResults", model);
             }
         }
 

@@ -1,0 +1,43 @@
+﻿@model MementoHealth.Models.ImportPatientResultsViewModel
+
+@{
+    ViewBag.Title = "ImportResults";
+}
+
+<div class="row d-flex justify-content-center">
+
+    <div class="custom-form-div shadow bg-light text-center">
+        <h2>Import Patients CSV File:</h2>
+        <hr />
+        <div class="row">
+            <div class="col-md-auto w-100">
+                @Model.Message
+                <br />
+                @Model.SuccessHeader
+                <ul class="list-group">
+                    @if (Model.SuccessList != null)
+                    {
+                        foreach (var item in Model.SuccessList)
+                        {
+                            <li class="list-group-item">@item</li>
+                        }
+                    }
+                </ul>
+                <br />
+                @Model.ErrorHeader
+                <ul class="list-group">
+                    @if (Model.ErrorList != null)
+                    {
+                        foreach (var item in Model.ErrorList)
+                        {
+                            <li class="list-group-item">@item</li>
+                        }
+                    }
+                </ul>
+                @Model.Exists
+                <br />
+                @Html.ActionLink("Back to Patients", "Index")
+            </div>
+        </div>
+    </div>
+</div>
