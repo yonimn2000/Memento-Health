@@ -5,8 +5,12 @@ using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text.RegularExpressions;
+using System.Web;
 using System.Web.Mvc;
 
 namespace MementoHealth.Controllers
@@ -62,7 +66,7 @@ namespace MementoHealth.Controllers
             return GetCurrentUserProvider().Patients.Where(p => p.ExtenalIdContains(extId)).ToList();
         }
 
-        private IEnumerable<Patient> FindPatientsByNameAndBirth(string name, DateTime birthday)
+        private IEnumerable<Patient> FindPatientsByNameAndBirthday(string name, DateTime birthday)
         {
             return GetCurrentUserProvider().Patients.Where(p => p.NameContains(name) && p.BirthdayEquals(birthday)).ToList();
         }
@@ -115,7 +119,100 @@ namespace MementoHealth.Controllers
         // GET: Patients/Import
         public ActionResult Import()
         {
-            throw new NotImplementedException();
+            return View();
+        }
+
+        // POST: Patients/Import
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Import(HttpPostedFileBase patientsFile)
+        {
+            ImportPatientsResultsViewModel model = new ImportPatientsResultsViewModel();
+            StreamReader fileReader = new StreamReader(patientsFile.InputStream);
+
+            try
+            {
+                // Skip first line.
+                fileReader.ReadLine();
+
+                int currentProviderId = GetCurrentUserProvider().ProviderId;
+
+                while (!fileReader.EndOfStream)
+                {
+                    string currentLine = fileReader.ReadLine();
+
+                    // Each line is turned into an array.
+                    string[] currentLineTokens = new Regex(",(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))")
+                        .Split(currentLine).Select(t => t.Trim('"').Trim()).ToArray();
+
+                    string patientExternalId = currentLineTokens[0];
+                    string patientName = currentLineTokens[1];
+                    string patientBirthdayString = currentLineTokens[2];
+
+                    // Validate name and birthday.
+                    if (string.IsNullOrWhiteSpace(patientName) || !DateTime.TryParse(patientBirthdayString, out DateTime patientBirthday))
+                    {
+                        model.ErrorLines.Add(currentLine);
+                        continue;
+                    }
+
+                    // If external ID is given:
+                    if (!string.IsNullOrWhiteSpace(patientExternalId))
+                    {
+                        // Try to find the patient.
+                        Patient patient = FindPatientsByExternalId(patientExternalId).FirstOrDefault();
+
+                        // If found:
+                        if (patient != null)
+                        {
+                            // Update patient details if needed:
+                            if (patient.Birthday != patientBirthday || !patient.FullName.Equals(patientName))
+                            {
+                                patient.Birthday = patientBirthday;
+                                patient.FullName = patientName;
+                                model.UpdatedLines.Add(currentLine);
+                                continue;
+                            }
+
+                            // Else:
+                            model.ExistingLines.Add(currentLine);
+                            continue;
+                        }
+                    }
+
+                    // If not found by the external ID, try by name and birthday:
+                    if (FindPatientsByNameAndBirthday(patientName, patientBirthday).Any())
+                    {
+                        model.ExistingLines.Add(currentLine);
+                        continue;
+                    }
+
+                    // If not found by name and birthday, create a new patient
+                    Patient newPatient = new Patient
+                    {
+                        ExternalPatientId = patientExternalId,
+                        FullName = patientName,
+                        Birthday = patientBirthday,
+                        ProviderId = currentProviderId
+                    };
+
+                    Db.Patients.Add(newPatient);
+                    model.ImportedLines.Add(currentLine);
+                }
+
+                Db.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                model.ExceptionThrown = true;
+            }
+            finally
+            {
+                fileReader.Close();
+            }
+
+            return View("ImportResults", model);
         }
 
         public ActionResult Search()
@@ -150,7 +247,7 @@ namespace MementoHealth.Controllers
                 }
                 else if (model.ExternalPatientId == null)
                 {
-                    foundPatients = FindPatientsByNameAndBirth(model.FullName, (DateTime)model.Birthday);
+                    foundPatients = FindPatientsByNameAndBirthday(model.FullName, (DateTime)model.Birthday);
                 }
                 else if (model.Birthday == null)
                 {
