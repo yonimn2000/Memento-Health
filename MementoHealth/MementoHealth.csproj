@@ -448,6 +448,7 @@
     <Content Include="Views\FormQuestions\Delete.cshtml" />
     <Content Include="Views\FormQuestions\Index.cshtml" />
     <Content Include="Views\Account\_CaptchaPartial.cshtml" />
+    <Content Include="Views\Patients\Import.cshtml" />
     <Content Include="Views\Patients\Search.cshtml" />
     <Content Include="Views\FormQuestionConditions\Delete.cshtml" />
     <Content Include="Views\FormQuestionConditions\Editor.cshtml" />
@@ -467,6 +468,7 @@
     <Content Include="Views\Submissions\_PatientDetailsPartial.cshtml" />
     <Content Include="Views\Submissions\_SubmissionDetailsPartial.cshtml" />
     <Content Include="Views\Submissions\ThankYou.cshtml" />
+    <Content Include="Views\Patients\ImportResults.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

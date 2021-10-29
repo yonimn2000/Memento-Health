@@ -18,4 +18,13 @@ namespace MementoHealth.Models
 
         public IEnumerable<Patient> Results { get; set; }
     }
+
+    public class ImportPatientsResultsViewModel
+    {
+        public bool ExceptionThrown { get; set; }
+        public List<string> ExistingLines { get; set; } = new List<string>();
+        public List<string> ImportedLines { get; set; } = new List<string>();
+        public List<string> UpdatedLines { get; set; } = new List<string>();
+        public List<string> ErrorLines { get; set; } = new List<string>();
+    }
 }
