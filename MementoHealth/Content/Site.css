@@ -126,9 +126,6 @@ footer {
         border-color: #5466af;
         background-image: linear-gradient(rgba(0, 0, 0, 0.1) 0 0);
     }
-.a {
-    color: #5466af !important;
-}
 /****** The following are for the selected point on the picture answer ******/
 
 #img-wrapper {
