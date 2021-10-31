@@ -12,7 +12,9 @@
     {
         <h4 class="text-info">Edits are not allowed as the form already has some submissions.</h4>
     }
-    <div style="margin-top:-20px; margin-bottom: 20px">@Html.ActionLink("Back to Forms", "Index", "Forms")</div>
+    <p style="margin-top:-20px; margin-bottom: 20px">
+        <i class="fa fa-arrow-circle-left" aria-hidden="true">@Html.ActionLink(" Back to Forms", "Index", "Forms")</i>
+        </p>
 </div>
 
 <div class="container" style="overflow-y: auto; white-space: nowrap; min-width: 94.5%; text-align: center">
@@ -36,80 +38,80 @@
                 <tbody>
                     @foreach (FormQuestion question in Model)
                     {
-                    <tr>
-                        <td>@question.Number</td>
-                        <td>@question.Question</td>
-                        <td>@question.IsRequired</td>
-                        <td>@question.TypeString</td>
-                        <td class="json-data" data-type="@question.TypeString" data-json="@question.JsonData"></td>
-                        <td>
-                            @if (question.Conditions.Count == 0)
-                            {
-                                if (editsAllowed)
-                                {
-                                    <text>
-                                        @Html.ActionLink("Add condition", "Add", "FormQuestionConditions", new { id = question.QuestionId }, null)
-                                    </text>
-                                }
-                            }
-                            else if (question.Conditions.Count > 0)
-                            {
-                                if (question.Conditions.Count == 1)
-                                {
-                                    <div>@question.Conditions.Single()</div>
-                                }
-                                else
-                                {
-                                    <ol class="pl-3 mb-0">
-                                        @foreach (var condition in question.Conditions)
-                                        {
-                                            <li>@condition</li>
-                                        }
-                                    </ol>
-                                }
-                                if (editsAllowed)
-                                {
-                                    <text>
-                                        @Html.ActionLink("Edit conditions", "Index", "FormQuestionConditions", new { id = question.QuestionId }, null)
-                                    </text>
-                                }
-                            }
-                        </td>
-                        @if (editsAllowed)
-                        {
+                        <tr>
+                            <td>@question.Number</td>
+                            <td>@question.Question</td>
+                            <td>@question.IsRequired</td>
+                            <td>@question.TypeString</td>
+                            <td class="json-data" data-type="@question.TypeString" data-json="@question.JsonData"></td>
                             <td>
-                                @if (question.CanBeMovedUp)
+                                @if (question.Conditions.Count == 0)
                                 {
-                                    using (Html.BeginForm("MoveUp", "FormQuestions", new { id = question.QuestionId }, FormMethod.Post))
+                                    if (editsAllowed)
                                     {
-                                        @Html.AntiForgeryToken()
-                                        <a href="#" onclick="this.closest('form').submit();return false;">Up</a>
+                                        <text>
+                                            @Html.ActionLink("Add condition", "Add", "FormQuestionConditions", new { id = question.QuestionId }, null)
+                                        </text>
                                     }
                                 }
-                                else
+                                else if (question.Conditions.Count > 0)
                                 {
-                                    <span class="text-secondary" title="@question.GetCannotMoveUpReason()">Up</span>
-                                } |
-
-                                @if (question.CanBeMovedDown)
-                                {
-                                    using (Html.BeginForm("MoveDown", "FormQuestions", new { id = question.QuestionId }, FormMethod.Post))
+                                    if (question.Conditions.Count == 1)
                                     {
-                                        @Html.AntiForgeryToken()
-                                        <a href="#" onclick="this.closest('form').submit();return false;">Down</a>
+                                        <div>@question.Conditions.Single()</div>
+                                    }
+                                    else
+                                    {
+                                        <ol class="pl-3 mb-0">
+                                            @foreach (var condition in question.Conditions)
+                                            {
+                                                <li>@condition</li>
+                                            }
+                                        </ol>
+                                    }
+                                    if (editsAllowed)
+                                    {
+                                        <text>
+                                            @Html.ActionLink("Edit conditions", "Index", "FormQuestionConditions", new { id = question.QuestionId }, null)
+                                        </text>
                                     }
                                 }
-                                else
-                                {
-                                    <span class="text-secondary" title="@question.GetCannotMoveDownReason()">Down</span>
-                                } |
-
-                                @Html.ActionLink("Insert after", "Insert", new { id = question.QuestionId }) |
-                                @Html.ActionLink("Edit question", "Edit", new { id = question.QuestionId }) |
-                                @Html.ActionLink("Delete", "Delete", new { id = question.QuestionId })
                             </td>
-                        }
-                    </tr>
+                            @if (editsAllowed)
+                            {
+                                <td>
+                                    @if (question.CanBeMovedUp)
+                                    {
+                                        using (Html.BeginForm("MoveUp", "FormQuestions", new { id = question.QuestionId }, FormMethod.Post))
+                                        {
+                                            @Html.AntiForgeryToken()
+                                            <a href="#" onclick="this.closest('form').submit();return false;">Up</a>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <span class="text-secondary" title="@question.GetCannotMoveUpReason()">Up</span>
+                                    } |
+
+                                    @if (question.CanBeMovedDown)
+                                    {
+                                        using (Html.BeginForm("MoveDown", "FormQuestions", new { id = question.QuestionId }, FormMethod.Post))
+                                        {
+                                            @Html.AntiForgeryToken()
+                                            <a href="#" onclick="this.closest('form').submit();return false;">Down</a>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <span class="text-secondary" title="@question.GetCannotMoveDownReason()">Down</span>
+                                    } |
+
+                                    @Html.ActionLink("Insert after", "Insert", new { id = question.QuestionId }) |
+                                    @Html.ActionLink("Edit question", "Edit", new { id = question.QuestionId }) |
+                                    @Html.ActionLink("Delete", "Delete", new { id = question.QuestionId })
+                                </td>
+                            }
+                        </tr>
                     }
                 </tbody>
             </table>
@@ -195,6 +197,8 @@
 }
 
 @section styles {
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
     <style>
         form {
             display: inline-block;

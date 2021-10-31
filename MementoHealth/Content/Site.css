@@ -51,11 +51,6 @@ textarea {
         margin-left: 10px;
     }
 
-.navbar {
-    -webkit-box-shadow: -1px 0 5px 0 rgba(0,0,0,.25);
-    box-shadow: -1px 0 5px 0 rgba(0,0,0,.25);
-}
-
 .custom-form-div {
     border: 1px solid transparent;
     border-radius: 20px;
@@ -111,20 +106,29 @@ footer {
     padding-right: 20px;
 }
 
-
-/* change the link color */
 .navbar-custom .navbar-nav .nav-link {
     color: #f9f6f7;
 }
-/* change the color of active or hovered links */
+
 .navbar-custom .nav-item.active .nav-link,
 .navbar-custom .nav-item:hover .nav-link {
     color: #ffffff;
+    text-decoration: underline;
 }
 
+.btn-primary {
+    background-color: #5466af;
+    border-color: #5466af;
+}
 
-
-
+    .btn-primary:hover {
+        background-color: #5466af;
+        border-color: #5466af;
+        background-image: linear-gradient(rgba(0, 0, 0, 0.1) 0 0);
+    }
+.a {
+    color: #5466af !important;
+}
 /****** The following are for the selected point on the picture answer ******/
 
 #img-wrapper {

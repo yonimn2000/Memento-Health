@@ -7,8 +7,10 @@
 
 <div class="box" style="text-align: center">
     <div class="page-title font-weight-bold h2">@ViewBag.Title</div>
-    <h5 class="text-info" style="margin-top: -20px; margin-bottom: 10px">Conditions will be tested during form submission in the following order:</h5>
-    <div style="margin-bottom: 20px">@Html.ActionLink("Back to Form Questions", "Index", "FormQuestions", new { id = formQuestion.FormId }, null)</div>
+    <h5 class="text-info" style="margin-top: -20px; margin-bottom: 20px">Conditions will be tested during form submission in the following order:</h5>
+    <p style="margin-bottom: 20px">
+        <i class="fa fa-arrow-circle-left" aria-hidden="true">@Html.ActionLink(" Back to Form Questions", "Index", "FormQuestions", new { id = formQuestion.FormId }, null)</i>
+    </p>
 </div>
 
 <div class="container" style="overflow-y: auto; white-space: nowrap; min-width: 94.5%; text-align: center">
@@ -72,6 +74,8 @@
 }
 
 @section styles {
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
     <style>
         form {
             display: inline-block;
