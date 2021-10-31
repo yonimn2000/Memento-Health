@@ -61,7 +61,8 @@ namespace MementoHealth.Controllers
                 Logins = await UserManager.GetLoginsAsync(userId),
                 BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId),
                 Role = string.Join(", ", await UserManager.GetRolesAsync(userId)),
-                FullName = await UserManager.GetFullNameAsync(userId)
+                FullName = await UserManager.GetFullNameAsync(userId),
+                Email = await UserManager.GetEmailAsync(userId)
             };
             return View(model);
         }
