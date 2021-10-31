@@ -6,108 +6,121 @@
     ViewBag.Title = $"“{form.Name}” Form Questions";
 }
 
-<h2>@ViewBag.Title</h2>
-@if (!editsAllowed)
-{
-    <h4 class="text-info">Edits are not allowed as the form already has some submissions.</h4>
-}
-<hr />
-@Html.ActionLink("Back to Forms", "Index", "Forms")
-
-<table class="table">
-    <tr>
-        <th>#</th>
-        <th>Question</th>
-        <th>Is Required</th>
-        <th>Answer Type</th>
-        <th>Data</th>
-        <th>Conditions</th>
-        @if (editsAllowed)
-        {
-            <th>Actions</th>
-        }
-    </tr>
-    @foreach (FormQuestion question in Model)
+<div class="box" style="text-align: center">
+    <div class="page-title font-weight-bold h2">@ViewBag.Title</div>
+    @if (!editsAllowed)
     {
-        <tr>
-            <td>@question.Number</td>
-            <td>@question.Question</td>
-            <td>@question.IsRequired</td>
-            <td>@question.TypeString</td>
-            <td class="json-data" data-type="@question.TypeString" data-json="@question.JsonData"></td>
-            <td>
-                @if (question.Conditions.Count == 0)
-                {
-                    if (editsAllowed)
-                    {
-                        <text>
-                            @Html.ActionLink("Add condition", "Add", "FormQuestionConditions", new { id = question.QuestionId }, null)
-                        </text>
-                    }
-                }
-                else if (question.Conditions.Count > 0)
-                {
-                    if (question.Conditions.Count == 1)
-                    {
-                        <div>@question.Conditions.Single()</div>
-                    }
-                    else
-                    {
-                        <ol class="pl-3 mb-0">
-                            @foreach (var condition in question.Conditions)
-                            {
-                                <li>@condition</li>
-                            }
-                        </ol>
-                    }
-                    if (editsAllowed)
-                    {
-                        <text>
-                            @Html.ActionLink("Edit conditions", "Index", "FormQuestionConditions", new { id = question.QuestionId }, null)
-                        </text>
-                    }
-                }
-            </td>
-            @if (editsAllowed)
-            {
-                <td>
-                    @if (question.CanBeMovedUp)
-                    {
-                        using (Html.BeginForm("MoveUp", "FormQuestions", new { id = question.QuestionId }, FormMethod.Post))
-                        {
-                            @Html.AntiForgeryToken()
-                            <a href="#" onclick="this.closest('form').submit();return false;">Up</a>
-                        }
-                    }
-                    else
-                    {
-                        <span class="text-secondary" title="@question.GetCannotMoveUpReason()">Up</span>
-                    } |
-
-                    @if (question.CanBeMovedDown)
-                    {
-                        using (Html.BeginForm("MoveDown", "FormQuestions", new { id = question.QuestionId }, FormMethod.Post))
-                        {
-                            @Html.AntiForgeryToken()
-                            <a href="#" onclick="this.closest('form').submit();return false;">Down</a>
-                        }
-                    }
-                    else
-                    {
-                        <span class="text-secondary" title="@question.GetCannotMoveDownReason()">Down</span>
-                    } |
-
-                    @Html.ActionLink("Insert after", "Insert", new { id = question.QuestionId }) |
-                    @Html.ActionLink("Edit question", "Edit", new { id = question.QuestionId }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = question.QuestionId })
-                </td>
-            }
-        </tr>
+        <h4 class="text-info">Edits are not allowed as the form already has some submissions.</h4>
     }
+    <div style="margin-top:-20px; margin-bottom: 20px">@Html.ActionLink("Back to Forms", "Index", "Forms")</div>
+</div>
 
-</table>
-<div id="canvas" class="w-100"></div>
-<button id="redraw" onclick="redraw();" class="btn btn-sm btn-outline-info">Redraw graph</button>
+<div class="container" style="overflow-y: auto; white-space: nowrap; min-width: 94.5%; text-align: center">
+    <div class="card shadow">
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Question</th>
+                        <th>Is Required</th>
+                        <th>Answer Type</th>
+                        <th>Data</th>
+                        <th>Conditions</th>
+                        @if (editsAllowed)
+                        {
+                            <th>Actions</th>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (FormQuestion question in Model)
+                    {
+                    <tr>
+                        <td>@question.Number</td>
+                        <td>@question.Question</td>
+                        <td>@question.IsRequired</td>
+                        <td>@question.TypeString</td>
+                        <td class="json-data" data-type="@question.TypeString" data-json="@question.JsonData"></td>
+                        <td>
+                            @if (question.Conditions.Count == 0)
+                            {
+                                if (editsAllowed)
+                                {
+                                    <text>
+                                        @Html.ActionLink("Add condition", "Add", "FormQuestionConditions", new { id = question.QuestionId }, null)
+                                    </text>
+                                }
+                            }
+                            else if (question.Conditions.Count > 0)
+                            {
+                                if (question.Conditions.Count == 1)
+                                {
+                                    <div>@question.Conditions.Single()</div>
+                                }
+                                else
+                                {
+                                    <ol class="pl-3 mb-0">
+                                        @foreach (var condition in question.Conditions)
+                                        {
+                                            <li>@condition</li>
+                                        }
+                                    </ol>
+                                }
+                                if (editsAllowed)
+                                {
+                                    <text>
+                                        @Html.ActionLink("Edit conditions", "Index", "FormQuestionConditions", new { id = question.QuestionId }, null)
+                                    </text>
+                                }
+                            }
+                        </td>
+                        @if (editsAllowed)
+                        {
+                            <td>
+                                @if (question.CanBeMovedUp)
+                                {
+                                    using (Html.BeginForm("MoveUp", "FormQuestions", new { id = question.QuestionId }, FormMethod.Post))
+                                    {
+                                        @Html.AntiForgeryToken()
+                                        <a href="#" onclick="this.closest('form').submit();return false;">Up</a>
+                                    }
+                                }
+                                else
+                                {
+                                    <span class="text-secondary" title="@question.GetCannotMoveUpReason()">Up</span>
+                                } |
+
+                                @if (question.CanBeMovedDown)
+                                {
+                                    using (Html.BeginForm("MoveDown", "FormQuestions", new { id = question.QuestionId }, FormMethod.Post))
+                                    {
+                                        @Html.AntiForgeryToken()
+                                        <a href="#" onclick="this.closest('form').submit();return false;">Down</a>
+                                    }
+                                }
+                                else
+                                {
+                                    <span class="text-secondary" title="@question.GetCannotMoveDownReason()">Down</span>
+                                } |
+
+                                @Html.ActionLink("Insert after", "Insert", new { id = question.QuestionId }) |
+                                @Html.ActionLink("Edit question", "Edit", new { id = question.QuestionId }) |
+                                @Html.ActionLink("Delete", "Delete", new { id = question.QuestionId })
+                            </td>
+                        }
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="text-center">
+    <div id="canvas" class="w-100 pl-5 pr-5 pt-5"></div>
+    <button id="redraw" onclick="redraw();" class="btn btn-sm btn-outline-info">Redraw graph</button>
+</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

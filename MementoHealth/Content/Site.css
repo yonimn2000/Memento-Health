@@ -111,6 +111,20 @@ footer {
     padding-right: 20px;
 }
 
+
+/* change the link color */
+.navbar-custom .navbar-nav .nav-link {
+    color: #f9f6f7;
+}
+/* change the color of active or hovered links */
+.navbar-custom .nav-item.active .nav-link,
+.navbar-custom .nav-item:hover .nav-link {
+    color: #ffffff;
+}
+
+
+
+
 /****** The following are for the selected point on the picture answer ******/
 
 #img-wrapper {

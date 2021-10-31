@@ -265,6 +265,7 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Images\camron.png" />
+    <Content Include="Images\image2vector %287%29.svg" />
     <Content Include="Images\Memento Health-logo.svg" />
     <Content Include="Images\Mobile Memento Health-logo.svg" />
     <Content Include="Images\Logo.png" />
