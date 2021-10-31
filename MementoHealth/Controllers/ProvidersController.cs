@@ -54,9 +54,14 @@ namespace MementoHealth.Controllers
         {
             if (ModelState.IsValid)
             {
-                Db.Entry(provider).State = EntityState.Modified;
-                Db.SaveChanges();
-                return RedirectToAction("Index");
+                if (!Db.Providers.Any(f => f.Name.Equals(provider.Name)))
+                {
+                    Db.Entry(provider).State = EntityState.Modified;
+                    Db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                ModelState.AddModelError("", $"A provider with the name of '{provider.Name}' already exists." +
+                    "Please pick a different name.");
             }
             return View(provider);
         }
