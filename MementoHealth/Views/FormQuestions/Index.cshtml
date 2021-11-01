@@ -10,10 +10,10 @@
     <div class="page-title font-weight-bold h2">@ViewBag.Title</div>
     @if (!editsAllowed)
     {
-        <h4 class="text-info">Edits are not allowed as the form already has some submissions.</h4>
+        <h4 class="text-secondary" style="margin-top: -20px; margin-bottom: 20px">Edits are not allowed as the form already has some submissions.</h4>
     }
-<p style="margin-top:-20px; margin-bottom: 20px">
-    @Html.ActionLink(" Back to Forms", "Index", "Forms", null, new { @class = "fa fa-arrow-circle-left text-dark" })
+<p style="margin-bottom: 20px; margin-top: -10px">
+    @Html.ActionLink(" Back to Forms", "Index", "Forms", null, new { @class = "fa fa-arrow-circle-left text-dark"})
 </p>
 </div>
 

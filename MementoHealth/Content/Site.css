@@ -81,10 +81,6 @@ textarea {
         content: url('../Images/Mobile Memento Health-logo.svg');
         top: -1px;
     }
-
-    .body-content {
-        min-height: calc(100vh - 200px) !important;
-    }
 }
 
 @media (hover: none) {
@@ -112,8 +108,7 @@ footer {
 
 .navbar-custom .nav-item.active .nav-link,
 .navbar-custom .nav-item:hover .nav-link {
-    color: #ffffff;
-    text-decoration: underline;
+    color: #ebeaea;
 }
 
 .btn-primary {
@@ -122,9 +117,19 @@ footer {
 }
 
     .btn-primary:hover {
-        background-color: #5466af;
-        border-color: #5466af;
+        background-color: #5466af !important;
+        border-color: #5466af !important;
         background-image: linear-gradient(rgba(0, 0, 0, 0.1) 0 0);
+    }
+
+    .btn-primary:focus {
+        background-color: #5466af !important;
+        border-color: #5466af !important;
+    }
+
+    .btn-primary:active {
+        background-color: #5466af !important;
+        border-color: #5466af !important;
     }
 /****** The following are for the selected point on the picture answer ******/
 
