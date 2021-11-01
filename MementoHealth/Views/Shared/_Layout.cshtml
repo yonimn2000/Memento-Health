@@ -7,15 +7,16 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" type="image/ico" href="~/Images/Logo.png">
+    <link rel="shortcut icon" type="image/ico" href="~/Images/Logo.png ">
     <link rel="manifest" href="~/manifest.json">
     <title>@ViewBag.Title - Memento Health</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     @RenderSection("styles", required: false)
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg bg-light navbar-light">
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom" style="background-color: #5065ad">
         <div class="container-fluid">
             <div class="navbar-header">
                 <a href="@(isPinLock ? "#" : Url.Action("Index", "Home"))" class="navbar-brand">

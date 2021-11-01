@@ -1,15 +1,15 @@
 ﻿@model IEnumerable<MementoHealth.Entities.Patient>
 
 @{
-    ViewBag.Title = "Patients";    
+    ViewBag.Title = "Patients";
 }
 
 <div class="box" style="text-align: center">
     <div class="page-title font-weight-bold h2">@ViewBag.Title</div>
-    <div style="margin-top:-30px; margin-bottom: 10px">
-        @Html.ActionLink("Add", "Create") |
-        @Html.ActionLink("Import", "Import") |
-        @Html.ActionLink("Search", "Search")
+    <div style="margin-top:-20px; margin-bottom: 20px">
+        @Html.ActionLink(" Add", "Create", null, new { @class = "fa fa-user-plus text-dark" }) |
+        @Html.ActionLink(" Import", "Import", null, new { @class = "fa fa-upload text-dark" }) |
+        @Html.ActionLink(" Search", "Search", null, new { @class = "fa fa-search text-dark" })
     </div>
 </div>
 

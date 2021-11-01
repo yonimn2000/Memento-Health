@@ -5,63 +5,76 @@
     ViewBag.Title = $"“{formQuestion.Question}” Question Conditions";
 }
 
-<h2>@ViewBag.Title</h2>
-<h5 class="text-info">Conditions will be tested during form submission in the following order:</h5>
-<hr />
-@Html.ActionLink("Back to Form Questions", "Index", "FormQuestions", new { id = formQuestion.FormId }, null)
+<div class="box" style="text-align: center">
+    <div class="page-title font-weight-bold h2">@ViewBag.Title</div>
+    <h5 class="text-info" style="margin-top: -20px; margin-bottom: 20px">Conditions will be tested during form submission in the following order:</h5>
+    <p style="margin-bottom: 20px">
+        @Html.ActionLink(" Back to Form Questions", "Index", "FormQuestions", new {id = formQuestion.FormId}, new { @class = "fa fa-arrow-circle-left text-dark" })
+    </p>
+</div>
 
-<table class="table">
-    <tr>
-        <th>#</th>
-        <th>Condition</th>
-        <th>Actions</th>
-    </tr>
-    @foreach (FormQuestionCondition condition in Model)
-    {
-        <tr>
-            <td>@condition.Number</td>
-            <td>@condition.ToString(true)</td>
-            <td>
-                @if (condition.Number == 1)
-                {
-                    <span class="text-secondary">Up</span>
-                }
-                else
-                {
-                    using (Html.BeginForm("MoveUp", "FormQuestionConditions", new { id = condition.ConditionId }, FormMethod.Post))
+<div class="container" style="overflow-y: auto; white-space: nowrap; min-width: 94.5%; text-align: center">
+    <div class="card shadow">
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Condition</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (FormQuestionCondition condition in Model)
                     {
-                        @Html.AntiForgeryToken()
-                        <a href="#" onclick="this.closest('form').submit();return false;">Up</a>
+                        <tr>
+                            <td>@condition.Number</td>
+                            <td>@condition.ToString(true)</td>
+                            <td>
+                                @if (condition.Number == 1)
+                                {
+                                    <span class="text-secondary">Up</span>
+                                }
+                                else
+                                {
+                                    using (Html.BeginForm("MoveUp", "FormQuestionConditions", new { id = condition.ConditionId }, FormMethod.Post))
+                                    {
+                                        @Html.AntiForgeryToken()
+                                        <a href="#" onclick="this.closest('form').submit();return false;">Up</a>
+                                    }
+                                } |
+
+                                @if (condition.Number == Model.Max(c => c.Number))
+                                {
+                                    <span class="text-secondary">Down</span>
+                                }
+                                else
+                                {
+                                    using (Html.BeginForm("MoveDown", "FormQuestionConditions", new { id = condition.QuestionId }, FormMethod.Post))
+                                    {
+                                        @Html.AntiForgeryToken()
+                                        <a href="#" onclick="this.closest('form').submit();return false;">Down</a>
+                                    }
+                                } |
+
+                                @Html.ActionLink("Insert after", "Insert", new { id = condition.ConditionId }) |
+                                @Html.ActionLink("Edit", "Edit", new { id = condition.ConditionId }) |
+                                @Html.ActionLink("Delete", "Delete", new { id = condition.ConditionId })
+                            </td>
+                        </tr>
                     }
-                } |
-
-                @if (condition.Number == Model.Max(c => c.Number))
-                {
-                    <span class="text-secondary">Down</span>
-                }
-                else
-                {
-                    using (Html.BeginForm("MoveDown", "FormQuestionConditions", new { id = condition.QuestionId }, FormMethod.Post))
-                    {
-                        @Html.AntiForgeryToken()
-                        <a href="#" onclick="this.closest('form').submit();return false;">Down</a>
-                    }
-                } |
-
-                @Html.ActionLink("Insert after", "Insert", new { id = condition.ConditionId }) |
-                @Html.ActionLink("Edit", "Edit", new { id = condition.ConditionId }) |
-                @Html.ActionLink("Delete", "Delete", new { id = condition.ConditionId })
-            </td>
-        </tr>
-    }
-
-</table>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
 
 @section styles {
+
     <style>
         form {
             display: inline-block;
