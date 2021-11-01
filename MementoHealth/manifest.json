@@ -1,8 +1,8 @@
 ﻿{
   "name": "Memento Health",
   "short_name": "Memento Health",
-  "theme_color": "#4c64a7",
-  "background_color": "#4c64a7",
+  "theme_color": "#5065ad",
+  "background_color": "#5065ad",
   "display": "standalone",
   "start_url": "./",
   "scope": "./",
