@@ -125,6 +125,7 @@ footer {
     .btn-primary:focus {
         background-color: #5466af !important;
         border-color: #5466af !important;
+        background-image: linear-gradient(rgba(0, 0, 0, 0.2) 0 0);
     }
 
     .btn-primary:active {
