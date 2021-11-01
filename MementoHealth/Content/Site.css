@@ -108,8 +108,7 @@ footer {
 
 .navbar-custom .nav-item.active .nav-link,
 .navbar-custom .nav-item:hover .nav-link {
-    color: #ffffff;
-    text-decoration: underline;
+    color: #ebeaea;
 }
 
 .btn-primary {
