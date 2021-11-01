@@ -146,9 +146,7 @@ namespace MementoHealth.Controllers
 
                     // If reached the end of the form:
                     if (question == null)
-                        // TODO: Return a "Check-in Complete" View.
                         return View("Review", submission);
-                    //return RedirectToAction("Patient", new { id = submission.PatientId });
                 }
 
                 answer = submission.Answers.SingleOrDefault(a => a.QuestionId == question.QuestionId);
@@ -165,7 +163,7 @@ namespace MementoHealth.Controllers
                 Patient = submission.Patient,
                 Question = question,
                 IsComplete = submission.IsComplete,
-                CurrentQuestionNumber = question.Number, // TODO
+                CurrentQuestionNumber = submission.Answers.Count,
                 NumberOfRemainingQuestions = submission.Form.Questions.Count - question.Number, // TODO
                 JsonData = answer?.JsonData
             });
