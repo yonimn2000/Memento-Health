@@ -122,9 +122,19 @@ footer {
 }
 
     .btn-primary:hover {
-        background-color: #5466af;
-        border-color: #5466af;
+        background-color: #5466af !important;
+        border-color: #5466af !important;
         background-image: linear-gradient(rgba(0, 0, 0, 0.1) 0 0);
+    }
+
+    .btn-primary:focus {
+        background-color: #5466af !important;
+        border-color: #5466af !important;
+    }
+
+    .btn-primary:active {
+        background-color: #5466af !important;
+        border-color: #5466af !important;
     }
 /****** The following are for the selected point on the picture answer ******/
 
