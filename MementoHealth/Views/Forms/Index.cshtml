@@ -8,8 +8,8 @@
     <div class="page-title font-weight-bold h2">@ViewBag.Title</div>
     @if (User.IsInRole(Role.ProviderAdmin))
     {
-        <p style="margin-top:-30px; margin-bottom: 10px">
-            @Html.ActionLink("Create New", "Create")
+        <p style="margin-top:-20px; margin-bottom: 20px">
+            @Html.ActionLink(" Create New Form", "Create", null, new { @class = "fa fa-plus-square text-dark" })
         </p>
     }
 </div>

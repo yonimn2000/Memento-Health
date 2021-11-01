@@ -1,11 +1,11 @@
 ﻿@model IEnumerable<MementoHealth.Models.UserViewModel>
 
 @{
-    ViewBag.Title = "User Manager";  
+    ViewBag.Title = "User Manager";
 }
 <div class="box" style="text-align: center">
-    <div class="page-title font-weight-bold h2">@ViewBag.Title</div>
-    <div style="margin-top:-30px; margin-bottom: 10px"> @Html.ActionLink("Create New User", "Create", "Users")</div>
+    <div class="page-title font-weight-bold h2" style="margin-bottom: -10px">@ViewBag.Title</div>
+    <div style="margin-top:-20px; margin-bottom: 20px">@Html.ActionLink(" Create New User", "Create", "Users", null, new { @class = "fa fa-user-plus text-dark" })</div>
 </div>
 
 <div class="container" style="overflow-y: auto; white-space: nowrap; min-width: 94.5%; text-align: center">
