@@ -12,9 +12,9 @@
     {
         <h4 class="text-info">Edits are not allowed as the form already has some submissions.</h4>
     }
-    <p style="margin-top:-20px; margin-bottom: 20px">
-        <i class="fa fa-arrow-circle-left" aria-hidden="true">@Html.ActionLink(" Back to Forms", "Index", "Forms")</i>
-        </p>
+<p style="margin-top:-20px; margin-bottom: 20px">
+    @Html.ActionLink(" Back to Forms", "Index", "Forms", null, new { @class = "fa fa-arrow-circle-left text-dark" })
+</p>
 </div>
 
 <div class="container" style="overflow-y: auto; white-space: nowrap; min-width: 94.5%; text-align: center">
@@ -197,7 +197,6 @@
 }
 
 @section styles {
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 
     <style>
         form {

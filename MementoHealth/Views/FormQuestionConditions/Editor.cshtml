@@ -7,9 +7,9 @@
 
 
 <div class="row d-flex justify-content-center">
-    <div class="shadow bg-light text-center" style="border-radius: 12px">
+    <div class="shadow bg-light text-left" style="border-radius: 12px">
         <div class="page-title h2 font-weight-bold" style="padding-top: 25px;">@ViewBag.Title</div>
-        <div class="h4 text-primary" style="margin-top: -30px; margin-bottom: 20px">Question @Model.Question.Number: "@Model.Question.Question"</div>
+        <div class="h4 text-center" style="margin-top: -30px; margin-bottom: 20px">Question @Model.Question.Number: "@Model.Question.Question"</div>
         <div class="custom-form-div" style="margin-top: -50px; padding-bottom: 0px">
 
             <div class="row">
@@ -31,7 +31,7 @@
                                 <div class="col-md-auto" style="text-align: left">If Answer</div>
                                 <div class="col-md-auto">
                                     <select class="form-control" id="options" onclick="optionSelected()"></select>
-                                    <div id="inputs" style="display:none;">
+                                    <div id="inputs" style="display:none; padding-top: 10px">
                                         <input class="form-control" id="textbox">
                                         <select class="form-control" id="radiobuttons"></select>
                                         <div class="form-check" id="checkboxes"></div>
@@ -58,7 +58,7 @@
                                     <button type="button" id="create-button" class="btn btn-primary w-100" onclick="submitClicked()">@action</button>
                                 </div>
                             </div>
-                            <p>
+                            <p class="text-center">
                                 @Html.ActionLink("Back to Condition List", "Index", new { id = Model.QuestionId })
                             </p>
                         }

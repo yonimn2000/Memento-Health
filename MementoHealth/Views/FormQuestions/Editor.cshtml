@@ -65,21 +65,23 @@
                             </div>
 
                             <div id="image-editor" class="custom-editor mb-3" style="display:none">
-                                <label for="file" class="mb-2">Image</label>
-                                <input id="img-selector" class="form-control-file" type="file" name="file" accept="image/*" onchange="imageSelected(event)" />
-                                <img id="selected-image" width="300px" />
-                            </div>
-
-                            <div class="form-group">
-                                <div class="col-md-auto my-4" style="text-align: center; padding-top: 5px">
-                                    <button type="button" id="create-button" class="btn btn-primary w-100" onclick="return createClicked();">@action</button>
+                                <label for="file">Image</label>
+                                <div class="col-md-auto my-3" style="text-align: left">
+                                    <input id="img-selector" class="form-control-file" type="file" name="file" accept="image/*" onchange="imageSelected(event)" />
+                                    <img id="selected-image" width="300px" />
+                                    </div>
                                 </div>
-                            </div>
-                            <p>
-                                @Html.ActionLink("Back to Question List", "Index", new { id = Model.FormId })
-                            </p>
-                        }
-                    </section>
+
+                                <div class="form-group">
+                                    <div class="col-md-auto my-4" style="text-align: center; padding-top: 5px">
+                                        <button type="button" id="create-button" class="btn btn-primary w-100" onclick="return createClicked();">@action</button>
+                                    </div>
+                                </div>
+                                <p>
+                                    @Html.ActionLink("Back to Question List", "Index", new { id = Model.FormId })
+                                </p>
+                                }
+</section>
                 </div>
             </div>
         </div>
