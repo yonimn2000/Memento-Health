@@ -50,7 +50,7 @@
                                 }
                                 else
                                 {
-                                    using (Html.BeginForm("MoveDown", "FormQuestionConditions", new { id = condition.QuestionId }, FormMethod.Post))
+                                    using (Html.BeginForm("MoveDown", "FormQuestionConditions", new { id = condition.ConditionId }, FormMethod.Post))
                                     {
                                         @Html.AntiForgeryToken()
                                         <a href="#" onclick="this.closest('form').submit();return false;">Down</a>

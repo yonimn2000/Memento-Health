@@ -42,15 +42,17 @@ window.onresize = () => {
 };
 
 let drawSelectedPointOnImage = () => {
-    $('.img-point').remove();
-    let img = $('#img-wrapper');
-    let point = $('<div class="img-point"></div>');
+    if (selectedPoint.x) {
+        $('.img-point').remove();
+        let img = $('#img-wrapper');
+        let point = $('<div class="img-point"></div>');
 
-    let x = selectedPoint.x * $("#image").width();
-    let y = selectedPoint.y * $("#image").height();
-    point.css({
-        left: x + "px",
-        top: y + "px"
-    });
-    point.appendTo(img);
+        let x = selectedPoint.x * $("#image").width();
+        let y = selectedPoint.y * $("#image").height();
+        point.css({
+            left: x + "px",
+            top: y + "px"
+        });
+        point.appendTo(img);
+    }
 }

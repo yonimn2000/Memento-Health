@@ -166,17 +166,19 @@
         }
 
         let drawPointOnImage = () => {
-            $('.img-point').remove();
-            let img = $('#img-wrapper');
-            let point = $('<div class="img-point"></div>');
+            if (lastImageClick.x) {
+                $('.img-point').remove();
+                let img = $('#img-wrapper');
+                let point = $('<div class="img-point"></div>');
 
-            let x = lastImageClick.x * $("#image").width();
-            let y = lastImageClick.y * $("#image").height();
-            point.css({
-                left: x + "px",
-                top: y + "px"
-            });
-            point.appendTo(img);
+                let x = lastImageClick.x * $("#image").width();
+                let y = lastImageClick.y * $("#image").height();
+                point.css({
+                    left: x + "px",
+                    top: y + "px"
+                });
+                point.appendTo(img);
+            }
         }
 
         let submitClicked = async (nextAction) => {
@@ -221,7 +223,7 @@
                     }
                     break;
                 case '@QuestionType.Radiobuttons.ToString()':
-                    jsonData.answer = $("#radiobuttons :checked").val();
+                    jsonData.answer = $("#radiobuttons :checked").val() ?? "";
                     if (isRequired && jsonData.answer.length == 0) {
                         isValidForm = false;
                         alert("Invalid radiobutton value.");
