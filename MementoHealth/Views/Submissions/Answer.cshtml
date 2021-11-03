@@ -223,7 +223,7 @@
                     }
                     break;
                 case '@QuestionType.Radiobuttons.ToString()':
-                    jsonData.answer = $("#radiobuttons :checked").val();
+                    jsonData.answer = $("#radiobuttons :checked").val() ?? "";
                     if (isRequired && jsonData.answer.length == 0) {
                         isValidForm = false;
                         alert("Invalid radiobutton value.");
