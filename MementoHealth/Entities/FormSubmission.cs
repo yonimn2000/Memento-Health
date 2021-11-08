@@ -12,8 +12,11 @@ namespace MementoHealth.Entities
         [Key]
         public int SubmissionId { get; set; }
 
-        [DisplayName("Submission Date")]
-        public DateTime? SubmissionDate { get; set; }
+        [DisplayName("Start")]
+        public DateTime SubmissionStartDate { get; set; }
+
+        [DisplayName("End")]
+        public DateTime? SubmissionEndDate { get; set; }
 
         [ForeignKey("Patient")]
         public int? PatientId { get; set; } // Nullable to avoid multiple cascade paths problem.
@@ -28,6 +31,20 @@ namespace MementoHealth.Entities
         [NotMapped]
         [DisplayName("Is Complete")]
         public bool IsComplete => Answers.Count > 0 && GetNextQuestion() == null;
+
+        [NotMapped]
+        [DisplayName("Time to Complete")]
+        public TimeSpan? TimeToComplete
+        {
+            get
+            {
+                if (SubmissionEndDate == null)
+                    return null;
+
+                TimeSpan diff = (DateTime)SubmissionEndDate - SubmissionStartDate;
+                return new TimeSpan(diff.Days, diff.Hours, diff.Minutes, diff.Seconds);
+            }
+        }
 
         public FormQuestion GetNextQuestion()
         {

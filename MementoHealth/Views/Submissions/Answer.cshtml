@@ -61,6 +61,8 @@
         }
     </div>
 
+    <button type="button" class="btn btn-sm btn-danger" onclick="clearAnswer()">Clear answer</button>
+
     <div>@remainingQuestionsTest</div>
     <div class="progress" style="height: 36px;">
         <div class="progress-bar" role="progressbar" style="width: @Model.GetProgress()%"><b>@Model.GetProgress()%</b></div>
@@ -148,6 +150,18 @@
                     break;
             }
         });
+
+        let clearAnswer = () => {
+            $("#textbox").val("");
+            $("#checkboxes input").each(function () {
+                $(this).prop('checked', false);
+            });
+            $("#radiobuttons input").each(function () {
+                $(this).prop('checked', false);
+            });
+            lastImageClick = {};
+            $('.img-point').remove();
+        }
 
         let doit;
         window.onresize = () => {

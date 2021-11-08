@@ -7,6 +7,18 @@
 @Html.Partial("_PatientDetailsPartial", Model.Patient)
 <hr />
 
+<div>
+    <b>Is complete: </b>@Model.IsComplete |
+    <b>Start: </b>@Model.SubmissionStartDate
+    @if (Model.SubmissionEndDate != null)
+    {
+        <span>|</span>
+        <b>End: </b>@Model.SubmissionEndDate
+        <span>|</span>
+        <b>Time to Complete: </b>@Model.TimeToComplete
+    }
+</div>
+
 @Html.Partial("_SubmissionDetailsPartial", Model)
 
 <div>@Html.ActionLink("Back to Submission List", "Index")</div>
