@@ -6,10 +6,12 @@
     ViewBag.UseFullScreenWidth = true;
     ViewBag.HidePatient = true;
 }
-
-<h2>@ViewBag.Title</h2>
-<hr />
-@Html.ActionLink("Back to Patients", "Index", "Patients") |
-@Html.ActionLink("Start new", "Start", "Submissions", new { id = patient.PatientId }, null)
+<div class="box text-center">
+    <div class="page-title font-weight-bold h2">@ViewBag.Title</div>
+    <div style="margin-top:-20px; margin-bottom: 20px">
+        @Html.ActionLink("Back to Patients", "Index", "Patients") |
+        @Html.ActionLink("Start new", "Start", "Submissions", new { id = patient.PatientId }, null)
+    </div>
+</div>
 
 @Html.Partial("_SubmissionsTablePartial", Model)
