@@ -3,27 +3,37 @@
     bool isPatientView = ViewBag.ShowChangeAnswerLinks != null && ViewBag.ShowChangeAnswerLinks == true;
 }
 
-<table class="table table-striped">
-    <tr>
-        <th>Question</th>
-        <th>@(isPatientView ? "Your" : "Patient") Answer</th>
-        @if (isPatientView)
-        {
-            <th></th>
-        }
-    </tr>
-    @foreach (var answer in Model.Answers.OrderBy(a => a.AnswerId).ToList())
-    {
-        <tr>
-            <td>@answer.Question.Question</td>
-            <td class="json-data"
-                data-question-type="@answer.Question.TypeString"
-                data-json-question="@answer.Question.JsonData"
-                data-json-answer="@answer.JsonData"></td>
-            @if (isPatientView)
-            {
-                <td>@Html.ActionLink("Change answer", "Answer", new { id = Model.SubmissionId, answerId = answer.AnswerId })</td>
-            }
-        </tr>
-    }
-</table>
+<div class="container" style="overflow-y: auto; white-space: nowrap; min-width: 94.5%">
+    <div class="card shadow">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Question</th>
+                        <th>@(isPatientView ? "Your" : "Patient") Answer</th>
+                        @if (isPatientView)
+                        {
+                            <th>Action</th>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var answer in Model.Answers.OrderBy(a => a.AnswerId).ToList())
+                    {
+                        <tr>
+                            <td>@answer.Question.Question</td>
+                            <td class="json-data"
+                                data-question-type="@answer.Question.TypeString"
+                                data-json-question="@answer.Question.JsonData"
+                                data-json-answer="@answer.JsonData"></td>
+                            @if (isPatientView)
+                            {
+                                <td>@Html.ActionLink("Change Answer", "Answer", new { id = Model.SubmissionId, answerId = answer.AnswerId })</td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
