@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using MementoHealth.Entities;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 
@@ -114,5 +115,14 @@ namespace MementoHealth.Models
     {
         public string SelectedProvider { get; set; }
         public ICollection<System.Web.Mvc.SelectListItem> Providers { get; set; }
+    }
+
+    public class StatsViewModel
+    {
+        public List<Provider> Providers { get; set; }
+        public int PatientCount { get; set; }
+        public int FormCount { get; set;  }
+        public int SubmissionCount { get; set; }
+        public int UserCount { get; set; }
     }
 }

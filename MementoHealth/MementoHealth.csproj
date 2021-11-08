@@ -469,6 +469,7 @@
     <Content Include="Views\Submissions\_SubmissionDetailsPartial.cshtml" />
     <Content Include="Views\Submissions\ThankYou.cshtml" />
     <Content Include="Views\Patients\ImportResults.cshtml" />
+    <Content Include="Views\Providers\Stats.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -96,5 +96,18 @@ namespace MementoHealth.Controllers
                 Db.Dispose();
             base.Dispose(disposing);
         }
+
+        public ActionResult Stats()
+        {
+            StatsViewModel statsViewModel = new StatsViewModel();
+
+            statsViewModel.Providers = Db.Providers.ToList();
+            statsViewModel.PatientCount = Db.Patients.Count();
+            statsViewModel.FormCount = Db.Forms.Count();
+            statsViewModel.SubmissionCount = Db.FormSubmissions.Count();
+            statsViewModel.UserCount = Db.Users.Count();
+
+            return View(statsViewModel);
+        }
     }
 }

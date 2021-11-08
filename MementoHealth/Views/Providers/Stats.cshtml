@@ -1,0 +1,77 @@
+﻿@model MementoHealth.Models.StatsViewModel
+
+@{
+    ViewBag.Title = "Stats";
+}
+
+
+<div class="box" style="text-align: center">
+    <div class="page-title font-weight-bold h2">@ViewBag.Title</div>
+</div>
+<div>
+    <dl class="dl-horizontal text-center">
+
+        <dt>Providers</dt>
+        <dd>
+            @Model.Providers.Count()
+        </dd>
+        <dt>Patients</dt>
+        <dd>
+            @Html.DisplayFor(model => model.PatientCount)
+        </dd>
+        <dt>Forms</dt>
+        <dd>
+            @Html.DisplayFor(model => model.FormCount)
+        </dd>
+        <dt>Users</dt>
+        <dd>
+            @Html.DisplayFor(model => model.UserCount)
+        </dd>
+        <dt>Submissions</dt>
+        <dd>
+            @Html.DisplayFor(model => model.SubmissionCount)
+        </dd>
+    </dl>
+</div>
+<br />
+<h5 class="text-center">Individual Provider Stats:</h5>
+
+<div class="container" style="overflow-y: auto; white-space: nowrap; min-width: 94.5%; text-align: center">
+    <div class="card shadow">
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Patients</th>
+                        <th>Forms</th>
+                        <th>Users</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Providers)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @item.Patients.Count
+                            </td>
+                            <td>
+                                @item.Forms.Count
+                            </td>
+                            <td>
+                                @item.Staff.Count
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+
