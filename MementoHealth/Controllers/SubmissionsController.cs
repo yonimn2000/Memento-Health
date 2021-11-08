@@ -230,6 +230,9 @@ namespace MementoHealth.Controllers
             if (submission == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
+            if (!submission.IsComplete)
+                return RedirectToAction("Answer", id);
+
             if (submission.SubmissionEndDate == null)
             {
                 submission.SubmissionEndDate = DateTime.Now;
