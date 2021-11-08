@@ -43,7 +43,7 @@ namespace MementoHealth.Controllers
             int providerId = GetCurrentUserProvider().ProviderId;
             return View("All", Db.FormSubmissions
                 .Where(s => s.Form.ProviderId == providerId || s.Patient.ProviderId == providerId)
-                .OrderByDescending(q => q.SubmissionDate).ToList());
+                .OrderByDescending(q => q.SubmissionStartDate).ToList());
         }
 
         // GET: Submissions/Form/5
@@ -56,7 +56,7 @@ namespace MementoHealth.Controllers
             if (form.Submissions.Count == 0)
                 return RedirectToAction("Index", "Forms");
 
-            return View("Form", form.Submissions.OrderByDescending(q => q.SubmissionDate).ToList());
+            return View("Form", form.Submissions.OrderByDescending(q => q.SubmissionStartDate).ToList());
         }
 
         // GET: Submissions/Form/5
@@ -69,7 +69,7 @@ namespace MementoHealth.Controllers
             if (patient.Submissions.Count == 0)
                 return RedirectToAction("Index", "Patients");
 
-            return View("Patient", patient.Submissions.OrderByDescending(q => q.SubmissionDate).ToList());
+            return View("Patient", patient.Submissions.OrderByDescending(q => q.SubmissionStartDate).ToList());
         }
 
         // GET: Submissions/Start/5
@@ -109,7 +109,7 @@ namespace MementoHealth.Controllers
             {
                 FormId = form.FormId,
                 PatientId = patient.PatientId,
-                SubmissionDate = DateTime.Now
+                SubmissionStartDate = DateTime.Now
             });
             Db.SaveChanges();
 
@@ -229,6 +229,12 @@ namespace MementoHealth.Controllers
             FormSubmission submission = FindSubmission_Restricted(id);
             if (submission == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            if (submission.SubmissionEndDate == null)
+            {
+                submission.SubmissionEndDate = DateTime.Now;
+                Db.SaveChanges();
+            }
 
             return View("ThankYou", submission);
         }
