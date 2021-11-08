@@ -47,10 +47,12 @@
                             <td>
                                 @if (question.Conditions.Count == 0)
                                 {
+                                    <div>If answer is anything, go to the next question.</div>
                                     if (editsAllowed)
                                     {
-                                        <div>If answer is anything, go to next question.</div>
-                                        @Html.ActionLink("Add condition", "Add", "FormQuestionConditions", new { id = question.QuestionId }, null)
+                                        <text>
+                                            @Html.ActionLink("Add condition", "Add", "FormQuestionConditions", new { id = question.QuestionId }, null)
+                                        </text>
                                     }
                                 }
                                 else if (question.Conditions.Count > 0)
@@ -66,7 +68,7 @@
                                             {
                                                 <li>@condition</li>
                                             }
-                                            <li>If answer is anything, go to next question.</li>
+                                            <li>If answer is anything, go to the next question.</li>
                                         </ol>
                                     }
                                     if (editsAllowed)
