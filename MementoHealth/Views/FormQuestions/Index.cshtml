@@ -12,9 +12,9 @@
     {
         <h4 class="text-secondary" style="margin-top: -20px; margin-bottom: 20px">Edits are not allowed as the form already has some submissions.</h4>
     }
-<p style="margin-bottom: 20px; margin-top: -10px">
-    @Html.ActionLink(" Back to Forms", "Index", "Forms", null, new { @class = "fa fa-arrow-circle-left text-dark"})
-</p>
+    <p style="margin-bottom: 20px; margin-top: -10px">
+        @Html.ActionLink(" Back to Forms", "Index", "Forms", null, new { @class = "fa fa-arrow-circle-left text-dark" })
+    </p>
 </div>
 
 <div class="container" style="overflow-y: auto; white-space: nowrap; min-width: 94.5%; text-align: center">
@@ -49,9 +49,8 @@
                                 {
                                     if (editsAllowed)
                                     {
-                                        <text>
-                                            @Html.ActionLink("Add condition", "Add", "FormQuestionConditions", new { id = question.QuestionId }, null)
-                                        </text>
+                                        <div>If answer is anything, go to next question.</div>
+                                        @Html.ActionLink("Add condition", "Add", "FormQuestionConditions", new { id = question.QuestionId }, null)
                                     }
                                 }
                                 else if (question.Conditions.Count > 0)
@@ -67,6 +66,7 @@
                                             {
                                                 <li>@condition</li>
                                             }
+                                            <li>If answer is anything, go to next question.</li>
                                         </ol>
                                     }
                                     if (editsAllowed)
