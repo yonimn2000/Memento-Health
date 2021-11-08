@@ -12,10 +12,10 @@ namespace MementoHealth.Entities
         [Key]
         public int SubmissionId { get; set; }
 
-        [DisplayName("Submission Start Date")]
+        [DisplayName("Start")]
         public DateTime SubmissionStartDate { get; set; }
 
-        [DisplayName("Submission End Date")]
+        [DisplayName("End")]
         public DateTime? SubmissionEndDate { get; set; }
 
         [ForeignKey("Patient")]

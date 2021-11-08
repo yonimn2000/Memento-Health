@@ -28,6 +28,7 @@ else
             <th>Start</th>
             <th>End</th>
             <th>Time to Complete</th>
+            <th>Is Complete</th>
             <th>Actions</th>
         </tr>
         @foreach (FormSubmission submission in Model)
@@ -45,6 +46,7 @@ else
                 <td>@submission.SubmissionStartDate</td>
                 <td>@submission.SubmissionEndDate</td>
                 <td>@submission.TimeToComplete</td>
+                <td>@submission.IsComplete</td>
                 <td>
                     @Html.ActionLink("View details", "Details", new { id = submission.SubmissionId }) |
                     @Html.ActionLink(submission.IsComplete ? "Edit" : "Continue", "Answer", new { id = submission.SubmissionId }) |
