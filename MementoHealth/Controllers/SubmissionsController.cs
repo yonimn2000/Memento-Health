@@ -163,8 +163,8 @@ namespace MementoHealth.Controllers
                 Patient = submission.Patient,
                 Question = question,
                 IsComplete = submission.IsComplete,
-                CurrentQuestionNumber = submission.Answers.Count,
-                NumberOfRemainingQuestions = submission.Form.Questions.Count - question.Number, // TODO
+                CurrentQuestionNumber = submission.Answers.Count, // TODO: Current graph depth.
+                NumberOfRemainingQuestions = submission.Form.Questions.Count - question.Number, // TODO: Shortest path length to end.
                 JsonData = answer?.JsonData
             });
         }
@@ -198,7 +198,7 @@ namespace MementoHealth.Controllers
             if (model.NextAction != null)
             {
                 switch (model.NextAction)
-                {
+                { // TODO: Graph traversal forward and backward.
                     case "next":
                         goToAnswerId = submission.Answers.Where(a => a.Question.Number > question.Number)
                         .OrderBy(a => a.Question.Number).FirstOrDefault()?.AnswerId;
@@ -207,9 +207,7 @@ namespace MementoHealth.Controllers
                         goToAnswerId = submission.Answers.Where(a => a.Question.Number < question.Number)
                         .OrderBy(a => a.Question.Number).Last().AnswerId;
                         break;
-                    case "review": break;
-                    default:
-                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    // case "review": break;
                 }
             }
 
@@ -231,7 +229,7 @@ namespace MementoHealth.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
             if (!submission.IsComplete)
-                return RedirectToAction("Answer", id);
+                return RedirectToAction("Answer", new { id });
 
             if (submission.SubmissionEndDate == null)
             {

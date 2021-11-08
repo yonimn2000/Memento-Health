@@ -12,7 +12,7 @@
             <th></th>
         }
     </tr>
-    @foreach (var answer in Model.Answers.OrderBy(a => a.AnswerId).ToList())
+    @foreach (var answer in Model.Answers.OrderBy(a => a.Question.Number).ToList())
     {
         <tr>
             <td>@answer.Question.Question</td>

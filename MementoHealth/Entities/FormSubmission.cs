@@ -46,11 +46,6 @@ namespace MementoHealth.Entities
             }
         }
 
-        public FormQuestion GetNextQuestion()
-        {
-            // TODO: Get correct next question.
-            FormQuestion lastAnsweredQuestion = Answers.OrderBy(a => a.Question.Number).Last().Question;
-            return Form.Questions.Where(q => q.Number > lastAnsweredQuestion.Number).OrderBy(q => q.Number).FirstOrDefault();
-        }
+        public FormQuestion GetNextQuestion() => Answers.OrderBy(a => a.Question.Number).Last().GetNextQuestion();
     }
 }

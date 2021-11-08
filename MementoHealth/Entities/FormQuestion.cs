@@ -56,7 +56,7 @@ namespace MementoHealth.Entities
                 ICollection<FormQuestion> questions = new HashSet<FormQuestion>();
                 foreach (FormQuestionCondition condition in Conditions)
                     questions.Add(condition.GoToQuestion);
-                questions.Add(NextSequentialQuestion);
+                questions.Add(NextOrdinalQuestion);
                 return questions;
             }
         }
@@ -73,11 +73,11 @@ namespace MementoHealth.Entities
                         Question = condition.GoToQuestion,
                         Condition = condition
                     });
-                if (!edges.Any(e => e.Question == NextSequentialQuestion
+                if (!edges.Any(e => e.Question == NextOrdinalQuestion
                     || e.Condition.ToString(justCondition: true).Equals("If answer is anything...")))
                     edges.Add(new FormQuestionEdge
                     {
-                        Question = NextSequentialQuestion,
+                        Question = NextOrdinalQuestion,
                         Condition = null
                     });
                 return edges;
@@ -85,7 +85,7 @@ namespace MementoHealth.Entities
         }
 
         [NotMapped]
-        public FormQuestion NextSequentialQuestion
+        public FormQuestion NextOrdinalQuestion
             => Form.Questions.Where(q => q.Number == Number + 1).FirstOrDefault();
 
         [NotMapped]
