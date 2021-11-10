@@ -66,7 +66,6 @@ namespace MementoHealth.Controllers
             var userId = User.Identity.GetUserId();
             var model = new IndexViewModel
             {
-
                 HasPassword = HasPassword(),
                 HasPin = await UserManager.HasPinAsync(userId),
                 PhoneNumber = await UserManager.GetPhoneNumberAsync(userId),
@@ -76,11 +75,7 @@ namespace MementoHealth.Controllers
                 Role = string.Join(", ", await UserManager.GetRolesAsync(userId)),
                 FullName = await UserManager.GetFullNameAsync(userId),
                 Email = await UserManager.GetEmailAsync(userId),
-                ProviderName = GetCurrentUserProvider()?.Name,
-                ProviderPhone = GetCurrentUserProvider()?.Phone,
-                ProviderEmail = GetCurrentUserProvider()?.Email,
-                ProviderAddress = GetCurrentUserProvider()?.Address
-
+                Provider = GetCurrentUserProvider()
             };
             return View(model);
         }
