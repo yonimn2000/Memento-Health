@@ -16,6 +16,13 @@ namespace MementoHealth.Models
         public string Role { get; set; }
         public bool TwoFactor { get; set; }
         public bool BrowserRemembered { get; set; }
+        public string ProviderName { get; set; }
+        public string ProviderPhone { get; set; }
+        public string ProviderEmail { get; set; }
+        public string ProviderAddress { get; set; }
+        public int ProvderForms { get; set; }
+        public int ProvderPatients { get; set; }
+
     }
 
     public class ManageLoginsViewModel

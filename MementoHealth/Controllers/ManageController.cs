@@ -1,4 +1,6 @@
-﻿using MementoHealth.Attributes;
+﻿using MementoHealth.Classes;
+using MementoHealth.Entities;
+using MementoHealth.Attributes;
 using MementoHealth.Filters;
 using MementoHealth.Models;
 using Microsoft.AspNet.Identity;
@@ -14,6 +16,9 @@ namespace MementoHealth.Controllers
     [Authorize]
     public class ManageController : Controller
     {
+
+        private ApplicationDbContext Db { get; } = new ApplicationDbContext();
+
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
@@ -37,6 +42,13 @@ namespace MementoHealth.Controllers
             private set => _userManager = value;
         }
 
+        private Provider GetCurrentUserProvider()
+        {
+            if (User.IsInRole(Role.SysAdmin))
+                return null;
+            return Db.Users.Find(User.Identity.GetUserId()).Provider;
+        }
+
         //
         // GET: /Manage/Index
         public async Task<ActionResult> Index(ManageMessageId? message)
@@ -54,6 +66,7 @@ namespace MementoHealth.Controllers
             var userId = User.Identity.GetUserId();
             var model = new IndexViewModel
             {
+
                 HasPassword = HasPassword(),
                 HasPin = await UserManager.HasPinAsync(userId),
                 PhoneNumber = await UserManager.GetPhoneNumberAsync(userId),
@@ -62,7 +75,12 @@ namespace MementoHealth.Controllers
                 BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId),
                 Role = string.Join(", ", await UserManager.GetRolesAsync(userId)),
                 FullName = await UserManager.GetFullNameAsync(userId),
-                Email = await UserManager.GetEmailAsync(userId)
+                Email = await UserManager.GetEmailAsync(userId),
+                ProviderName = GetCurrentUserProvider()?.Name,
+                ProviderPhone = GetCurrentUserProvider()?.Phone,
+                ProviderEmail = GetCurrentUserProvider()?.Email,
+                ProviderAddress = GetCurrentUserProvider()?.Address
+
             };
             return View(model);
         }
