@@ -3,13 +3,13 @@
     ViewBag.Title = "Answer";
     ViewBag.PatientId = Model.Patient.PatientId;
 
-    bool isLast = Model.NumberOfRemainingQuestions == 0;
+    bool isLast = Model.NumberOfRemainingQuestions == 1;
     string remainingQuestionsTest;
     if (isLast)
     {
         remainingQuestionsTest = "Last question";
     }
-    else if (Model.NumberOfRemainingQuestions == 1)
+    else if (Model.NumberOfRemainingQuestions == 2)
     {
         remainingQuestionsTest = "One more question or less remain.";
     }

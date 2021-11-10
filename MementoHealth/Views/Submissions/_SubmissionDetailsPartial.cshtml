@@ -12,7 +12,7 @@
             <th></th>
         }
     </tr>
-    @foreach (var answer in Model.Answers.OrderBy(a => a.Question.Number).ToList())
+    @foreach (var answer in Model.GetAnswers())
     {
         <tr>
             <td>@answer.Question.Question</td>
@@ -22,7 +22,7 @@
                 data-json-answer="@answer.JsonData"></td>
             @if (isPatientView)
             {
-                <td>@Html.ActionLink("Change answer", "Answer", new { id = Model.SubmissionId, answerId = answer.AnswerId })</td>
+                <td>@Html.ActionLink("Change answer", "Answer", new { id = Model.SubmissionId, questionId = answer.QuestionId })</td>
             }
         </tr>
     }
