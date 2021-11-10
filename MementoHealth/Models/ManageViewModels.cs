@@ -119,10 +119,13 @@ namespace MementoHealth.Models
 
     public class StatsViewModel
     {
-        public List<Provider> Providers { get; set; }
+        public int ProviderCount { get; set; }
         public int PatientCount { get; set; }
         public int FormCount { get; set;  }
         public int SubmissionCount { get; set; }
         public int UserCount { get; set; }
+        public int AveragePatients { get; set; }
+        public int AverageForms { get; set; }
+        public int AverageUsers { get; set; }
     }
 }

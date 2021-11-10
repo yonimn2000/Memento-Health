@@ -1,6 +1,8 @@
 ﻿using MementoHealth.Classes;
 using MementoHealth.Entities;
 using MementoHealth.Models;
+using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
@@ -100,12 +102,16 @@ namespace MementoHealth.Controllers
         public ActionResult Stats()
         {
             StatsViewModel statsViewModel = new StatsViewModel();
+            List<Provider> providers = Db.Providers.ToList();
 
-            statsViewModel.Providers = Db.Providers.ToList();
+            statsViewModel.ProviderCount = Db.Providers.Count();
             statsViewModel.PatientCount = Db.Patients.Count();
             statsViewModel.FormCount = Db.Forms.Count();
             statsViewModel.SubmissionCount = Db.FormSubmissions.Count();
             statsViewModel.UserCount = Db.Users.Count();
+            statsViewModel.AveragePatients = (int)Math.Round(providers.Average(x => x.Patients.Count()));
+            statsViewModel.AverageForms = (int)Math.Round(providers.Average(x => x.Forms.Count()));
+            statsViewModel.AverageUsers = (int)Math.Round(providers.Average(x => x.Staff.Count()));
 
             return View(statsViewModel);
         }
