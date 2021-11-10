@@ -21,7 +21,6 @@ namespace MementoHealth.Entities
         [Required]
         public string Email { get; set; }
 
-
         public virtual ICollection<ApplicationUser> Staff { get; set; }
         public virtual ICollection<Patient> Patients { get; set; }
         public virtual ICollection<Form> Forms { get; set; }
