@@ -144,7 +144,7 @@
                 int charLimit = 30;
                 string questionStr = question.Question.Truncate(charLimit);
                 <text>g.addNode('@questionStr');</text>
-                foreach (var edge in question.GraphEdges)
+                foreach (var edge in question.GetGraphEdges())
                 {
                     string toQuestionStr = edge.Question?.Question.Truncate(charLimit) ?? "End";
                     string label = "";
