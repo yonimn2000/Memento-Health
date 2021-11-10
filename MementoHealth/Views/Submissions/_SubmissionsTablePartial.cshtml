@@ -25,13 +25,15 @@ else
             {
                 <th>Form</th>
             }
-            <th>Complete</th>
+            <th>Start</th>
+            <th>End</th>
+            <th>Time to Complete</th>
             <th>Actions</th>
         </tr>
         @foreach (FormSubmission submission in Model)
         {
             <tr>
-                <td>@submission.SubmissionDate</td>
+                <td>@submission.SubmissionStartDate</td>
                 @if (!hidePatient)
                 {
                     <td>@submission.Patient.FullName</td>
@@ -40,10 +42,12 @@ else
                 {
                     <td>@submission.Form.Name</td>
                 }
-                <td>@submission.IsComplete</td>
+                <td>@submission.SubmissionStartDate</td>
+                <td>@submission.SubmissionEndDate</td>
+                <td>@submission.TimeToComplete</td>
                 <td>
+                    @Html.ActionLink("View details", "Details", new { id = submission.SubmissionId }) |
                     @Html.ActionLink(submission.IsComplete ? "Edit" : "Continue", "Answer", new { id = submission.SubmissionId }) |
-                    @Html.ActionLink("Details", "Details", new { id = submission.SubmissionId }) |
                     @Html.ActionLink("Delete", "Delete", new { id = submission.SubmissionId })
                 </td>
             </tr>
