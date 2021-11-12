@@ -1,11 +1,12 @@
 ﻿@model IEnumerable<MementoHealth.Entities.Provider>
 
 @{
-    ViewBag.Title = "Providers";   
+    ViewBag.Title = "Providers";
 }
 
 <div class="box" style="text-align: center">
     <div class="page-title font-weight-bold h2">@ViewBag.Title</div>
+    <div style="margin-top:-20px; margin-bottom: 20px">@Html.ActionLink(" View Stats", "Stats", null, new { @class = "text-dark" })</div>
 </div>
 
 <div class="container" style="overflow-y: auto; white-space: nowrap; min-width: 94.5%; text-align: center">
@@ -54,7 +55,7 @@
                             <td>
                                 @Html.DisplayFor(modelItem => item.Email)
                             </td>
-                             <td>
+                            <td>
                                 @item.Forms.Count
                             </td>
                             <td>

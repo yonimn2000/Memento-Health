@@ -68,7 +68,7 @@
                             </div>
                         </div>
 
-                        @if (Model.Provider != null)
+                        @if (!User.IsInRole(Role.SysAdmin))
                         {
                             <div class="form-group mt-4">
                                 <div class="col-md-auto my-1 font-weight-bold" style="text-align: center">My Provider Details</div><hr style="margin: 0 0 0 0" />
