@@ -2,6 +2,8 @@
 using MementoHealth.Entities;
 using MementoHealth.Models;
 using Microsoft.AspNet.Identity;
+using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
@@ -114,6 +116,23 @@ namespace MementoHealth.Controllers
             if (disposing)
                 Db.Dispose();
             base.Dispose(disposing);
+        }
+
+        public ActionResult Stats()
+        {
+            List<Provider> providers = Db.Providers.ToList();
+
+            return View(new StatsViewModel
+            {
+                ProviderCount = providers.Count,
+                PatientCount = Db.Patients.Count(),
+                FormCount = Db.Forms.Count(),
+                SubmissionCount = Db.FormSubmissions.Count(),
+                UserCount = Db.Users.Count(),
+                AveragePatients = Math.Round(providers.Average(x => x.Patients.Count()),2),
+                AverageForms = Math.Round(providers.Average(x => x.Forms.Count()), 2),
+                AverageUsers = Math.Round(providers.Average(x => x.Staff.Count()), 2)
+            });
         }
     }
 }

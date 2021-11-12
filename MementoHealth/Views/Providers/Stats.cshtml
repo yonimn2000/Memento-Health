@@ -1,0 +1,51 @@
+﻿@model MementoHealth.Models.StatsViewModel
+
+
+<div class="row d-flex justify-content-center">
+    <div class="shadow bg-light text-center" style="border-radius: 12px">
+        <div class="page-title h2 font-weight-bold" style="padding-top: 25px;">Memento Health Stats</div>
+        <div class="custom-form-div" style="margin-top: -50px; padding-bottom: 0px">
+
+            <div>
+                <dl class="dl-horizontal text-center">
+
+                    <dt>Providers</dt>
+                    <dd>
+                        @Model.ProviderCount
+                    </dd>
+                    <dt>Patients</dt>
+                    <dd>
+                        @Model.PatientCount
+                    </dd>
+                    <dt>Forms</dt>
+                    <dd>
+                        @Model.FormCount
+                    </dd>
+                    <dt>Users</dt>
+                    <dd>
+                        @Model.UserCount
+                    </dd>
+                    <dt>Submissions</dt>
+                    <dd>
+                        @Model.SubmissionCount
+                    </dd>
+                    <dt>Average Patients Per Provider</dt>
+                    <dd>
+                        @Model.AveragePatients
+                    </dd>
+                    <dt>Average Forms Per Provider</dt>
+                    <dd>
+                        @Model.AverageForms
+                    </dd>
+                    <dt>Average Users Per Provider</dt>
+                    <dd>
+                        @Model.AverageUsers
+                    </dd>
+                </dl>
+            </div>
+            <br />
+        </div>
+    </div>
+</div>
+
+
