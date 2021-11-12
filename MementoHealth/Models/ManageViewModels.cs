@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using MementoHealth.Entities;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 
@@ -17,7 +16,6 @@ namespace MementoHealth.Models
         public string Role { get; set; }
         public bool TwoFactor { get; set; }
         public bool BrowserRemembered { get; set; }
-        public Provider Provider { get; set; }
     }
 
     public class ManageLoginsViewModel
