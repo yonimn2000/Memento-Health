@@ -1,6 +1,6 @@
 ﻿@model MementoHealth.Models.IndexViewModel
 @{
-    ViewBag.Title = "Manage";   
+    ViewBag.Title = "Manage";
 }
 
 <div class="row d-flex justify-content-center">
@@ -54,7 +54,6 @@
                                         @Html.AntiForgeryToken()
 
                                         <input type="submit" value="Disable" class="btn btn-link" style="padding: 0 0 0 0" />
-
                                     }
                                 }
                                 else
@@ -64,16 +63,21 @@
                                         @Html.AntiForgeryToken()
 
                                         <input type="submit" value="Enable" class="btn btn-link" style="padding: 0 0 0 0" />
-
                                     }
                                 }
                             </div>
                         </div>
+
+                        @if (Model.Provider != null)
+                        {
+                            <div class="form-group mt-4">
+                                <div class="col-md-auto my-1 font-weight-bold" style="text-align: center">My Provider Details</div><hr style="margin: 0 0 0 0" />
+                                <div class="col-md-auto my-1">@Html.ActionLink("View", "Details", "Providers")</div>
+                            </div>
+                        }
                     </section>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-

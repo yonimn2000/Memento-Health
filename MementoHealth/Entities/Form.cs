@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace MementoHealth.Entities
 {
@@ -20,5 +21,7 @@ namespace MementoHealth.Entities
 
         public virtual ICollection<FormSubmission> Submissions { get; set; }
         public virtual ICollection<FormQuestion> Questions { get; set; }
+
+        public FormQuestion GetFirstQuestion() => Questions.OrderBy(q => q.Number).FirstOrDefault();
     }
 }
