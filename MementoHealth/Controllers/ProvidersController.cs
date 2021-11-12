@@ -111,13 +111,7 @@ namespace MementoHealth.Controllers
             return RedirectToAction("Index");
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-                Db.Dispose();
-            base.Dispose(disposing);
-        }
-
+        [Authorize(Roles = Role.SysAdmin)]
         public ActionResult Stats()
         {
             List<Provider> providers = Db.Providers.ToList();
@@ -129,10 +123,17 @@ namespace MementoHealth.Controllers
                 FormCount = Db.Forms.Count(),
                 SubmissionCount = Db.FormSubmissions.Count(),
                 UserCount = Db.Users.Count(),
-                AveragePatients = Math.Round(providers.Average(x => x.Patients.Count()),2),
+                AveragePatients = Math.Round(providers.Average(x => x.Patients.Count()), 2),
                 AverageForms = Math.Round(providers.Average(x => x.Forms.Count()), 2),
                 AverageUsers = Math.Round(providers.Average(x => x.Staff.Count()), 2)
             });
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+                Db.Dispose();
+            base.Dispose(disposing);
         }
     }
 }
