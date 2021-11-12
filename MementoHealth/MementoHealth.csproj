@@ -254,6 +254,7 @@
     <Compile Include="Models\FormViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\ProviderViewModels.cs" />
     <Compile Include="Models\SubmissionViewModels.cs" />
     <Compile Include="Models\UsersViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -474,6 +475,7 @@
     <Content Include="Views\Submissions\_SubmissionDetailsPartial.cshtml" />
     <Content Include="Views\Submissions\ThankYou.cshtml" />
     <Content Include="Views\Patients\ImportResults.cshtml" />
+    <Content Include="Views\Providers\Stats.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
