@@ -117,15 +117,4 @@ namespace MementoHealth.Models
         public ICollection<System.Web.Mvc.SelectListItem> Providers { get; set; }
     }
 
-    public class StatsViewModel
-    {
-        public int ProviderCount { get; set; }
-        public int PatientCount { get; set; }
-        public int FormCount { get; set;  }
-        public int SubmissionCount { get; set; }
-        public int UserCount { get; set; }
-        public int AveragePatients { get; set; }
-        public int AverageForms { get; set; }
-        public int AverageUsers { get; set; }
-    }
 }

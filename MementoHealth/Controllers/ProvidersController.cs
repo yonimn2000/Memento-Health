@@ -101,19 +101,19 @@ namespace MementoHealth.Controllers
 
         public ActionResult Stats()
         {
-            StatsViewModel statsViewModel = new StatsViewModel();
             List<Provider> providers = Db.Providers.ToList();
 
-            statsViewModel.ProviderCount = Db.Providers.Count();
-            statsViewModel.PatientCount = Db.Patients.Count();
-            statsViewModel.FormCount = Db.Forms.Count();
-            statsViewModel.SubmissionCount = Db.FormSubmissions.Count();
-            statsViewModel.UserCount = Db.Users.Count();
-            statsViewModel.AveragePatients = (int)Math.Round(providers.Average(x => x.Patients.Count()));
-            statsViewModel.AverageForms = (int)Math.Round(providers.Average(x => x.Forms.Count()));
-            statsViewModel.AverageUsers = (int)Math.Round(providers.Average(x => x.Staff.Count()));
-
-            return View(statsViewModel);
+            return View(new StatsViewModel
+            {
+                ProviderCount = providers.Count,
+                PatientCount = Db.Patients.Count(),
+                FormCount = Db.Forms.Count(),
+                SubmissionCount = Db.FormSubmissions.Count(),
+                UserCount = Db.Users.Count(),
+                AveragePatients = Math.Round(providers.Average(x => x.Patients.Count()),2),
+                AverageForms = Math.Round(providers.Average(x => x.Forms.Count()), 2),
+                AverageUsers = Math.Round(providers.Average(x => x.Staff.Count()), 2)
+            });
         }
     }
 }
