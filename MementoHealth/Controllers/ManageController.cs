@@ -1,4 +1,6 @@
-﻿using MementoHealth.Attributes;
+﻿using MementoHealth.Classes;
+using MementoHealth.Entities;
+using MementoHealth.Attributes;
 using MementoHealth.Filters;
 using MementoHealth.Models;
 using Microsoft.AspNet.Identity;
@@ -14,6 +16,9 @@ namespace MementoHealth.Controllers
     [Authorize]
     public class ManageController : Controller
     {
+
+        private ApplicationDbContext Db { get; } = new ApplicationDbContext();
+
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 

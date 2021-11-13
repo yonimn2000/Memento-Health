@@ -8,6 +8,18 @@
     <div style="margin-bottom: 20px">@Html.ActionLink("Back to Submission List", "Index")</div>
 </div>
 
+<div>
+    <b>Is complete: </b>@Model.IsComplete |
+    <b>Start: </b>@Model.SubmissionStartDate
+    @if (Model.SubmissionEndDate != null)
+    {
+        <span>|</span>
+        <b>End: </b>@Model.SubmissionEndDate
+        <span>|</span>
+        <b>Time to Complete: </b>@Model.TimeToComplete
+    }
+</div>
+
 @Html.Partial("_SubmissionDetailsPartial", Model)
 
 @section scripts

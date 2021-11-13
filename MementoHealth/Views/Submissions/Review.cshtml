@@ -10,6 +10,11 @@
     <div style="margin-top:-20px; margin-bottom: 20px">@Html.Partial("_PatientDetailsPartial", Model.Patient)</div>
 </div>
 
+<h4>Form completed successfully. Please review your answers below and hit submit.</h4>
+<div class="progress" style="height: 36px;">
+    <div class="progress-bar bg-success" role="progressbar" style="width: 100%"><b>100%</b></div>
+</div>
+
 @Html.Partial("_SubmissionDetailsPartial", Model)
 
 <div class="text-center pt-3">
