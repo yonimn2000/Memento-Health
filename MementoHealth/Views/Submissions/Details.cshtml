@@ -8,9 +8,9 @@
 <hr />
 
 <div>
-    <b>Is complete: </b>@Model.IsComplete |
+    <b>Answered All Questions: </b>@Model.AnsweredAllQuestions |
     <b>Start: </b>@Model.SubmissionStartDate
-    @if (Model.SubmissionEndDate != null)
+    @if (Model.WasSubmitted)
     {
         <span>|</span>
         <b>End: </b>@Model.SubmissionEndDate
