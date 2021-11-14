@@ -32,8 +32,8 @@
                     {
                         <tr>
                             <td>@item.FullName</td>
-                            <td>@item.Email</td>
-                            <td>@item.Phone</td>
+                            <td>@Html.Email(item.Email)</td>
+                            <td>@Html.Phone(item.Phone)</td>
                             <td>@item.Role</td>
                             <td>@item.LockOutStatus @(item.EmailConfirmed ? "" : " + Email not confirmed")</td>
                             <td>

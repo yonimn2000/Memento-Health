@@ -1,17 +1,18 @@
-﻿using System.Web.Mvc;
+﻿using System.Web;
+using System.Web.Mvc;
 
 namespace MementoHealth.Classes
 {
     public static class HtmlExtensions
     {
-        public static string Phone(this HtmlHelper helper, string phone)
+        public static IHtmlString Phone(this HtmlHelper helper, string phone)
         {
-            return $"<a href='tel:{phone}'>{phone}</a>";
+            return new HtmlString(string.IsNullOrWhiteSpace(phone) ? "<span>None</span>" : $"<a href='tel:{phone}'>{phone}</a>");
         }
 
-        public static string Email(this HtmlHelper helper, string email)
+        public static IHtmlString Email(this HtmlHelper helper, string email)
         {
-            return $"<a href='mailto:{email}'>{email}</a>";
+            return new HtmlString(string.IsNullOrWhiteSpace(email) ? "<span>None</span>" : $"<a href='mailto:{email}' target='_blank' rel='noopener noreferrer'>{email}</a>");
         }
     }
 }
