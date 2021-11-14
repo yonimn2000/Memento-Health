@@ -56,8 +56,8 @@
                                         {
                                             <tr>
                                                 <td>@item.FullName</td>
-                                                <td>@item.Email</td>
-                                                <td>@(item.PhoneNumber)</td>
+                                                <td>@Html.Email(item.Email)</td>
+                                                <td>@Html.Phone(item.PhoneNumber)</td>
                                             </tr>
                                         }
                                     </tbody>
