@@ -18,11 +18,9 @@ namespace MementoHealth
 {
     public class EmailService : IIdentityMessageService
     {
-        public Task SendAsync(IdentityMessage message)
+        public async Task SendAsync(IdentityMessage message)
         {
-            if (SendAsync(message.Destination, message.Subject, message.Body).Result)
-                return Task.FromResult(0);
-            return Task.FromResult(-1);
+            await SendAsync(message.Destination, message.Subject, message.Body);
         }
 
         public static async Task<bool> SendAsync(string destination, string subject, string body)
