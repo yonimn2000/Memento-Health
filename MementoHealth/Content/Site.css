@@ -31,7 +31,7 @@ textarea {
 .page-title {
     display: flex;
     flex-direction: row;
-    padding-bottom: 25px;
+    padding-bottom: 5px;
     text-align: center;
 }
 
@@ -54,9 +54,9 @@ textarea {
 .custom-form-div {
     border: 1px solid transparent;
     border-radius: 20px;
-    margin-top: 30px;
+    margin-top: 0px;
     margin-bottom: 50px;
-    padding-top: 50px;
+    padding-top: 0px;
     padding-right: 150px;
     padding-bottom: 50px;
     padding-left: 150px;
@@ -67,9 +67,9 @@ textarea {
     .custom-form-div {
         border: 1px solid transparent;
         border-radius: 20px;
-        margin-top: 20px;
+        margin-top: 0px;
         margin-bottom: 20px;
-        padding-top: 20px;
+        padding-top: 0px;
         padding-right: 20px;
         padding-bottom: 20px;
         padding-left: 20px;
@@ -80,6 +80,10 @@ textarea {
     #logo-img {
         content: url('../Images/Mobile Memento Health-logo.svg');
         top: -1px;
+    }
+
+    .body-content {
+        min-height: calc(100vh - 190px) !important;
     }
 }
 
@@ -125,13 +129,43 @@ footer {
     .btn-primary:focus {
         background-color: #5466af !important;
         border-color: #5466af !important;
-        background-image: linear-gradient(rgba(0, 0, 0, 0.2) 0 0);
+        background-image: linear-gradient(rgba(0, 0, 0, 0.4) 0 0);
     }
 
     .btn-primary:active {
         background-color: #5466af !important;
         border-color: #5466af !important;
     }
+
+.table-striped > tbody > tr:nth-child(odd) > td,
+.table-striped > tbody > tr:nth-child(odd) > th {
+    background-color: rgb(84 102 175 / 0.25);
+}
+
+a {
+    color: #3952ba;
+    text-decoration: none;
+}
+
+    a:hover {
+        color: #0e2fb7;
+        text-decoration: none;
+    }
+
+    a:focus {
+        color: #0024b6;
+        text-decoration: none;
+    }
+
+    a:active {
+        color: #0024b6;
+        text-decoration: none;
+    }
+
+    div.shadow.bg-light {
+        margin-top: 100px;
+    }
+
 /****** The following are for the selected point on the picture answer ******/
 
 #img-wrapper {

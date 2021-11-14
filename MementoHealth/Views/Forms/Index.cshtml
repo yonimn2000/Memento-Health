@@ -4,14 +4,17 @@
     ViewBag.Title = "Forms";
 }
 
-<div class="box" style="text-align: center">
-    <div class="page-title font-weight-bold h2">@ViewBag.Title</div>
-    @if (User.IsInRole(Role.ProviderAdmin))
-    {
-        <p style="margin-top:-20px; margin-bottom: 20px">
-            @Html.ActionLink(" Create New Form", "Create", null, new { @class = "fa fa-plus-square text-dark" })
-        </p>
-    }
+<div class="text-center">
+    <div class="h2 page-title font-weight-bold">@ViewBag.Title</div>
+    <div class="text-secondary">
+        @if (User.IsInRole(Role.ProviderAdmin))
+        {
+            <p>
+                @Html.ActionLink(" Create New Form", "Create", null, new { @class = "fa fa-plus-square text-dark" })
+            </p>
+        }
+    </div>
+    <hr />
 </div>
 
 <div class="container" style="overflow-y: auto; white-space: nowrap; min-width: 94.5%; text-align: center">

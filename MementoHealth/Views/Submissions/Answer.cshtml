@@ -19,9 +19,8 @@
     }
 }
 <div class="row d-flex justify-content-center">
-    <div class="shadow bg-light" style="border-radius: 12px; min-width: 90%">
-        <div style="padding-top: 20px; padding-right: 15px; text-align: right">@Html.Partial("_PatientDetailsPartial", Model.Patient)</div>
-        <div class="custom-form-div" style="margin-top: -1px">
+    <div class="shadow bg-light" style="border-radius: 12px; width: 90%; height: 85vh; margin-top: 15px">
+        <div class="custom-form-div" style="">
             @using (Html.BeginForm())
             {
                 @Html.AntiForgeryToken()
@@ -33,43 +32,57 @@
                 @Html.HiddenFor(m => m.JsonData)
                 @Html.HiddenFor(m => m.NextAction)
 
-                <h2 class="pb-3">@Model.Question.Question</h2>
+                <h2 class="pb-3 pt-5">@Model.Question.Question</h2>
 
                 if (Model.Question.IsRequired)
                 {
-                    <div class="text-danger pb-2">Answer is required.</div>
+                    <div class="text-danger pb-2" style="font-size: large">Answer is required.</div>
                 }
+                
+        <div class="container" style="padding: 0 0 0 0">
+            <input class="form-control" id="textbox" style="display:none; font-size: large" autocomplete="off">
+            <div class="form-check" id="radiobuttons" style="display: none; font-size: x-large"></div>
+            <div class="form-check" id="checkboxes" style="display: none; font-size: x-large"></div>
+            <div id="img-wrapper">
+                <img id="image" class="img-fluid" style="display:none;" onclick="imgClicked(event)" />
+            </div>
+        </div>
 
-                <input class="form-control" id="textbox" style="display:none;" autocomplete="off">
-                <div class="form-check" id="radiobuttons" style="display:none;"></div>
-                <div class="form-check" id="checkboxes" style="display:none;"></div>
-                <div id="img-wrapper">
-                    <img id="image" class="img-fluid" style="display:none;" onclick="imgClicked(event)" />
-                </div>
 
-                <div class="my-3 text-right">
-                    @if (Model.Question.Number != 1)
-                    {
-                        <button type="button" id="previous-button" class="btn btn-outline-primary" onclick="submitClicked('previous')">Previous</button>
+                <div style="position: absolute; bottom: 250px; left: 7.5%; right: 50%; width: 85%">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <button type="button" class="btn btn-lg btn-danger" onclick="clearAnswer()">Clear answer</button>
+                        </div>
+                        <div class="col-md-8 text-right">
+                            @if (Model.Question.Number != 1)
+                            {
+                                <button type="button" id="previous-button" class="btn btn-lg btn-outline-primary" onclick="submitClicked('previous')">Previous</button>
+                            }
+                            <button type="button" id="next-button" class="btn btn-lg btn-primary" onclick="submitClicked('next')">@(isLast ? "Review" : "Next")</button>
+                            @if (!isLast && Model.IsComplete)
+                            {
+                                <button type="button" id="review-button" class="btn btn-lg btn-info" onclick="submitClicked('review')">Review</button>
+                            }
+                        </div>
+                    </div>
+                    </div>
+
+                    <div style="position: absolute; bottom: 125px; left: 7.5%; right: 50%; width: 85%">
+                        <div>@remainingQuestionsTest</div>
+                        <div class="progress" style="height: 36px;">
+                            <div class="progress-bar" role="progressbar" style="width: @Model.GetProgress()%"><b>@Model.GetProgress()%</b></div>
+                        </div>
+                        <div class="text-center pt-2">@Html.Partial("_PatientDetailsPartial", Model.Patient)</div>
+                    </div>
                     }
-                    <button type="button" id="next-button" class="btn btn-primary" onclick="submitClicked('next')">@(isLast ? "Review" : "Next")</button>
-                    @if (!isLast && Model.IsComplete)
-                    {
-                        <button type="button" id="review-button" class="btn btn-info" onclick="submitClicked('review')">Review</button>
-                    }
                 </div>
+            </div>
+</div>
 
-    <button type="button" class="btn btn-sm btn-danger" onclick="clearAnswer()">Clear answer</button>
-
-    <div>@remainingQuestionsTest</div>
-    <div class="progress" style="height: 36px;">
-        <div class="progress-bar" role="progressbar" style="width: @Model.GetProgress()%"><b>@Model.GetProgress()%</b></div>
-    </div>
-}
-
-            @section scripts
+@section scripts
 {
-                <script>
+    <script>
         let answerType = '@Model.Question.TypeString';
         let lastImageClick = {};
 
@@ -256,5 +269,5 @@
                 $('#next-button').closest("form").submit();
             }
         };
-                </script>
-            }
+    </script>
+}

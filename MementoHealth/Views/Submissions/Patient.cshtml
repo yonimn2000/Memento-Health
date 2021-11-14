@@ -6,12 +6,22 @@
     ViewBag.UseFullScreenWidth = true;
     ViewBag.HidePatient = true;
 }
-<div class="box text-center">
-    <div class="page-title font-weight-bold h2">@ViewBag.Title</div>
-    <div style="margin-top:-20px; margin-bottom: 20px">
+<div class="text-center">
+    <div class="h2 page-title font-weight-bold">@ViewBag.Title</div>
+    <div class="text-secondary">
+        <div class="pb-3">
+            <b>Patient: </b> @patient.FullName |
+            <b>Birthday: </b> @patient.Birthday.ToShortDateString()
+            @if (patient.ExternalPatientId != null)
+            {
+                <text>|</text>
+                <b>External ID: </b> @patient.ExternalPatientId
+            }
+        </div>
         @Html.ActionLink("Back to Patients", "Index", "Patients") |
         @Html.ActionLink("Start new", "Start", "Submissions", new { id = patient.PatientId }, null)
     </div>
+    <hr />
 </div>
 
 @Html.Partial("_SubmissionsTablePartial", Model)

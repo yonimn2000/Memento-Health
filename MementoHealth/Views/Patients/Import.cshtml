@@ -3,29 +3,33 @@
 }
 
 <div class="row d-flex justify-content-center">
+    <div class="shadow bg-light text-center" style="border-radius: 12px">
+        <div class="h2 text-center font-weight-bold" style="padding: 25px 10px 10px 10px">Import Patients CSV File</div><hr />
+        <div class="custom-form-div" style="padding-bottom: 0px; min-width: 300px">
+            <div class="row">
+                <div class="col-md-auto">
+                    <section>
+                        @using (Html.BeginForm("Import", "Patients", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <p class="text-info pb-2" style="max-width: 605px">
+                                Import a patients file with the columns "External ID", "Full Name", and "Birthday".
+                                Data for the External ID column is optional but the column must exist.
+                                The first line is always skipped.
+                            </p>
 
-    <div class="custom-form-div shadow bg-light text-center">
-        <h2>Import Patients CSV File</h2>
-        <hr />
+                            <input type="file" name="patientsFile" accept=".csv" required />
+                            <br />
 
-        <div class="row">
-            <div class="col-md-auto">
-                @using (Html.BeginForm("Import", "Patients", FormMethod.Post, new { enctype = "multipart/form-data" }))
-                {
-                    @Html.AntiForgeryToken()
-                    <p class="text-info">
-                        Import a patients file with the columns "External ID", "Full Name", and "Birthday".
-                        Data for the External ID column is optional but the column must exist.
-                        The first line is always skipped.
-                    </p>
-                    <input type="file" name="patientsFile" accept=".csv" required/>
-                    <br />
+                            <div class="pt-3"><input type="submit" value="Import" class="btn btn-primary w-100" /></div>
+                            <br />
 
-                    <input type="submit" value="Import" class="btn btn-primary w-100" />
-                    <br />
-
-                    @Html.ActionLink("Back to Patient List", "Index")
-                }
+                            <p class="pt-2">
+                                @Html.ActionLink("Back to Patient List", "Index")
+                            </p>
+                        }
+                    </section>
+                </div>
             </div>
         </div>
     </div>
