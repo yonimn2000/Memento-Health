@@ -1,24 +1,24 @@
 ﻿@model MementoHealth.Entities.Provider
 
 @{
-    ViewBag.Title = "Provider Details";   
+    ViewBag.Title = "Provider Details";
 }
 
 <div class="row d-flex justify-content-center">
     <div class="shadow bg-light text-center" style="border-radius: 12px">
-        <div class="page-title h2 font-weight-bold" style="padding-top: 25px;">Provider Details</div>
-        <div class="custom-form-div" style="margin-top: -50px; padding-bottom: 0px">
+        <div class="h2 text-center font-weight-bold" style="padding-top: 25px;">Provider Details</div><hr />
+        <div class="custom-form-div" style="padding-bottom: 0px; min-width: 300px">
 
             <div class="row">
                 <div class="col-md-auto">
                     <section>
-                        <div class="form-group mt-2">
+                        <div class="form-group">
                             <div class="col-md-auto my-1 font-weight-bold" style="text-align: center">@Html.DisplayNameFor(model => model.Name)</div><hr style="margin: 0 0 0 0" />
                             <div class="col-md-auto my-1">@Html.DisplayFor(model => model.Name)</div>
                         </div>
                         <div class="form-group mt-4">
                             <div class="col-md-auto my-1 font-weight-bold" style="text-align: center">@Html.DisplayNameFor(model => model.Phone)</div><hr style="margin: 0 0 0 0" />
-                            <div class="col-md-auto my-1">@Html.DisplayFor(model => model.Phone)</div>
+                            <div class="col-md-auto my-1">@Html.Phone(Model.Phone)</div>
                         </div>
                         <div class="form-group mt-4">
                             <div class="col-md-auto my-1 font-weight-bold" style="text-align: center">@Html.DisplayNameFor(model => model.Address)</div><hr style="margin: 0 0 0 0" />
@@ -26,7 +26,7 @@
                         </div>
                         <div class="form-group mt-4">
                             <div class="col-md-auto my-1 font-weight-bold" style="text-align: center">@Html.DisplayNameFor(model => model.Email)</div><hr style="margin: 0 0 0 0" />
-                            <div class="col-md-auto my-1">@Html.DisplayFor(model => model.Email)</div>
+                            <div class="col-md-auto my-1">@Html.Email(Model.Email)</div>
                         </div>
                         <div class="form-group mt-4">
                             <div class="col-md-auto my-1 font-weight-bold" style="text-align: center">@Html.DisplayNameFor(model => model.Forms)</div><hr style="margin: 0 0 0 0" />
@@ -42,34 +42,45 @@
                         </div>
                         <div class="form-group mt-4">
                             <div class="col-md-auto my-1 font-weight-bold" style="text-align: center">Admins</div>
-                                <div class="table-responsive" style="width: 50vw; white-space:nowrap; overflow: auto">
-                                    <table class="table table-bordered table-striped">
-                                        <thead>
+                            <div class="table-responsive" style="max-width: 85vw; white-space:nowrap; overflow: auto">
+                                <table class="col-md-auto table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Full Name</th>
+                                            <th>Email</th>
+                                            <th>Phone</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.Staff.Where(s => s.Roles.Any(r => r.Role.Name.Equals(Role.ProviderAdmin))).ToList())
+                                        {
                                             <tr>
-                                                <th>Full Name</th>
-                                                <th>Email</th>
-                                                <th>Phone</th>
+                                                <td>@item.FullName</td>
+                                                <td>@Html.Email(item.Email)</td>
+                                                <td>@Html.Phone(item.PhoneNumber)</td>
                                             </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach (var item in Model.Staff.Where(s => s.Roles.Any(r => r.Role.Name.Equals(Role.ProviderAdmin))).ToList())
-                                            {
-                                                <tr>
-                                                    <td>@item.FullName</td>
-                                                    <td>@item.Email</td>
-                                                    <td>@(item.PhoneNumber ?? "None")</td>
-                                                </tr>
-                                            }
-                                        </tbody>
-                                    </table>
-                                </div>
+                                        }
+                                    </tbody>
+                                </table>
                             </div>
-                  
+                        </div>
 
                         <p class="mt-4">
-                            @Html.ActionLink("Edit", "Edit", new { id = Model.ProviderId }) |
-                            @Html.ActionLink("Back to Provider List", "Index")
+                            @if (User.IsInRole(Role.SysAdmin) || User.IsInRole(Role.ProviderAdmin))
+                            {
+                                @Html.ActionLink("Edit", "Edit", new { id = Model.ProviderId })
+                                <span>|</span>
+                            }
+                            @if (User.IsInRole(Role.SysAdmin))
+                            {
+                                @Html.ActionLink("Back to Provider List", "Index")
+                            }
+                            else
+                            {
+                                @Html.ActionLink("Back to Manage", "Index", "Manage")
+                            }
                         </p>
+
                     </section>
                 </div>
             </div>

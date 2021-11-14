@@ -3,18 +3,24 @@
 @{
     Form form = Model.First().Form;
     bool editsAllowed = !form.Submissions.Any() && User.IsInRole(Role.ProviderAdmin);
-    ViewBag.Title = $"“{form.Name}” Form Questions";
+    ViewBag.Title = "Form Questions";
 }
 
-<div class="box" style="text-align: center">
-    <div class="page-title font-weight-bold h2">@ViewBag.Title</div>
-    @if (!editsAllowed)
-    {
-        <h4 class="text-secondary" style="margin-top: -20px; margin-bottom: 20px">Edits are not allowed as the form already has some submissions.</h4>
-    }
-<p style="margin-bottom: 20px; margin-top: -10px">
-    @Html.ActionLink(" Back to Forms", "Index", "Forms", null, new { @class = "fa fa-arrow-circle-left text-dark"})
-</p>
+<div class="text-center">
+    <div class="h2 page-title font-weight-bold">@ViewBag.Title</div>
+    <div class="text-secondary">
+        <h5 style="margin-top: -7px">
+            Form Name: "@form.Name"
+        </h5>
+        @if (!editsAllowed)
+        {
+            <h5 class="text-danger" style="margin-bottom: 15px">Edits are not allowed as the form already has some submissions.</h5>
+        }
+        <p>
+            @Html.ActionLink(" Back to Forms", "Index", "Forms", null, new { @class = "fa fa-arrow-circle-left text-dark" })
+        </p>
+    </div>
+    <hr />
 </div>
 
 <div class="container" style="overflow-y: auto; white-space: nowrap; min-width: 94.5%; text-align: center">
@@ -47,6 +53,7 @@
                             <td>
                                 @if (question.Conditions.Count == 0)
                                 {
+                                    <div>If answer is anything, go to the next question.</div>
                                     if (editsAllowed)
                                     {
                                         <text>
@@ -67,6 +74,7 @@
                                             {
                                                 <li>@condition</li>
                                             }
+                                            <li>If answer is anything, go to the next question.</li>
                                         </ol>
                                     }
                                     if (editsAllowed)
@@ -142,7 +150,7 @@
                 int charLimit = 30;
                 string questionStr = question.Question.Truncate(charLimit);
                 <text>g.addNode('@questionStr');</text>
-                foreach (var edge in question.GraphEdges)
+                foreach (var edge in question.GetGraphEdges())
                 {
                     string toQuestionStr = edge.Question?.Question.Truncate(charLimit) ?? "End";
                     string label = "";

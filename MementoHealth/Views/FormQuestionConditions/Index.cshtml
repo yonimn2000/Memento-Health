@@ -2,18 +2,27 @@
 @model IEnumerable<FormQuestionCondition>
 @{
     FormQuestion formQuestion = Model.First().Question;
-    ViewBag.Title = $"“{formQuestion.Question}” Question Conditions";
+    ViewBag.Title = "Question Conditions";
 }
 
-<div class="box" style="text-align: center">
-    <div class="page-title font-weight-bold h2">@ViewBag.Title</div>
-    <h5 class="text-secondary" style="margin-top: -20px; margin-bottom: 20px">Conditions will be tested during form submission in the following order:</h5>
-    <p style="margin-bottom: 20px">
-        @Html.ActionLink(" Back to Form Questions", "Index", "FormQuestions", new {id = formQuestion.FormId}, new { @class = "fa fa-arrow-circle-left text-dark" })
-    </p>
+<div class="text-center">
+    <div class="h2 page-title font-weight-bold">@ViewBag.Title</div>
+    <div class="text-secondary">
+        <h5 style="margin-top: -7px">
+            Question: "@formQuestion.Question"
+        </h5>
+        <p>
+            @Html.ActionLink(" Back to Form Questions", "Index", "FormQuestions", new { id = formQuestion.FormId }, new { @class = "fa fa-arrow-circle-left text-dark" })
+        </p>
+    </div>
+    <hr />
 </div>
 
 <div class="container" style="overflow-y: auto; white-space: nowrap; min-width: 94.5%; text-align: center">
+    <ul class="text-info text-left">
+        <li>Conditions will be tested during form submission in the order listed below.</li>
+        <li>The form will proceed to the next ordinal question if no conditions match.</li>
+    </ul>
     <div class="card shadow">
         <div class="table-responsive">
             <table class="table table-bordered table-striped">

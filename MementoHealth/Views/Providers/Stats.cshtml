@@ -1,0 +1,55 @@
+﻿@model MementoHealth.Models.StatsViewModel
+
+@{
+    ViewBag.Title = "Stats";
+}
+
+<div class="row d-flex justify-content-center">
+    <div class="shadow bg-light text-center" style="border-radius: 12px">
+        <div class="h2 text-center font-weight-bold" style="padding-top: 25px;">@ViewBag.Title</div><hr />
+        <div class="custom-form-div" style="padding-bottom: 0px; min-width: 300px">
+
+            <div class="row">
+                <div class="col-md-auto">
+                    <section>
+                        <div class="form-group">
+                            <div class="col-md-auto my-1 font-weight-bold" style="text-align: center">Total Providers</div><hr style="margin: 0 0 0 0" />
+                            <div class="col-md-auto my-1">@Model.ProviderCount</div>
+                        </div>
+                        <div class="form-group mt-2">
+                            <div class="col-md-auto my-1 font-weight-bold" style="text-align: center">Total Patients</div><hr style="margin: 0 0 0 0" />
+                            <div class="col-md-auto my-1">@Model.PatientCount</div>
+                        </div>
+                        <div class="form-group mt-2">
+                            <div class="col-md-auto my-1 font-weight-bold" style="text-align: center">Totoal Forms</div><hr style="margin: 0 0 0 0" />
+                            <div class="col-md-auto my-1">@Model.FormCount</div>
+                        </div>
+                        <div class="form-group mt-2">
+                            <div class="col-md-auto my-1 font-weight-bold" style="text-align: center">Total Users</div><hr style="margin: 0 0 0 0" />
+                            <div class="col-md-auto my-1">@Model.UserCount</div>
+                        </div>
+                        <div class="form-group mt-2">
+                            <div class="col-md-auto my-1 font-weight-bold" style="text-align: center">Total Submissions</div><hr style="margin: 0 0 0 0" />
+                            <div class="col-md-auto my-1">@Model.SubmissionCount</div>
+                        </div>
+                        <div class="form-group mt-2">
+                            <div class="col-md-auto my-1 font-weight-bold" style="text-align: center">Average Patients Per Provider</div><hr style="margin: 0 0 0 0" />
+                            <div class="col-md-auto my-1">@Model.AveragePatients</div>
+                        </div>
+                        <div class="form-group mt-2">
+                            <div class="col-md-auto my-1 font-weight-bold" style="text-align: center">Average Forms Per Provider</div><hr style="margin: 0 0 0 0" />
+                            <div class="col-md-auto my-1">@Model.AverageForms</div>
+                        </div>
+                        <div class="form-group mt-2">
+                            <div class="col-md-auto my-1 font-weight-bold" style="text-align: center">Average Users Per Provider</div><hr style="margin: 0 0 0 0" />
+                            <div class="col-md-auto my-1">@Model.AverageUsers</div>
+                        </div>
+                        <p class="mt-4">
+                            @Html.ActionLink("Back to Providers", "Index")
+                        </p>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

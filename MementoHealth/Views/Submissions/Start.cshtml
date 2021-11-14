@@ -4,13 +4,13 @@
 }
 <div class="row d-flex justify-content-center">
     <div class="shadow bg-light text-center" style="border-radius: 12px">
-        <div class="page-title h2 font-weight-bold" style="padding-top: 25px;">@ViewBag.Title</div>
-        <div class="custom-form-div" style="margin-top: -70px; padding-bottom: 0px">
+        <div class="h2 text-center font-weight-bold" style="padding: 25px 10px 10px 10px">@ViewBag.Title</div>
+        <div style="padding-right: 30px; padding-left: 30px">@Html.Partial("_PatientDetailsPartial", Model.Patient)</div>
+        <hr />
+        <div class="custom-form-div" style="min-width: 315px; padding-bottom: 0px">
             <div class="row">
                 <div class="col-md-auto">
-                    <section>
-                        @Html.Partial("_PatientDetailsPartial", Model.Patient)
-
+                    <section style="min-width: 315px">
                         @using (Html.BeginForm())
                         {
                             @Html.AntiForgeryToken()
@@ -18,9 +18,9 @@
                             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                             @Html.HiddenFor(m => m.PatientId)
 
-                            <div class="form-group mt-4">
+                            <div class="form-group">
                                 <div class="col-md-auto my-1 font-weight-bold" style="text-align: center">@Html.LabelFor(m => m.FormId)</div><hr style="margin: 0 0 0 0" />
-                                <div class="col-md-auto my-1" style="margin-left: 62px">
+                                <div class="col-md-auto my-1">
                                     @Html.DropDownList(nameof(Model.FormId),
                                         new SelectList(Model.Forms
                                             .Select(f => new { Value = f.FormId, Text = f.Name }),
@@ -31,7 +31,6 @@
                                     )
                                 </div>
                             </div>
-
                             <div class="form-actions no-color my-4" style="text-align: center">
                                 <input type="submit" value="Start" class="btn btn-primary w-100" />
                             </div>
@@ -42,4 +41,13 @@
         </div>
     </div>
 </div>
+
+@section styles {
+    <style>
+        #FormId {
+            display: inline-block;
+            text-align: center;
+        }
+    </style>
+}
 

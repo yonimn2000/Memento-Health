@@ -14,51 +14,55 @@
 }
 else
 {
-<div class="container" style="overflow-y: auto; white-space: nowrap; min-width: 94.5%; text-align: center">
-    <div class="card shadow">
-        <div class="table-responsive">
-            <table class="table table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        @if (!hidePatient)
-                        {
-                            <th>Patient</th>
-                        }
-                        @if (!hideForm)
-                        {
-                            <th>Form</th>
-                        }
-                        <th>Complete</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (FormSubmission submission in Model)
-                    {
+    <div class="container" style="overflow-y: auto; white-space: nowrap; min-width: 94.5%; text-align: center">
+        <div class="card shadow">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped">
+                    <thead>
                         <tr>
-                            <td>@submission.SubmissionDate</td>
+                            <th>Date</th>
                             @if (!hidePatient)
                             {
-                                <td>@submission.Patient.FullName</td>
+                                <th>Patient</th>
                             }
                             @if (!hideForm)
                             {
-                                <td>@submission.Form.Name</td>
+                                <th>Form</th>
                             }
-                            <td>@submission.IsComplete</td>
-                            <td>
-                                @Html.ActionLink(submission.IsComplete ? "Edit" : "Continue", "Answer", new { id = submission.SubmissionId }) |
-                                @Html.ActionLink("Details", "Details", new { id = submission.SubmissionId }) |
-                                @Html.ActionLink("Delete", "Delete", new { id = submission.SubmissionId })
-                            </td>
+                            <th>Start</th>
+                            <th>End</th>
+                            <th>Time to Complete</th>
+                            <th>Actions</th>
                         </tr>
-                    }
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach (FormSubmission submission in Model)
+                        {
+                            <tr>
+                                <td>@submission.SubmissionStartDate</td>
+                                @if (!hidePatient)
+                                {
+                                    <td>@submission.Patient.FullName</td>
+                                }
+                                @if (!hideForm)
+                                {
+                                    <td>@submission.Form.Name</td>
+                                }
+                                <td>@submission.SubmissionStartDate</td>
+                                <td>@submission.SubmissionEndDate</td>
+                                <td>@submission.TimeToComplete</td>
+                                <td>
+                                    @Html.ActionLink("View details", "Details", new { id = submission.SubmissionId }) |
+                                    @Html.ActionLink(submission.IsComplete ? "Edit" : "Continue", "Answer", new { id = submission.SubmissionId }) |
+                                    @Html.ActionLink("Delete", "Delete", new { id = submission.SubmissionId })
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-</div>
 }
 
 @section styles {

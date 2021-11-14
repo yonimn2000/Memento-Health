@@ -2,10 +2,28 @@
 @{
     ViewBag.Title = "Submission Details";
 }
-<div class="box text-center">
-    <div class="page-title font-weight-bold h2">@ViewBag.Title</div>
-    <div style="margin-top:-20px; margin-bottom: 10px">@Html.Partial("_PatientDetailsPartial", Model.Patient)</div>
-    <div style="margin-bottom: 20px">@Html.ActionLink("Back to Submission List", "Index")</div>
+
+<div class="text-center">
+    <div class="h2 page-title font-weight-bold">@ViewBag.Title</div>
+    <div class="text-secondary">
+        @Html.Partial("_PatientDetailsPartial", Model.Patient)
+        <div class="pt-2">@Html.ActionLink(" Back to Submission List", "Index", null, new { @class = "fa fa-arrow-circle-left text-dark" })</div>
+    </div>
+    <hr />
+</div>
+
+<div class="container text-center pt-3" style="min-width: 94.3%">
+    <div>
+    <b>Answered All Questions: </b>@Model.AnsweredAllQuestions |
+    <b>Start: </b>@Model.SubmissionStartDate
+    @if (Model.WasSubmitted)
+    {
+        <span>|</span>
+        <b>End: </b>@Model.SubmissionEndDate
+        <span>|</span>
+        <b>Time to Complete: </b>@Model.TimeToComplete
+    }
+    </div>
 </div>
 
 @Html.Partial("_SubmissionDetailsPartial", Model)

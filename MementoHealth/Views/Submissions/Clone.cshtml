@@ -1,42 +1,47 @@
 ﻿@model MementoHealth.Entities.FormSubmission
+
 @{
-    ViewBag.Title = "Delete Form Submission";
-    ViewBag.UseFullScreenWidth = true;
+    ViewBag.Title = "Clone Submission";
 }
 
 <div class="row d-flex justify-content-center">
     <div class="shadow bg-light text-center" style="border-radius: 12px">
-        <div class="text-danger text-center h2 font-weight-bold" style="padding-top: 25px;">Delete this Submission?</div><hr />
-        <div class="custom-form-div" style="min-width: 300px; padding-bottom: 0px">
+        <div class="page-title h2 font-weight-bold" style="padding-top: 25px;">Clone this Submission?</div>
+        <div class="custom-form-div" style="margin-top: -50px; padding-bottom: 0px">
 
             <div class="row">
                 <div class="col-md-auto">
                     <section>
-                        <div class="form-group">
+                        <div class="form-group mt-4">
                             <div class="col-md-auto my-1 font-weight-bold" style="text-align: center">@Html.DisplayNameFor(model => model.Patient)</div><hr style="margin: 0 0 0 0" />
                             <div class="col-md-auto my-1">@Html.DisplayFor(model => model.Patient.FullName)</div>
                         </div>
+                        
                         <div class="form-group mt-4">
                             <div class="col-md-auto my-1 font-weight-bold" style="text-align: center">@Html.DisplayNameFor(model => model.Form)</div><hr style="margin: 0 0 0 0" />
                             <div class="col-md-auto my-1">@Html.DisplayFor(model => model.Form.Name)</div>
                         </div>
-                        <div class="form-group mt-4">
+
+                        <div class="form-group mt-2">
                             <div class="col-md-auto my-1 font-weight-bold" style="text-align: center">@Html.DisplayNameFor(model => model.AnsweredAllQuestions)</div><hr style="margin: 0 0 0 0" />
                             <div class="col-md-auto my-1">@Model.AnsweredAllQuestions</div>
                         </div>
-                        <div class="form-group mt-2">
+
+                        <div class="form-group mt-4">
                             <div class="col-md-auto my-1 font-weight-bold" style="text-align: center">@Html.DisplayNameFor(model => model.SubmissionStartDate)</div><hr style="margin: 0 0 0 0" />
                             <div class="col-md-auto my-1">@Html.DisplayFor(model => model.SubmissionStartDate)</div>
                         </div>
+
                         @if (Model.WasSubmitted)
                         {
-                            <div class="form-group mt-2">
+                            <div class="form-group mt-4">
                                 <div class="col-md-auto my-1 font-weight-bold" style="text-align: center">@Html.DisplayNameFor(model => model.SubmissionEndDate)</div><hr style="margin: 0 0 0 0" />
                                 <div class="col-md-auto my-1">@Html.DisplayFor(model => model.SubmissionEndDate)</div>
                             </div>
-                            <div class="form-group mt-2">
-                                <div class="col-md-auto my-1 font-weight-bold" style="text-align: center">@Html.DisplayNameFor(model => model.TimeToComplete)</div><hr style="margin: 0 0 0 0" />
-                                <div class="col-md-auto my-1">@Html.DisplayFor(model => model.TimeToComplete)</div>
+
+                            <div class="form-group mt-4">
+                                <div class="col-md-auto my-1 font-weight-bold" style="text-align: center">@Html.DisplayNameFor(model => model.SubmissionEndDate)</div><hr style="margin: 0 0 0 0" />
+                                <div class="col-md-auto my-1">@Html.DisplayFor(model => model.SubmissionEndDate)</div>
                             </div>
                         }
 
@@ -45,7 +50,7 @@
                             @Html.AntiForgeryToken()
 
                             <div class="form-actions no-color my-4" style="text-align: center">
-                                <input type="submit" value="Delete" class="btn btn-danger w-100" />
+                                <input type="submit" value="Clone" class="btn btn-primary w-100" />
 
                             </div>
                             <div style="text-align: center">@Html.ActionLink("Back to Submission List", "Index")</div>

@@ -6,7 +6,7 @@
 <div class="container" style="overflow-y: auto; white-space: nowrap; min-width: 94.5%">
     <div class="card shadow">
         <div class="table-responsive">
-            <table class="table table-striped">
+            <table class="table table-bordered table-striped">
                 <thead>
                     <tr>
                         <th>Question</th>
@@ -18,7 +18,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var answer in Model.Answers.OrderBy(a => a.AnswerId).ToList())
+                    @foreach (var answer in Model.GetAnswers())
                     {
                         <tr>
                             <td>@answer.Question.Question</td>
@@ -28,7 +28,7 @@
                                 data-json-answer="@answer.JsonData"></td>
                             @if (isPatientView)
                             {
-                                <td>@Html.ActionLink("Change Answer", "Answer", new { id = Model.SubmissionId, answerId = answer.AnswerId })</td>
+                                <td>@Html.ActionLink("Change answer", "Answer", new { id = Model.SubmissionId, questionId = answer.QuestionId })</td>
                             }
                         </tr>
                     }

@@ -43,7 +43,7 @@ namespace MementoHealth.Controllers
             int providerId = GetCurrentUserProvider().ProviderId;
             return View("All", Db.FormSubmissions
                 .Where(s => s.Form.ProviderId == providerId || s.Patient.ProviderId == providerId)
-                .OrderByDescending(q => q.SubmissionDate).ToList());
+                .OrderByDescending(q => q.SubmissionStartDate).ToList());
         }
 
         // GET: Submissions/Form/5
@@ -56,7 +56,7 @@ namespace MementoHealth.Controllers
             if (form.Submissions.Count == 0)
                 return RedirectToAction("Index", "Forms");
 
-            return View("Form", form.Submissions.OrderByDescending(q => q.SubmissionDate).ToList());
+            return View("Form", form.Submissions.OrderByDescending(q => q.SubmissionStartDate).ToList());
         }
 
         // GET: Submissions/Form/5
@@ -69,7 +69,7 @@ namespace MementoHealth.Controllers
             if (patient.Submissions.Count == 0)
                 return RedirectToAction("Index", "Patients");
 
-            return View("Patient", patient.Submissions.OrderByDescending(q => q.SubmissionDate).ToList());
+            return View("Patient", patient.Submissions.OrderByDescending(q => q.SubmissionStartDate).ToList());
         }
 
         // GET: Submissions/Start/5
@@ -109,7 +109,7 @@ namespace MementoHealth.Controllers
             {
                 FormId = form.FormId,
                 PatientId = patient.PatientId,
-                SubmissionDate = DateTime.Now
+                SubmissionStartDate = DateTime.Now
             });
             Db.SaveChanges();
 
@@ -118,13 +118,13 @@ namespace MementoHealth.Controllers
 
         // GET: Submissions/Answer/5
         [AllowThroughPinLock]
-        public ActionResult Answer(int id, int? answerId)
+        public ActionResult Answer(int id, int? questionId)
         {
             FormSubmission submission = FindSubmission_Restricted(id);
-            FormQuestionAnswer answer = answerId == null ? null : submission.Answers.SingleOrDefault(a => a.AnswerId == answerId);
-            FormQuestion question;
+            FormQuestionAnswer answer = questionId == null ? null : submission.Answers.SingleOrDefault(a => a.QuestionId == questionId);
+            FormQuestion question = answer?.Question;
 
-            if (submission == null || (answerId != null && answer == null))
+            if (submission == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
             if (Db.Users.Find(User.Identity.GetUserId()).PinHash == null)
@@ -136,25 +136,21 @@ namespace MementoHealth.Controllers
             else
                 PinLockFilter.Enabled = true;
 
-            if (answer == null)
+
+            // If no specific question has been requested:
+            if (question == null)
             {
-                if (submission.Answers.Count == 0)
-                    question = submission.Form.Questions.OrderBy(q => q.Number).First();
-                else
-                {
-                    question = submission.GetNextQuestion();
+                question = submission.GetNextQuestion();
 
-                    // If reached the end of the form:
-                    if (question == null)
-                        return View("Review", submission);
-                }
+                // If reached the end of the form, go to the review page.
+                if (question == null)
+                    return View("Review", submission);
 
+                // Get the current answer if has already been answered.
                 answer = submission.Answers.SingleOrDefault(a => a.QuestionId == question.QuestionId);
             }
             else
-            {
                 question = answer.Question;
-            }
 
             return View(new AnswerViewModel
             {
@@ -162,9 +158,9 @@ namespace MementoHealth.Controllers
                 QuestionId = question.QuestionId,
                 Patient = submission.Patient,
                 Question = question,
-                IsComplete = submission.IsComplete,
-                CurrentQuestionNumber = submission.Answers.Count,
-                NumberOfRemainingQuestions = submission.Form.Questions.Count - question.Number, // TODO
+                AnsweredAllQuestions = submission.AnsweredAllQuestions,
+                CurrentQuestionNumber = submission.GetNumberOfAnsweredQuestions(question.QuestionId),
+                NumberOfRemainingQuestions = submission.GetNumberOfRemainingQuestions(question),
                 JsonData = answer?.JsonData
             });
         }
@@ -183,8 +179,8 @@ namespace MementoHealth.Controllers
 
             FormQuestionAnswer answer = submission.Answers.Where(a => a.QuestionId == model.QuestionId).SingleOrDefault();
 
-            if (answer != null)
-                answer.JsonData = model.JsonData;
+            if (answer != null) // If this question has been answered before,
+                answer.JsonData = model.JsonData; // Update it.
             else
                 submission.Answers.Add(new FormQuestionAnswer
                 {
@@ -194,29 +190,24 @@ namespace MementoHealth.Controllers
 
             Db.SaveChanges();
 
-            int? goToAnswerId = null;
-            if (model.NextAction != null)
+            int? goToQuestionId = null;
+            switch (model.NextAction)
             {
-                switch (model.NextAction)
-                {
-                    case "next":
-                        goToAnswerId = submission.Answers.Where(a => a.Question.Number > question.Number)
-                        .OrderBy(a => a.Question.Number).FirstOrDefault()?.AnswerId;
-                        break;
-                    case "previous":
-                        goToAnswerId = submission.Answers.Where(a => a.Question.Number < question.Number)
-                        .OrderBy(a => a.Question.Number).Last().AnswerId;
-                        break;
-                    case "review": break;
-                    default:
-                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-                }
+                case "next":
+                    // Get the ID of the next question if it has been answered.
+                    goToQuestionId = submission.GetNextQuestion(question.QuestionId)?.QuestionId;
+                    break;
+                case "previous":
+                    // Get the ID of the previous question.
+                    goToQuestionId = submission.GetPreviousQuestion(question.QuestionId)?.QuestionId;
+                    break;
+                    // case "review": break; // This will be automatically handled in the GET action.
             }
 
             return RedirectToAction("Answer", new
             {
                 id = model.SubmissionId,
-                answerId = goToAnswerId
+                questionId = goToQuestionId
             });
         }
 
@@ -227,10 +218,49 @@ namespace MementoHealth.Controllers
         public ActionResult Submit(int id)
         {
             FormSubmission submission = FindSubmission_Restricted(id);
+
             if (submission == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
+            if (!submission.AnsweredAllQuestions)
+                return RedirectToAction("Answer", new { id });
+
+            if (submission.SubmissionEndDate == null)
+            {
+                submission.SubmissionEndDate = DateTime.Now;
+                Db.SaveChanges();
+            }
+
             return View("ThankYou", submission);
+        }
+
+        // GET: Submissions/Clone/5
+        public ActionResult Clone(int id)
+        {
+            FormSubmission submission = FindSubmission_Restricted(id);
+
+            if (submission == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            return View(submission);
+        }
+
+        // POST: Submissions/Clone/5
+        [HttpPost]
+        [ActionName("Clone")]
+        [ValidateAntiForgeryToken]
+        public ActionResult CloneConfirmed(int id)
+        {
+            FormSubmission submission = FindSubmission_Restricted(id);
+
+            if (submission == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            FormSubmission newSubmission = Db.FormSubmissions.Add(submission.Clone());
+            newSubmission.SubmissionStartDate = DateTime.Now;
+            Db.SaveChanges();
+
+            return RedirectToAction("Answer", new { id = newSubmission.SubmissionId, questionId = newSubmission.Answers.FirstOrDefault()?.QuestionId });
         }
 
         // GET: Submissions/Details/5

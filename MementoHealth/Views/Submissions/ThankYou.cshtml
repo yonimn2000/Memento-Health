@@ -6,10 +6,10 @@
 <div class="row d-flex justify-content-center" style="position: absolute; top: 35%; left: 50%; transform: translate(-50%, -50%)">
     <div class="shadow bg-light" style="border-radius: 12px">
         <div style="padding-top: 20px; text-align: center">@Html.Partial("_PatientDetailsPartial", Model.Patient)</div>
-        <div class="custom-form-div text-center">
+        <div class="custom-form-div text-center" style="padding-top: 50px">
                 <i class="fa fa-check-circle-o text-success pb-3" style="font-size: 9em"></i>
-                <h5 class="pb-2">Thank you @Model.Patient.FullName!</h5>
-                <h6>Please let the staff know you completed the form.</h6>
+                <h5 class="pb-2">Done!</h5>
+                <h6 style="min-width: 250px">Please let the staff know you completed the form.</h6>
         </div>
     </div>
 </div>

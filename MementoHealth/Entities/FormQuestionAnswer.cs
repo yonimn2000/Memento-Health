@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace MementoHealth.Entities
 {
@@ -18,5 +19,24 @@ namespace MementoHealth.Entities
         [ForeignKey("Question")]
         public int QuestionId { get; set; }
         public virtual FormQuestion Question { get; set; }
+
+        public FormQuestion GetNextQuestion()
+        {
+            foreach (FormQuestionCondition condition in Question.Conditions.OrderBy(c => c.Number).ToList())
+                if (condition.Matches(JsonData))
+                    return condition.GoToQuestion;
+
+            // If no conditions matched, go to the next ordinal question.
+            return Question.NextOrdinalQuestion;
+        }
+
+        public FormQuestionAnswer Clone()
+        {
+            return new FormQuestionAnswer
+            {
+                QuestionId = QuestionId,
+                JsonData = JsonData
+            };
+        }
     }
 }
