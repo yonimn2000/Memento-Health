@@ -60,7 +60,7 @@
                                 <button type="button" id="previous-button" class="btn btn-lg btn-outline-primary" onclick="submitClicked('previous')">Previous</button>
                             }
                             <button type="button" id="next-button" class="btn btn-lg btn-primary" onclick="submitClicked('next')">@(isLast ? "Review" : "Next")</button>
-                            @if (!isLast && Model.IsComplete)
+                            @if (!isLast && Model.AnsweredAllQuestions)
                             {
                                 <button type="button" id="review-button" class="btn btn-lg btn-info" onclick="submitClicked('review')">Review</button>
                             }

@@ -32,31 +32,35 @@ else
                             <th>Start</th>
                             <th>End</th>
                             <th>Time to Complete</th>
+                            <th>Answered All Questions</th>
+                            <th>Was Submitted</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (FormSubmission submission in Model)
                         {
-                            <tr>
-                                <td>@submission.SubmissionStartDate</td>
-                                @if (!hidePatient)
-                                {
-                                    <td>@submission.Patient.FullName</td>
-                                }
-                                @if (!hideForm)
-                                {
-                                    <td>@submission.Form.Name</td>
-                                }
-                                <td>@submission.SubmissionStartDate</td>
-                                <td>@submission.SubmissionEndDate</td>
-                                <td>@submission.TimeToComplete</td>
-                                <td>
-                                    @Html.ActionLink("View details", "Details", new { id = submission.SubmissionId }) |
-                                    @Html.ActionLink(submission.IsComplete ? "Edit" : "Continue", "Answer", new { id = submission.SubmissionId }) |
-                                    @Html.ActionLink("Delete", "Delete", new { id = submission.SubmissionId })
-                                </td>
-                            </tr>
+                        <tr>
+                            <td>@submission.SubmissionStartDate</td>
+                            @if (!hidePatient)
+                            {
+                                <td>@submission.Patient.FullName</td>
+                            }
+                            @if (!hideForm)
+                            {
+                                <td>@submission.Form.Name</td>
+                            }
+                            <td>@submission.SubmissionStartDate</td>
+                            <td>@submission.SubmissionEndDate</td>
+                            <td>@submission.TimeToComplete</td>
+                            <td>@submission.AnsweredAllQuestions</td>
+                            <td>@submission.WasSubmitted</td>
+                            <td>
+                                @Html.ActionLink("View details", "Details", new { id = submission.SubmissionId }) |
+                                @Html.ActionLink(submission.WasSubmitted ? "Edit" : "Continue", "Answer", new { id = submission.SubmissionId }) |
+                                @Html.ActionLink("Delete", "Delete", new { id = submission.SubmissionId })
+                            </td>
+                        </tr>
                         }
                     </tbody>
                 </table>

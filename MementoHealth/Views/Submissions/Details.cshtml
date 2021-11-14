@@ -14,9 +14,9 @@
 
 <div class="container text-center pt-3" style="min-width: 94.3%">
     <div>
-        <b>Is Complete: </b>@Model.IsComplete |
+        <b>Answered All Questions: </b>@Model.AnsweredAllQuestions |
         <b>Start: </b>@Model.SubmissionStartDate
-        @if (Model.SubmissionEndDate != null)
+        @if (Model.WasSubmitted)
         {
             <span>|</span>
             <b>End: </b>@Model.SubmissionEndDate

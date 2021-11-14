@@ -29,8 +29,12 @@ namespace MementoHealth.Entities
         public virtual ICollection<FormQuestionAnswer> Answers { get; set; }
 
         [NotMapped]
-        [DisplayName("Is Complete")]
-        public bool IsComplete => GetNextQuestion() == null;
+        [DisplayName("Answered All Questions")]
+        public bool AnsweredAllQuestions => GetNextQuestion() == null;
+
+        [NotMapped]
+        [DisplayName("Submitted")]
+        public bool WasSubmitted => SubmissionEndDate != null;
 
         [NotMapped]
         [DisplayName("Time to Complete")]
