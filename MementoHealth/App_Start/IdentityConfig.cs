@@ -46,7 +46,7 @@ namespace MementoHealth
             mail.IsBodyHtml = true;
             try
             {
-                SmtpServer.Send(mail);
+                await SmtpServer.SendMailAsync(mail);
                 return true;
             }
             catch (Exception e)
