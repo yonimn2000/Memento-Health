@@ -159,7 +159,7 @@ namespace MementoHealth.Controllers
                 Patient = submission.Patient,
                 Question = question,
                 IsComplete = submission.IsComplete,
-                CurrentQuestionNumber = submission.GetNumberOfAnsweredQuestions(),
+                CurrentQuestionNumber = submission.GetNumberOfAnsweredQuestions(question.QuestionId),
                 NumberOfRemainingQuestions = submission.GetNumberOfRemainingQuestions(question),
                 JsonData = answer?.JsonData
             });
@@ -218,6 +218,7 @@ namespace MementoHealth.Controllers
         public ActionResult Submit(int id)
         {
             FormSubmission submission = FindSubmission_Restricted(id);
+
             if (submission == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
@@ -231,6 +232,35 @@ namespace MementoHealth.Controllers
             }
 
             return View("ThankYou", submission);
+        }
+
+        // GET: Submissions/Clone/5
+        public ActionResult Clone(int id)
+        {
+            FormSubmission submission = FindSubmission_Restricted(id);
+
+            if (submission == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            return View(submission);
+        }
+
+        // POST: Submissions/Clone/5
+        [HttpPost]
+        [ActionName("Clone")]
+        [ValidateAntiForgeryToken]
+        public ActionResult CloneConfirmed(int id)
+        {
+            FormSubmission submission = FindSubmission_Restricted(id);
+
+            if (submission == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            FormSubmission newSubmission = Db.FormSubmissions.Add(submission.Clone());
+            newSubmission.SubmissionStartDate = DateTime.Now;
+            Db.SaveChanges();
+
+            return RedirectToAction("Answer", new { id = newSubmission.SubmissionId, questionId = newSubmission.Answers.FirstOrDefault()?.QuestionId });
         }
 
         // GET: Submissions/Details/5
