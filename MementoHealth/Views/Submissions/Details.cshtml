@@ -14,15 +14,15 @@
 
 <div class="container text-center pt-3" style="min-width: 94.3%">
     <div>
-        <b>Is Complete: </b>@Model.IsComplete |
-        <b>Start: </b>@Model.SubmissionStartDate
-        @if (Model.SubmissionEndDate != null)
-        {
-            <span>|</span>
-            <b>End: </b>@Model.SubmissionEndDate
-            <span>|</span>
-            <b>Time to Complete: </b>@Model.TimeToComplete
-        }
+    <b>Answered All Questions: </b>@Model.AnsweredAllQuestions |
+    <b>Start: </b>@Model.SubmissionStartDate
+    @if (Model.WasSubmitted)
+    {
+        <span>|</span>
+        <b>End: </b>@Model.SubmissionEndDate
+        <span>|</span>
+        <b>Time to Complete: </b>@Model.TimeToComplete
+    }
     </div>
 </div>
 

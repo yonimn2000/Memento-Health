@@ -4,18 +4,18 @@
     ViewBag.PatientId = Model.Patient.PatientId;
 
     bool isLast = Model.NumberOfRemainingQuestions == 1;
-    string remainingQuestionsTest;
+    string remainingQuestionsText;
     if (isLast)
     {
-        remainingQuestionsTest = "Last question";
+        remainingQuestionsText = "Last question";
     }
     else if (Model.NumberOfRemainingQuestions == 2)
     {
-        remainingQuestionsTest = "One more question or less remain.";
+        remainingQuestionsText = "One more question or less remain.";
     }
     else
     {
-        remainingQuestionsTest = Model.NumberOfRemainingQuestions + " questions or less remain.";
+        remainingQuestionsText = Model.NumberOfRemainingQuestions + " questions or less remain.";
     }
 }
 <div class="row d-flex justify-content-center">
@@ -47,7 +47,6 @@
                 <img id="image" class="img-fluid" style="display:none;" onclick="imgClicked(event)" />
             </div>
         </div>
-
 
                 <div style="position: absolute; bottom: 250px; left: 7.5%; right: 50%; width: 85%">
                     <div class="row">

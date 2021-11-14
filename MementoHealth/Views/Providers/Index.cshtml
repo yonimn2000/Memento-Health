@@ -50,13 +50,13 @@
                                 @Html.DisplayFor(modelItem => item.Name)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.Phone)
+                                @Html.Phone(item.Phone)
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.Address)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.Email)
+                                @Html.Email(item.Email)
                             </td>
                             <td>
                                 @item.Forms.Count
