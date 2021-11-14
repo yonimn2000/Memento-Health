@@ -142,22 +142,22 @@ footer {
     background-color: rgb(84 102 175 / 0.25);
 }
 
-a {
+a, input.btn.btn-link {
     color: #3952ba;
     text-decoration: none;
 }
 
-    a:hover {
+    a:hover, input.btn.btn-link:hover {
         color: #0e2fb7;
         text-decoration: none;
     }
 
-    a:focus {
+    a:focus, input.btn.btn-link:focus {
         color: #0024b6;
         text-decoration: none;
     }
 
-    a:active {
+    a:active, input.btn.btn-link:active {
         color: #0024b6;
         text-decoration: none;
     }
