@@ -33,7 +33,7 @@
                         <tr>
                             <td>@item.FullName</td>
                             <td>@Html.Email(item.Email)</td>
-                            <td>@Html.Phone(item.Phone ?? "none")</td>
+                            <td>@Html.Phone(item.Phone)</td>
                             <td>@item.Role</td>
                             <td>@item.LockOutStatus @(item.EmailConfirmed ? "" : " + Email not confirmed")</td>
                             <td>
