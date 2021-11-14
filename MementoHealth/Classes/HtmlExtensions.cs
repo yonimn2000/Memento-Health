@@ -7,14 +7,20 @@ namespace MementoHealth.Classes
     {
         public static IHtmlString Phone(this HtmlHelper helper, string phone)
         {
-            string encoded = HttpUtility.HtmlEncode(phone);
-            return new HtmlString(string.IsNullOrWhiteSpace(phone) ? "<span>None</span>" : $"<a href='tel:{encoded}'>{encoded}</a>");
+            if (string.IsNullOrWhiteSpace(phone))
+                return new HtmlString("<span>None</span>");
+
+            string encodedPhone = HttpUtility.HtmlEncode(phone);
+            return new HtmlString($"<a href='tel:{encodedPhone}'>{encodedPhone}</a>");
         }
 
         public static IHtmlString Email(this HtmlHelper helper, string email)
         {
-            string encoded = HttpUtility.HtmlEncode(email);
-            return new HtmlString(string.IsNullOrWhiteSpace(email) ? "<span>None</span>" : $"<a href='mailto:{encoded}' target='_blank' rel='noopener noreferrer'>{encoded}</a>");
+            if (string.IsNullOrWhiteSpace(email))
+                return new HtmlString("<span>None</span>");
+
+            string encodedEmail = HttpUtility.HtmlEncode(email);
+            return new HtmlString($"<a href='mailto:{encodedEmail}' target='_blank' rel='noopener noreferrer'>{encodedEmail}</a>");
         }
     }
 }
