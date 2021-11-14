@@ -4,18 +4,18 @@
     ViewBag.PatientId = Model.Patient.PatientId;
 
     bool isLast = Model.NumberOfRemainingQuestions == 1;
-    string remainingQuestionsTest;
+    string remainingQuestionsText;
     if (isLast)
     {
-        remainingQuestionsTest = "Last question";
+        remainingQuestionsText = "Last question";
     }
     else if (Model.NumberOfRemainingQuestions == 2)
     {
-        remainingQuestionsTest = "One more question or less remain.";
+        remainingQuestionsText = "One more question or less remain.";
     }
     else
     {
-        remainingQuestionsTest = Model.NumberOfRemainingQuestions + " questions or less remain.";
+        remainingQuestionsText = Model.NumberOfRemainingQuestions + " questions or less remain.";
     }
 }
 
@@ -63,7 +63,7 @@
 
     <button type="button" class="btn btn-sm btn-danger" onclick="clearAnswer()">Clear answer</button>
 
-    <div>@remainingQuestionsTest</div>
+    <div>@remainingQuestionsText</div>
     <div class="progress" style="height: 36px;">
         <div class="progress-bar" role="progressbar" style="width: @Model.GetProgress()%"><b>@Model.GetProgress()%</b></div>
     </div>

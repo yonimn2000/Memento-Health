@@ -159,7 +159,7 @@ namespace MementoHealth.Controllers
                 Patient = submission.Patient,
                 Question = question,
                 IsComplete = submission.IsComplete,
-                CurrentQuestionNumber = submission.GetNumberOfAnsweredQuestions(),
+                CurrentQuestionNumber = submission.GetNumberOfAnsweredQuestions(question.QuestionId),
                 NumberOfRemainingQuestions = submission.GetNumberOfRemainingQuestions(question),
                 JsonData = answer?.JsonData
             });
