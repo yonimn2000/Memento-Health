@@ -29,5 +29,14 @@ namespace MementoHealth.Entities
             // If no conditions matched, go to the next ordinal question.
             return Question.NextOrdinalQuestion;
         }
+
+        public FormQuestionAnswer Clone()
+        {
+            return new FormQuestionAnswer
+            {
+                QuestionId = QuestionId,
+                JsonData = JsonData
+            };
+        }
     }
 }

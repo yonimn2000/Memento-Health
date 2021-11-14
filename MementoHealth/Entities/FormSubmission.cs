@@ -113,5 +113,15 @@ namespace MementoHealth.Entities
 
             return answers[answerIndex - 1].Question;
         }
+
+        public FormSubmission Clone()
+        {
+            return new FormSubmission
+            {
+                FormId = FormId,
+                PatientId = PatientId,
+                Answers = Answers.Select(a => a.Clone()).ToList()
+            };
+        }
     }
 }
