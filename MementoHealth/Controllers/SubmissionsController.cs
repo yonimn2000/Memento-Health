@@ -158,7 +158,7 @@ namespace MementoHealth.Controllers
                 QuestionId = question.QuestionId,
                 Patient = submission.Patient,
                 Question = question,
-                IsComplete = submission.IsComplete,
+                AnsweredAllQuestions = submission.AnsweredAllQuestions,
                 CurrentQuestionNumber = submission.GetNumberOfAnsweredQuestions(question.QuestionId),
                 NumberOfRemainingQuestions = submission.GetNumberOfRemainingQuestions(question),
                 JsonData = answer?.JsonData
@@ -222,7 +222,7 @@ namespace MementoHealth.Controllers
             if (submission == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            if (!submission.IsComplete)
+            if (!submission.AnsweredAllQuestions)
                 return RedirectToAction("Answer", new { id });
 
             if (submission.SubmissionEndDate == null)
