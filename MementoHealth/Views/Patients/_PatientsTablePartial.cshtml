@@ -26,6 +26,8 @@
                                 @if (patient.Submissions.Count > 0)
                                 {
                                     @Html.ActionLink("View", "Patient", "Submissions", new { id = patient.PatientId }, null)
+                                    <span>|</span>
+                                    @Html.ActionLink("Start new", "Start", "Submissions", new { id = patient.PatientId }, null)
                                 }
                                 else
                                 {

@@ -3,13 +3,13 @@
     ViewBag.Title = "Answer";
     ViewBag.PatientId = Model.Patient.PatientId;
 
-    bool isLast = Model.NumberOfRemainingQuestions == 0;
+    bool isLast = Model.NumberOfRemainingQuestions == 1;
     string remainingQuestionsTest;
     if (isLast)
     {
         remainingQuestionsTest = "Last question";
     }
-    else if (Model.NumberOfRemainingQuestions == 1)
+    else if (Model.NumberOfRemainingQuestions == 2)
     {
         remainingQuestionsTest = "One more question or less remain.";
     }
@@ -60,6 +60,8 @@
             <button type="button" id="review-button" class="btn btn-info" onclick="submitClicked('review')">Review</button>
         }
     </div>
+
+    <button type="button" class="btn btn-sm btn-danger" onclick="clearAnswer()">Clear answer</button>
 
     <div>@remainingQuestionsTest</div>
     <div class="progress" style="height: 36px;">
@@ -148,6 +150,18 @@
                     break;
             }
         });
+
+        let clearAnswer = () => {
+            $("#textbox").val("");
+            $("#checkboxes input").each(function () {
+                $(this).prop('checked', false);
+            });
+            $("#radiobuttons input").each(function () {
+                $(this).prop('checked', false);
+            });
+            lastImageClick = {};
+            $('.img-point').remove();
+        }
 
         let doit;
         window.onresize = () => {
