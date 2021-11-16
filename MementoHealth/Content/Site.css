@@ -85,27 +85,6 @@ textarea {
     .body-content {
         min-height: calc(100vh - 190px) !important;
     }
-
-    #previous-button {
-        font-size: 15px !important;
-        padding: 5px 2px;
-    }
-
-    #next-button {
-        font-size: 15px !important;
-        padding: 5px 2px;
-    }
-
-    #review-button {
-        margin-right: -17px !important;
-        font-size: 15px !important;
-        padding: 5px 2px;
-    }
-
-    #clear-button {
-        font-size: 15px !important;
-        padding: 5px 2px;
-    }
 }
 
 @media (hover: none) {

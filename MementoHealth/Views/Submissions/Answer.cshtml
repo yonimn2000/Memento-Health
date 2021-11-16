@@ -18,74 +18,99 @@
         remainingQuestionsText = Model.NumberOfRemainingQuestions + " questions or less remain.";
     }
 }
-    <div class="shadow bg-light" style="border-radius: 12px">
-        @using (Html.BeginForm())
+<div class="shadow bg-light container" style="border-radius: 12px">
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(m => m.SubmissionId)
+        @Html.HiddenFor(m => m.Question.JsonData)
+        @Html.HiddenFor(m => m.QuestionId)
+        @Html.HiddenFor(m => m.JsonData)
+        @Html.HiddenFor(m => m.NextAction)
+
+        <div class="text-center py-3">@Html.Partial("_PatientDetailsPartial", Model.Patient)</div>
+        <div class="progress ml-3 mr-3" style="height: 36px;">
+            <div class="progress-bar" role="progressbar" style="width: @Model.GetProgress()%; background-color:#5466af"><b>@Model.GetProgress()%</b></div>
+        </div>
+        <div class="text-center mt-2 mb-1">@remainingQuestionsText</div>
+        <hr />
+
+        <h2 class="pl-3">@Model.Question.Question</h2>
+
+        if (Model.Question.IsRequired)
         {
-            @Html.AntiForgeryToken()
+            <div class="text-danger pb-3 ml-3">Answer is required.</div>
+        }
 
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-            @Html.HiddenFor(m => m.SubmissionId)
-            @Html.HiddenFor(m => m.Question.JsonData)
-            @Html.HiddenFor(m => m.QuestionId)
-            @Html.HiddenFor(m => m.JsonData)
-            @Html.HiddenFor(m => m.NextAction)
+        <div class="row vw-100" style="display: flex">
+            <input class="form-control" id="textbox" style="display:none; margin-left: 30px" autocomplete="off">
+            <div class="form-check pl-3 ml-5" id="radiobuttons" style="display: none; font-size: x-large"></div>
+            <div class="form-check pl-3 ml-5" id="checkboxes" style="display: none; font-size: x-large"></div>
+            <div id="img-wrapper">
+                <img id="image" class="img-fluid" style="display:none;" onclick="imgClicked(event)" />
+            </div>
+        </div>
 
-            <h2 class="pl-3 pt-2">@Model.Question.Question</h2>
-            <hr />
+        <div class="text-center">
+            <div class="btn-group mb-4 mt-5" role="group" aria-label="Basic example">
+                @if (Model.Question.Number != 1)
+                {
+                    <button type="button" id="previous-button" class="btn btn-lg btn-outline-info" onclick="submitClicked('previous')">Previous question</button>
+                }
+                <button type="button" id="next-button" class="btn btn-lg btn-info" onclick="submitClicked('next')">@(isLast ? "Review answers" : "Next question")</button>
+                @if (!isLast && Model.AnsweredAllQuestions)
+                {
+                    <button type="button" id="review-button" class="btn btn-lg btn-success" onclick="submitClicked('review')">Review answers</button>
+                }
+                <button type="button" id="clear-button" class="btn btn-lg btn-danger" onclick="clearAnswer()">Clear answer</button>
+            </div>
+        </div>
+    }
+</div>
 
-            if (Model.Question.IsRequired)
-            {
-                <div class="text-danger pb-3 ml-3">Answer is required.</div>
+@section styles
+{
+    <style>
+        input[type=checkbox], input[type=radio] {
+            transform: scale(2.5);
+            margin-top: 12px;
+        }
+
+        @@media only screen and (max-width: 575px) {
+
+            .body-content {
+                min-height: calc(100vh - 190px) !important;
             }
 
-            <div class="row vw-100" style="display: flex">
-                <input class="form-control" id="textbox" style="display:none; margin-left: 30px" autocomplete="off">
-                <div class="form-check pl-3 ml-5" id="radiobuttons" style="display: none; font-size: x-large"></div>
-                <div class="form-check pl-3 ml-5" id="checkboxes" style="display: none; font-size: x-large"></div>
-                <div id="img-wrapper" style="margin: auto">
-                    <img id="image" class="img-fluid" style="display:none;" onclick="imgClicked(event)" />
-                </div>
-            </div>
+            #previous-button {
+                font-size: 15px !important;
+                padding: 5px 2px;
+            }
 
-            <div class="row pt-4 pb-2 flex-nowrap">
-                <div class="col-md-4 col-xs-4 ml-3">
-                    <button type="button" id="clear-button" class="btn btn-lg btn-danger" onclick="clearAnswer()">Clear answer</button>
-                </div>
-                <div class="col-md-8 col-xs-8 pr-5 text-right">
-                    @if (Model.Question.Number != 1)
-                    {
-                        <button type="button" id="previous-button" class="btn btn-lg btn-outline-info" onclick="submitClicked('previous')">Previous</button>
-                    }
-                    <button type="button" id="next-button" class="btn btn-lg btn-info" onclick="submitClicked('next')">@(isLast ? "Review" : "Next")</button>
-                    @if (!isLast && Model.AnsweredAllQuestions)
-                    {
-                        <button type="button" id="review-button" class="btn btn-lg btn-success" onclick="submitClicked('review')">Review</button>
-                    }
-                </div>
-            </div>
+            #next-button {
+                font-size: 15px !important;
+                padding: 5px 2px;
+            }
 
-            <div class="pb-1 ml-3 w-75">@remainingQuestionsText</div>
-            <div class="progress ml-3 mr-3" style="height: 36px;">
-                <div class="progress-bar" role="progressbar" style="width: @Model.GetProgress()%; background-color:#5466af"><b>@Model.GetProgress()%</b></div>
-            </div>
+            #review-button {
+                margin-right: -17px !important;
+                font-size: 15px !important;
+                padding: 5px 2px;
+            }
 
-            <div class="text-center py-2">@Html.Partial("_PatientDetailsPartial", Model.Patient)</div>
+            #clear-button {
+                font-size: 15px !important;
+                padding: 5px 2px;
+            }
         }
-    </div>
+    </style>
+}
 
-        @section styles
+@section scripts
 {
-            <style>
-                input[type=checkbox], input[type=radio] {
-                    transform: scale(2.5);
-                    margin-top: 12px;
-                }
-            </style>
-        }
-
-        @section scripts
-{
-            <script>
+    <script>
         let answerType = '@Model.Question.TypeString';
         let lastImageClick = {};
 
@@ -272,5 +297,5 @@
                 $('#next-button').closest("form").submit();
             }
         };
-            </script>
-        }
+    </script>
+}
