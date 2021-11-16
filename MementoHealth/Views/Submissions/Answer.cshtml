@@ -23,12 +23,12 @@
 {
     @Html.AntiForgeryToken()
 
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                @Html.HiddenFor(m => m.SubmissionId)
-                @Html.HiddenFor(m => m.Question.JsonData)
-                @Html.HiddenFor(m => m.QuestionId)
-                @Html.HiddenFor(m => m.JsonData)
-                @Html.HiddenFor(m => m.NextAction)
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(m => m.SubmissionId)
+    @Html.HiddenFor(m => m.Question.JsonData)
+    @Html.HiddenFor(m => m.QuestionId)
+    @Html.HiddenFor(m => m.JsonData)
+    @Html.HiddenFor(m => m.NextAction)
 
     <h2 class="pl-2">@Model.Question.Question</h2>
     <hr />
@@ -38,14 +38,14 @@
         <div class="text-danger pb-3 ml-3">Answer is required.</div>
     }
 
-                <div class="container" style="padding: 0 0 0 0; min-width: 100%">
-                    <input class="form-control" id="textbox" style="display:none; font-size: large" autocomplete="off">
-                    <div class="form-check" id="radiobuttons" style="display: none; font-size: large"></div>
-                    <div class="form-check" id="checkboxes" style="display: none; font-size: large"></div>
-                    <div id="img-wrapper">
-                        <img id="image" class="img-fluid" style="display: none; max-width: 650px; max-height: 650px" onclick="imgClicked(event)" />
-                    </div>
-                </div>
+    <div class="row vw-100" style="display: flex">
+        <input class="form-control ml-3" id="textbox" style="display:none;" autocomplete="off">
+        <div class="form-check pl-3 ml-5" id="radiobuttons" style="display: none; font-size: x-large"></div>
+        <div class="form-check pl-3 ml-5" id="checkboxes" style="display: none; font-size: x-large"></div>
+        <div id="img-wrapper" style="margin: auto">
+            <img id="image" class="img-fluid" style="display:none;" onclick="imgClicked(event)" />
+        </div>
+    </div>
 
     <div class="row pt-4 pb-2 flex-nowrap">
         <div class="col-md-4 col-xs-4">
@@ -77,16 +77,6 @@
     <style>
         input[type=checkbox], input[type=radio] {
             transform: scale(2.5);
-        }
-    </style>
-}
-
-@section styles
-{
-    <style>
-        input[type=checkbox], input[type=radio] {
-            transform: scale(2.5);
-            margin-top: 12px;
         }
     </style>
 }
@@ -128,7 +118,7 @@
                             })).append(
                             $('<label>').prop({
                                 for: 'checkbox-' + i,
-                                class: 'form-check-label'
+                                class: 'form-check-label mb-3 ml-4'
                             }).html(" " + label)
                             ).append($('<br>'));
                     });
