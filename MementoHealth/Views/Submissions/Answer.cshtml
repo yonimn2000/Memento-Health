@@ -18,66 +18,68 @@
         remainingQuestionsText = Model.NumberOfRemainingQuestions + " questions or less remain.";
     }
 }
-<div class="row d-flex justify-content-center">
-    <div class="shadow bg-light" style="border-radius: 12px; width: 90%; height: 85vh; margin-top: 15px">
-        <div class="custom-form-div" style="height: 85vh">
-            @using (Html.BeginForm())
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(m => m.SubmissionId)
+    @Html.HiddenFor(m => m.Question.JsonData)
+    @Html.HiddenFor(m => m.QuestionId)
+    @Html.HiddenFor(m => m.JsonData)
+    @Html.HiddenFor(m => m.NextAction)
+
+    <h2 class="pl-2">@Model.Question.Question</h2>
+    <hr />
+
+    if (Model.Question.IsRequired)
+    {
+        <div class="text-danger pb-3 ml-3">Answer is required.</div>
+    }
+
+    <div class="row vw-100" style="display: flex">
+        <input class="form-control ml-3" id="textbox" style="display:none;" autocomplete="off">
+        <div class="form-check pl-3 ml-5" id="radiobuttons" style="display: none; font-size: x-large"></div>
+        <div class="form-check pl-3 ml-5" id="checkboxes" style="display: none; font-size: x-large"></div>
+        <div id="img-wrapper" style="margin: auto">
+            <img id="image" class="img-fluid" style="display:none;" onclick="imgClicked(event)" />
+        </div>
+    </div>
+
+    <div class="row pt-4 pb-2 flex-nowrap">
+        <div class="col-md-4 col-xs-4">
+            <button type="button" id="clear-button" class="btn btn-lg btn-danger" onclick="clearAnswer()">Clear answer</button>
+        </div>
+        <div class="col-md-8 col-xs-8 text-right">
+            @if (Model.Question.Number != 1)
             {
-                @Html.AntiForgeryToken()
-
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                @Html.HiddenFor(m => m.SubmissionId)
-                @Html.HiddenFor(m => m.Question.JsonData)
-                @Html.HiddenFor(m => m.QuestionId)
-                @Html.HiddenFor(m => m.JsonData)
-                @Html.HiddenFor(m => m.NextAction)
-
-                <h2 class="pb-3 pt-5">@Model.Question.Question</h2>
-
-                if (Model.Question.IsRequired)
-                {
-                    <div class="text-danger pb-2" style="font-size: large">Answer is required.</div>
-                }
-
-                <div class="container" style="padding: 0 0 0 0; min-width: 100%">
-                    <input class="form-control" id="textbox" style="display:none; font-size: large" autocomplete="off">
-                    <div class="form-check" id="radiobuttons" style="display: none; font-size: large"></div>
-                    <div class="form-check" id="checkboxes" style="display: none; font-size: large"></div>
-                    <div id="img-wrapper">
-                        <img id="image" class="img-fluid" style="display: none; max-width: 650px; max-height: 650px" onclick="imgClicked(event)" />
-                    </div>
-                </div>
-
-                <div style="position: absolute; bottom: 250px; left: 7.5%; right: 50%; width: 85%">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <button type="button" class="btn btn-lg btn-danger" onclick="clearAnswer()">Clear answer</button>
-                        </div>
-                        <div class="col-md-8 text-right">
-                            @if (Model.Question.Number != 1)
-                            {
-                                <button type="button" id="previous-button" class="btn btn-lg btn-outline-info" onclick="submitClicked('previous')">Previous</button>
-                            }
-                            <button type="button" id="next-button" class="btn btn-lg btn-info" onclick="submitClicked('next')">@(isLast ? "Review" : "Next")</button>
-                            @if (!isLast && Model.AnsweredAllQuestions)
-                            {
-                                <button type="button" id="review-button" class="btn btn-lg btn-success" onclick="submitClicked('review')">Review</button>
-                            }
-                        </div>
-                    </div>
-                </div>
-
-                <div style="position: absolute; bottom: 125px; left: 7.5%; right: 50%; width: 85%">
-                    <div>@remainingQuestionsText</div>
-                    <div class="progress" style="height: 36px;">
-                        <div class="progress-bar" role="progressbar" style="width: @Model.GetProgress()%; background-color:#5466af"><b>@Model.GetProgress()%</b></div>
-                    </div>
-                    <div class="text-center pt-2">@Html.Partial("_PatientDetailsPartial", Model.Patient)</div>
-                </div>
+                <button type="button" id="previous-button" class="btn btn-lg btn-outline-info" onclick="submitClicked('previous')">Previous</button>
+            }
+            <button type="button" id="next-button" class="btn btn-lg btn-info" onclick="submitClicked('next')">@(isLast ? "Review" : "Next")</button>
+            @if (!isLast && Model.AnsweredAllQuestions)
+            {
+                <button type="button" id="review-button" class="btn btn-lg btn-success" onclick="submitClicked('review')">Review</button>
             }
         </div>
     </div>
-</div>
+
+    <div class="pb-1">@remainingQuestionsText</div>
+    <div class="progress" style="height: 36px;">
+        <div class="progress-bar" role="progressbar" style="width: @Model.GetProgress()%; background-color:#5466af"><b>@Model.GetProgress()%</b></div>
+    </div>
+
+    <div class="text-center pt-2">@Html.Partial("_PatientDetailsPartial", Model.Patient)</div>
+}
+
+@section styles
+{
+    <style>
+        input[type=checkbox], input[type=radio] {
+            transform: scale(2.5);
+        }
+    </style>
+}
 
 @section scripts
 {
@@ -116,7 +118,7 @@
                             })).append(
                             $('<label>').prop({
                                 for: 'checkbox-' + i,
-                                class: 'form-check-label'
+                                class: 'form-check-label mb-3 ml-4'
                             }).html(" " + label)
                             ).append($('<br>'));
                     });
@@ -139,7 +141,7 @@
                             })).append(
                                 $('<label>').prop({
                                     for: 'radio-' + i,
-                                    class: 'form-check-label'
+                                    class: 'form-check-label mb-3 ml-3'
                                 }).html(" " + label)
                             ).append($('<br>'));
                     });

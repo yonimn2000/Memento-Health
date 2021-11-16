@@ -85,6 +85,11 @@ textarea {
     .body-content {
         min-height: calc(100vh - 190px) !important;
     }
+
+    #clear-button, #previous-button, #next-button, #review-button {
+        font-size: 15px !important;
+        padding: 2px 4px;
+    }
 }
 
 @media (hover: none) {
@@ -139,7 +144,7 @@ footer {
 
 .table-striped > tbody > tr:nth-child(odd) > td,
 .table-striped > tbody > tr:nth-child(odd) > th {
-    background-color: rgb(84 102 175 / 0.01);
+    background-color: rgb(84 102 175 / 0.10);
 }
 
 a, input.btn.btn-link {
