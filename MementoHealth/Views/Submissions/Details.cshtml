@@ -3,11 +3,17 @@
     ViewBag.Title = "Submission Details";
 }
 
-<h2>@ViewBag.Title</h2>
-@Html.Partial("_PatientDetailsPartial", Model.Patient)
-<hr />
+<div class="text-center">
+    <div class="h2 page-title font-weight-bold">@ViewBag.Title</div>
+    <div class="text-secondary">
+        @Html.Partial("_PatientDetailsPartial", Model.Patient)
+        <div class="pt-2">@Html.ActionLink(" Back to Submission List", "Index", null, new { @class = "fa fa-arrow-circle-left text-dark" })</div>
+    </div>
+    <hr />
+</div>
 
-<div>
+<div class="container text-center pt-3" style="min-width: 94.3%">
+    <div>
     <b>Answered All Questions: </b>@Model.AnsweredAllQuestions |
     <b>Start: </b>@Model.SubmissionStartDate
     @if (Model.WasSubmitted)
@@ -17,11 +23,10 @@
         <span>|</span>
         <b>Time to Complete: </b>@Model.TimeToComplete
     }
+    </div>
 </div>
 
 @Html.Partial("_SubmissionDetailsPartial", Model)
-
-<div>@Html.ActionLink("Back to Submission List", "Index")</div>
 
 @section scripts
 {

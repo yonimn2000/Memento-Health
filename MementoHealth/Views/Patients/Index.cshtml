@@ -4,13 +4,15 @@
     ViewBag.Title = "Patients";
 }
 
-<div class="box" style="text-align: center">
-    <div class="page-title font-weight-bold h2">@ViewBag.Title</div>
-    <div style="margin-top:-20px; margin-bottom: 20px">
+
+<div class="text-center">
+    <div class="h2 page-title font-weight-bold">@ViewBag.Title</div>
+    <div class="text-secondary">
         @Html.ActionLink(" Add", "Create", null, new { @class = "fa fa-user-plus text-dark" }) |
         @Html.ActionLink(" Import", "Import", null, new { @class = "fa fa-upload text-dark" }) |
         @Html.ActionLink(" Search", "Search", null, new { @class = "fa fa-search text-dark" })
     </div>
+    <hr />
 </div>
 
 @Html.Partial("_PatientsTablePartial", Model)

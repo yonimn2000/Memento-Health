@@ -7,8 +7,12 @@
     ViewBag.HideForm = true;
 }
 
-<h2>@ViewBag.Title</h2>
-<hr />
-@Html.ActionLink("Back to Forms", "Index", "Forms")
+<div class="text-center">
+    <div class="h2 page-title font-weight-bold">@ViewBag.Title</div>
+    <div class="text-secondary">
+        @Html.ActionLink(" Back to Forms", "Index", "Forms", new { @class = "fa fa-arrow-circle-left text-dark" })
+    </div>
+    <hr />
+</div>
 
 @Html.Partial("_SubmissionsTablePartial", Model)

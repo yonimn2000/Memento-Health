@@ -5,23 +5,31 @@
     ViewBag.PatientId = Model.Patient.PatientId;
 }
 
-<h2>@ViewBag.Title</h2>
-@Html.Partial("_PatientDetailsPartial", Model.Patient)
-<hr />
+<div class="text-center">
+    <div class="h2 page-title font-weight-bold">@ViewBag.Title</div>
+    <div class="text-secondary">
+        @Html.Partial("_PatientDetailsPartial", Model.Patient)
+    </div>
+    <hr />
+</div>
 
-<h4>Form completed successfully. Please review your answers below and hit submit.</h4>
-<div class="progress" style="height: 36px;">
-    <div class="progress-bar bg-success" role="progressbar" style="width: 100%"><b>100%</b></div>
+<div class="container text-center pt-3" style="min-width: 94.5%">
+    <h5>Form completed successfully. Please review your answers below and hit submit.</h5>
+    <div class="progress mb-4" style="height: 36px;">
+        <div class="progress-bar bg-success" role="progressbar" style="width: 100%"><b>100%</b></div>
+    </div>
 </div>
 
 @Html.Partial("_SubmissionDetailsPartial", Model)
 
-@using (Html.BeginForm("Submit", "Submissions", new { id = Model.SubmissionId }, FormMethod.Post))
-{
-    @Html.AntiForgeryToken()
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    <input type="submit" value="Submit" class="btn btn-primary w-100" />
-}
+<div class="text-center pt-3">
+    @using (Html.BeginForm("Submit", "Submissions", new { id = Model.SubmissionId }, FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <input type="submit" value="Submit" class="btn btn-lg btn-primary w-100" />
+    }
+</div>
 
 @section scripts
 {
