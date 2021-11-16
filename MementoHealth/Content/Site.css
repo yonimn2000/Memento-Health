@@ -139,7 +139,7 @@ footer {
 
 .table-striped > tbody > tr:nth-child(odd) > td,
 .table-striped > tbody > tr:nth-child(odd) > th {
-    background-color: rgb(84 102 175 / 0.25);
+    background-color: rgb(84 102 175 / 0.10);
 }
 
 a, input.btn.btn-link {
@@ -149,21 +149,21 @@ a, input.btn.btn-link {
 
     a:hover, input.btn.btn-link:hover {
         color: #0e2fb7;
-        text-decoration: none;
+        text-decoration: underline;
     }
 
     a:focus, input.btn.btn-link:focus {
         color: #0024b6;
-        text-decoration: none;
+        text-decoration: underline;
     }
 
     a:active, input.btn.btn-link:active {
         color: #0024b6;
-        text-decoration: none;
+        text-decoration: underline;
     }
 
     div.shadow.bg-light {
-        margin-top: 100px;
+        margin-top: 7vh;
     }
 
 /****** The following are for the selected point on the picture answer ******/
