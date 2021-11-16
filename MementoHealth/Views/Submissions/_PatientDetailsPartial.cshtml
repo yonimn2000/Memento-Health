@@ -3,7 +3,7 @@
 <div class="text-secondary">
     <b>Patient: </b> @Model.FullName |
     <b>Birthday: </b> @Model.Birthday.ToShortDateString()
-    @if (Model.ExternalPatientId != null)
+    @if (!string.IsNullOrWhiteSpace(Model.ExternalPatientId))
     {
         <text>|</text>
         <b>External ID: </b> @Model.ExternalPatientId
