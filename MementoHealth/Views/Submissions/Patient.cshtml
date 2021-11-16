@@ -18,8 +18,8 @@
                 <b>External ID: </b> @patient.ExternalPatientId
             }
         </div>
-        @Html.ActionLink("Back to Patients", "Index", "Patients") |
-        @Html.ActionLink("Start new", "Start", "Submissions", new { id = patient.PatientId }, null)
+        @Html.ActionLink(" Back to Patients", "Index", "Patients", null, new { @class = "fa fa-arrow-circle-left text-dark" }) |
+        @Html.ActionLink(" Start new", "Start", "Submissions", new { id = patient.PatientId }, new { @class = "fa fa-plus-square text-dark" })
     </div>
     <hr />
 </div>

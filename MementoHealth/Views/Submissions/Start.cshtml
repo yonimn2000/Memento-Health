@@ -34,6 +34,10 @@
                             <div class="form-actions no-color my-4" style="text-align: center">
                                 <input type="submit" value="Start" class="btn btn-primary w-100" />
                             </div>
+
+                            <p>
+                                @Html.ActionLink("Back to Patient Submission List", "Patient", new { id = Model.PatientId })
+                            </p>
                         }
                     </section>
                 </div>

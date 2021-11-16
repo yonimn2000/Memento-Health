@@ -20,7 +20,7 @@
 }
 <div class="row d-flex justify-content-center">
     <div class="shadow bg-light" style="border-radius: 12px; width: 90%; height: 85vh; margin-top: 15px">
-        <div class="custom-form-div" style="">
+        <div class="custom-form-div" style="height: 85vh">
             @using (Html.BeginForm())
             {
                 @Html.AntiForgeryToken()
@@ -38,15 +38,15 @@
                 {
                     <div class="text-danger pb-2" style="font-size: large">Answer is required.</div>
                 }
-                
-        <div class="container" style="padding: 0 0 0 0">
-            <input class="form-control" id="textbox" style="display:none; font-size: large" autocomplete="off">
-            <div class="form-check" id="radiobuttons" style="display: none; font-size: x-large"></div>
-            <div class="form-check" id="checkboxes" style="display: none; font-size: x-large"></div>
-            <div id="img-wrapper">
-                <img id="image" class="img-fluid" style="display:none;" onclick="imgClicked(event)" />
-            </div>
-        </div>
+
+                <div class="container" style="padding: 0 0 0 0; min-width: 100%">
+                    <input class="form-control" id="textbox" style="display:none; font-size: large" autocomplete="off">
+                    <div class="form-check" id="radiobuttons" style="display: none; font-size: large"></div>
+                    <div class="form-check" id="checkboxes" style="display: none; font-size: large"></div>
+                    <div id="img-wrapper">
+                        <img id="image" class="img-fluid" style="display: none; max-width: 650px; max-height: 650px" onclick="imgClicked(event)" />
+                    </div>
+                </div>
 
                 <div style="position: absolute; bottom: 250px; left: 7.5%; right: 50%; width: 85%">
                     <div class="row">
@@ -56,27 +56,27 @@
                         <div class="col-md-8 text-right">
                             @if (Model.Question.Number != 1)
                             {
-                                <button type="button" id="previous-button" class="btn btn-lg btn-outline-primary" onclick="submitClicked('previous')">Previous</button>
+                                <button type="button" id="previous-button" class="btn btn-lg btn-outline-info" onclick="submitClicked('previous')">Previous</button>
                             }
-                            <button type="button" id="next-button" class="btn btn-lg btn-primary" onclick="submitClicked('next')">@(isLast ? "Review" : "Next")</button>
+                            <button type="button" id="next-button" class="btn btn-lg btn-info" onclick="submitClicked('next')">@(isLast ? "Review" : "Next")</button>
                             @if (!isLast && Model.AnsweredAllQuestions)
                             {
-                                <button type="button" id="review-button" class="btn btn-lg btn-info" onclick="submitClicked('review')">Review</button>
+                                <button type="button" id="review-button" class="btn btn-lg btn-success" onclick="submitClicked('review')">Review</button>
                             }
                         </div>
                     </div>
-                    </div>
-
-                    <div style="position: absolute; bottom: 125px; left: 7.5%; right: 50%; width: 85%">
-                        <div>@remainingQuestionsText</div>
-                        <div class="progress" style="height: 36px;">
-                            <div class="progress-bar" role="progressbar" style="width: @Model.GetProgress()%"><b>@Model.GetProgress()%</b></div>
-                        </div>
-                        <div class="text-center pt-2">@Html.Partial("_PatientDetailsPartial", Model.Patient)</div>
-                    </div>
-                    }
                 </div>
-            </div>
+
+                <div style="position: absolute; bottom: 125px; left: 7.5%; right: 50%; width: 85%">
+                    <div>@remainingQuestionsText</div>
+                    <div class="progress" style="height: 36px;">
+                        <div class="progress-bar" role="progressbar" style="width: @Model.GetProgress()%; background-color:#5466af"><b>@Model.GetProgress()%</b></div>
+                    </div>
+                    <div class="text-center pt-2">@Html.Partial("_PatientDetailsPartial", Model.Patient)</div>
+                </div>
+            }
+        </div>
+    </div>
 </div>
 
 @section scripts

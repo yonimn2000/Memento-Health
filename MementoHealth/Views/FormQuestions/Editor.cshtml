@@ -37,8 +37,6 @@
                             <div class="form-check">
                                 <div class="col-md-auto my-3" style="text-align: left">
                                     @Html.CheckBoxFor(m => m.IsRequired, new { @class = "form-check-input col-md-auto" })
-
-
                                     @Html.LabelFor(m => m.IsRequired, new { @class = "form-check-label" })
                                 </div>
                             </div>
@@ -64,13 +62,15 @@
                                 <div id="multi-labels"></div>
                             </div>
 
-                            <div id="image-editor" class="custom-editor mb-3" style="display:none">
-                                <label for="file">Image</label>
+                            <div id="image-editor" class="custom-editor mb-3" style="display: none">
+                                <div class="ml-3 text-left">
+                                    <label for="file">Image</label>
+                                </div>
                                 <div class="col-md-auto my-3" style="text-align: left">
                                     <input id="img-selector" class="form-control-file" type="file" name="file" accept="image/*" onchange="imageSelected(event)" />
                                     <img id="selected-image" width="300px" />
-                                    </div>
                                 </div>
+                            </div>
 
                                 <div class="form-group">
                                     <div class="col-md-auto my-4" style="text-align: center; padding-top: 5px">
