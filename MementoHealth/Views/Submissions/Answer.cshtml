@@ -40,9 +40,9 @@
                 }
 
                 <div class="container" style="padding: 0 0 0 0; min-width: 100%">
-                    <input class="form-control" id="textbox" style="display:none; font-size: large" autocomplete="off">
-                    <div class="form-check ml-2" id="radiobuttons" style="display: none; font-size: large"></div>
-                    <div class="form-check ml-2" id="checkboxes" style="display: none; font-size: large"></div>
+                    <input class="form-control" id="textbox" style="display:none; font-size: x-large" autocomplete="off">
+                    <div class="form-check ml-2" id="radiobuttons" style="display: none; font-size: x-large"></div>
+                    <div class="form-check ml-2" id="checkboxes" style="display: none; font-size: x-large"></div>
                     <div id="img-wrapper">
                         <img id="image" class="img-fluid" style="display: none; max-width: 650px; max-height: 650px" onclick="imgClicked(event)" />
                     </div>
@@ -84,6 +84,7 @@
     <style>
         input[type=checkbox], input[type=radio] {
             transform: scale(2.5);
+            margin-top: 12px;
         }
     </style>
 }
@@ -120,7 +121,7 @@
                             $('<input>').prop({
                                 type: 'checkbox',
                                 id: 'checkbox-' + i,
-                                class: 'form-check-input mb-3',
+                                class: 'form-check-input',
                                 value: label
                             })).append(
                             $('<label>').prop({
@@ -143,7 +144,7 @@
                                 type: 'radio',
                                 id: 'radio-' + i,
                                 name: 'radiobuttons',
-                                class: 'form-check-input mb-3',
+                                class: 'form-check-input',
                                 value: label
                             })).append(
                                 $('<label>').prop({
