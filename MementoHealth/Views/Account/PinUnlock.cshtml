@@ -20,7 +20,7 @@
                         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                         <div class="form-group">
                             <div class="col-md-auto">
-                                @Html.PasswordFor(m => m.Pin, new { @class = "form-control", placeholder = "PIN" })
+                                @Html.PasswordFor(m => m.Pin, new { @class = "form-control", placeholder = "PIN", autofocus = true })
                                 @Html.ValidationMessageFor(m => m.Pin, "", new { @class = "text-danger" })
                             </div>
                         </div>
