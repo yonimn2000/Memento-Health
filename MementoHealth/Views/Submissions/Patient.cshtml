@@ -9,14 +9,8 @@
 <div class="text-center">
     <div class="h2 page-title font-weight-bold">@ViewBag.Title</div>
     <div class="text-secondary">
-        <div class="pb-3">
-            <b>Patient: </b> @patient.FullName |
-            <b>Birthday: </b> @patient.Birthday.ToShortDateString()
-            @if (patient.ExternalPatientId != null)
-            {
-                <text>|</text>
-                <b>External ID: </b> @patient.ExternalPatientId
-            }
+        <div class="mb-2">
+            @Html.Partial("_PatientDetailsPartial", Model.First().Patient)
         </div>
         @Html.ActionLink(" Back to Patients", "Index", "Patients", null, new { @class = "fa fa-arrow-circle-left text-dark" }) |
         @Html.ActionLink(" Start new", "Start", "Submissions", new { id = patient.PatientId }, new { @class = "fa fa-plus-square text-dark" })
