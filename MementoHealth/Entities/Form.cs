@@ -26,12 +26,31 @@ namespace MementoHealth.Entities
 
         public Form Clone()
         {
+            IDictionary<int, FormQuestion> newQuestions = Questions.Select(q => new FormQuestion
+            {
+                Number = q.Number,
+                Question = q.Question,
+                TypeString = q.TypeString,
+                JsonData = q.JsonData,
+                IsRequired = q.IsRequired
+            }).ToDictionary(q => q.Number);
+
+            foreach (FormQuestion question in Questions)
+            {
+                newQuestions[question.Number].Conditions = question.Conditions.Select(c => new FormQuestionCondition
+                {
+                    JsonData = c.JsonData,
+                    Number = c.Number,
+                    GoToQuestion = c.GoToQuestion == null ? null : newQuestions[c.GoToQuestion.Number]
+                }).ToList();
+            }
+
             return new Form
             {
                 Name = Name,
                 ProviderId = ProviderId,
                 IsPublished = false,
-                Questions = Questions.Select(q => q.Clone()).ToList()
+                Questions = newQuestions.Values
             };
         }
     }
