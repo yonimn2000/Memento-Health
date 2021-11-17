@@ -18,7 +18,7 @@
         remainingQuestionsText = Model.NumberOfRemainingQuestions + " questions or less remain.";
     }
 }
-<div class="shadow bg-light container" style="border-radius: 12px">
+<div class="shadow bg-light container pb-3" style="border-radius: 12px">
     @using (Html.BeginForm())
     {
         @Html.AntiForgeryToken()
@@ -53,18 +53,24 @@
             </div>
         </div>
 
-        <div class="text-center">
-            <div class="btn-group mb-4 mt-5" role="group" aria-label="Basic example">
-                @if (Model.Question.Number != 1)
-                {
-                    <button type="button" id="previous-button" class="btn btn-lg btn-outline-info" onclick="submitClicked('previous')">Previous question</button>
-                }
-                <button type="button" id="next-button" class="btn btn-lg btn-info" onclick="submitClicked('next')">@(isLast ? "Review answers" : "Next question")</button>
+        <div class="row mt-5 mx-1">
+            <div class="col-3 text-left">
+                <button type="button" id="clear-button" class="btn btn-lg btn-danger" onclick="clearAnswer()">Clear answer</button>
+            </div>
+            <div class="col-6 text-center">
+                <div class="btn-group" role="group" aria-label="Basic example">
+                    @if (Model.Question.Number != 1)
+                    {
+                        <button type="button" id="previous-button" class="btn btn-lg btn-outline-primary" onclick="submitClicked('previous')">Previous question</button>
+                    }
+                    <button type="button" id="next-button" class="btn btn-lg btn-primary" onclick="submitClicked('next')">@(isLast ? "Review answers" : "Next question")</button>
+                </div>
+            </div>
+            <div class="col-3 text-right">
                 @if (!isLast && Model.AnsweredAllQuestions)
                 {
                     <button type="button" id="review-button" class="btn btn-lg btn-success" onclick="submitClicked('review')">Review answers</button>
                 }
-                <button type="button" id="clear-button" class="btn btn-lg btn-danger" onclick="clearAnswer()">Clear answer</button>
             </div>
         </div>
     }
