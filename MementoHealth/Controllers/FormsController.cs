@@ -152,7 +152,12 @@ namespace MementoHealth.Controllers
         [Authorize(Roles = Role.ProviderAdmin)]
         public ActionResult Clone(int? id)
         {
-            return GetFormViewModelResult(id);
+            Form form = FindForm_Restricted(id);
+
+            if (form == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            return View(form);
         }
 
 
@@ -162,11 +167,15 @@ namespace MementoHealth.Controllers
         [Authorize(Roles = Role.ProviderAdmin)]
         public ActionResult CloneConfirmed(int id)
         {
-            throw new NotImplementedException();
-            /*Form form = FindForm_Restricted(id);
-            // TODO: Implement
-            db.SaveChanges();
-            return RedirectToAction("Index");*/
+            Form form = FindForm_Restricted(id);
+
+            if (form == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            Form newForm = Db.Forms.Add(form.Clone());
+            Db.SaveChanges();
+
+            return RedirectToAction("Edit", new {id=newForm.FormId});
         }
 
         // GET: Forms/Publish/5

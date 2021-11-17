@@ -23,5 +23,16 @@ namespace MementoHealth.Entities
         public virtual ICollection<FormQuestion> Questions { get; set; }
 
         public FormQuestion GetFirstQuestion() => Questions.OrderBy(q => q.Number).FirstOrDefault();
+
+        public Form Clone()
+        {
+            return new Form
+            {
+                Name = Name,
+                ProviderId = ProviderId,
+                IsPublished = false,
+                Questions = Questions.Select(q => q.Clone()).ToList()
+            };
+        }
     }
 }

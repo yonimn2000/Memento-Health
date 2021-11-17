@@ -128,5 +128,17 @@ namespace MementoHealth.Entities
         }
 
         public override string ToString() => Question;
+
+        public FormQuestion Clone()
+        {
+            return new FormQuestion
+            {
+                Number = Number,
+                TypeString = TypeString,
+                JsonData = JsonData,
+                IsRequired = IsRequired,
+                Conditions = Conditions.Select(c => c.Clone()).ToList()
+            };
+        }
     }
 }
