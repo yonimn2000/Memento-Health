@@ -6,11 +6,11 @@
 
 
 <div class="text-center">
-    <div class="h2 page-title font-weight-bold">@ViewBag.Title</div>
+    <div class="h2 page-title font-weight-bold"><i class="fa fa-users"></i>&nbsp;@ViewBag.Title</div>
     <div class="text-secondary">
-        @Html.ActionLink(" Add", "Create", null, new { @class = "fa fa-user-plus text-dark" }) |
-        @Html.ActionLink(" Import", "Import", null, new { @class = "fa fa-upload text-dark" }) |
-        @Html.ActionLink(" Search", "Search", null, new { @class = "fa fa-search text-dark" })
+        <a href="@Url.Action("Create")"><i class="fa fa-user-plus"></i> Add</a> |
+        <a href="@Url.Action("Import")"><i class="fa fa-download"></i> Import</a> |
+        <a href="@Url.Action("Search")"><i class="fa fa-search"></i> Search</a>
     </div>
     <hr />
 </div>

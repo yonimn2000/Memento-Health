@@ -1,5 +1,4 @@
-﻿@using MementoHealth.Entities
-@model IEnumerable<FormQuestionCondition>
+﻿@model IEnumerable<FormQuestionCondition>
 @{
     FormQuestion formQuestion = Model.First().Question;
     ViewBag.Title = "Question Conditions";
@@ -9,10 +8,11 @@
     <div class="h2 page-title font-weight-bold">@ViewBag.Title</div>
     <div class="text-secondary">
         <h5 style="margin-top: -7px">
-            Question: "@formQuestion.Question"
+            <i class="fa fa-question-circle"></i>
+            <span class="font-weight-bolder">Question:</span> "@formQuestion.Question"
         </h5>
         <p>
-            @Html.ActionLink(" Back to Form Questions", "Index", "FormQuestions", new { id = formQuestion.FormId }, new { @class = "fa fa-arrow-circle-left text-dark" })
+            <a href="@Url.Action("Index", "FormQuestions", new { id = formQuestion.FormId })"><i class="fa fa-chevron-circle-left"></i> Back to Form Questions</a>
         </p>
     </div>
     <hr />
@@ -28,9 +28,9 @@
             <table class="table table-bordered table-striped">
                 <thead>
                     <tr>
-                        <th>#</th>
-                        <th>Condition</th>
-                        <th>Actions</th>
+                        <th><i class="fa fa-hashtag"></i></th>
+                        <th><i class="fa fa-sitemap"></i> Condition</th>
+                        <th><i class="fa fa-bolt"></i> Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -40,35 +40,35 @@
                             <td>@condition.Number</td>
                             <td>@condition.ToString(true)</td>
                             <td>
-                                @if (condition.Number == 1)
-                                {
-                                    <span class="text-secondary">Up</span>
-                                }
-                                else
+                                @if (condition.Number > 1)
                                 {
                                     using (Html.BeginForm("MoveUp", "FormQuestionConditions", new { id = condition.ConditionId }, FormMethod.Post))
                                     {
                                         @Html.AntiForgeryToken()
-                                        <a href="#" onclick="this.closest('form').submit();return false;">Up</a>
+                                        <a href="#" onclick="this.closest('form').submit();return false;"><i class="fa fa-lg fa-arrow-up"></i></a>
                                     }
-                                } |
-
-                                @if (condition.Number == Model.Max(c => c.Number))
-                                {
-                                    <span class="text-secondary">Down</span>
+                                    <span>|</span>
                                 }
-                                else
+
+                                @if (condition.Number < Model.Max(c => c.Number))
                                 {
                                     using (Html.BeginForm("MoveDown", "FormQuestionConditions", new { id = condition.ConditionId }, FormMethod.Post))
                                     {
                                         @Html.AntiForgeryToken()
-                                        <a href="#" onclick="this.closest('form').submit();return false;">Down</a>
+                                        <a href="#" onclick="this.closest('form').submit();return false;"><i class="fa fa-lg fa-arrow-down"></i></a>
                                     }
-                                } |
+                                    <span>|</span>
+                                }
 
-                                @Html.ActionLink("Insert after", "Insert", new { id = condition.ConditionId }) |
-                                @Html.ActionLink("Edit", "Edit", new { id = condition.ConditionId }) |
-                                @Html.ActionLink("Delete", "Delete", new { id = condition.ConditionId })
+                                <a class="text-success" title="Insert after" href="@Url.Action("Insert", new { id = condition.ConditionId })">
+                                    <i class="fa fa-lg fa-plus"></i>
+                                </a> |
+                                <a title="Edit question" href="@Url.Action("Edit", new { id = condition.ConditionId })">
+                                    <i class="fa fa-lg fa-pencil"></i>
+                                </a> |
+                                <a class="text-danger" title="Delete" href="@Url.Action("Delete", new { id = condition.ConditionId })">
+                                    <i class="fa fa-lg fa-trash"></i>
+                                </a>
                             </td>
                         </tr>
                     }
@@ -78,12 +78,13 @@
     </div>
 </div>
 
-@section Scripts {
+@section scripts
+{
     @Scripts.Render("~/bundles/jqueryval")
 }
 
-@section styles {
-
+@section styles
+{
     <style>
         form {
             display: inline-block;

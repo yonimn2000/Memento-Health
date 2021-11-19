@@ -1,5 +1,4 @@
-﻿@using MementoHealth.Models;
-@model SubmissionHistoryViewModel
+﻿@model SubmissionHistoryViewModel
 @{
     ViewBag.Title = "Submission History";
 }
@@ -9,7 +8,10 @@
     <div class="text-secondary">
         <div style="font-size: x-large" class="mb-2"><b>Form: </b>@Model.Form.Name</div>
         @Html.Partial("_PatientDetailsPartial", Model.Patient)
-        <div class="pt-2">@Html.ActionLink(" Back to Patient Submission List", "Patient", new { id = Model.Patient.PatientId }, new { @class = "fa fa-arrow-circle-left text-dark" })</div>
+        <div class="pt-2">
+            <a href="@Url.Action("Patient", new { id = Model.Patient.PatientId })"><i class="fa fa-chevron-circle-left"></i> Back to Patient Submission List</a>
+        </div>
+        <a href="@Url.Action("Index")"><i class="fa fa-chevron-circle-left"></i> Back to Full Submission List</a>
     </div>
     <hr />
 </div>

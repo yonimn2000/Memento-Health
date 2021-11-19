@@ -1,7 +1,7 @@
 ﻿@model MementoHealth.Entities.Patient
 
 @{
-    ViewBag.Title = "Delete Patient";    
+    ViewBag.Title = "Delete Patient";
 }
 
 <div class="row d-flex justify-content-center">
@@ -40,7 +40,9 @@
                                 <input type="submit" value="Delete" class="btn btn-danger w-100" />
 
                             </div>
-                            <div style="text-align: center">@Html.ActionLink("Back to Patient List", "Index")</div>
+                            <div style="text-align: center">
+                                <a href="@Url.Action("Index")"><i class="fa fa-chevron-circle-left"></i> Back to Patient List</a>
+                            </div>
                         }
                     </section>
                 </div>

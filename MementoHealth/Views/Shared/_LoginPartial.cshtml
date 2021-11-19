@@ -2,28 +2,41 @@
 {
     <ul class="nav navbar-nav navbar-right">
         <li class="nav-item">
-            @Html.ActionLink($"Hello, {User.GetFullName()}!", "Index", "Manage", routeValues: null, htmlAttributes: new { @class = "nav-link", title = "Manage" })
+            <a class="nav-link" title="Manage account" href="@Url.Action("Index", "Manage", new { Area = "" })">
+                <i class="fa fa-user-circle-o"></i>
+                Hello, @User.GetFullName()!
+            </a>
         </li>
     </ul>
     using (Html.BeginForm("PinLock", "Account", new { returnUrl = Request.Path }, FormMethod.Post, new { id = "lockForm", @class = "navbar-right" }))
     {
         @Html.AntiForgeryToken()
         <ul class="nav navbar-nav navbar-right">
-            <li class="nav-item"><a class="nav-link" href="javascript:document.getElementById('lockForm').submit()"><span>Lock</span></a></li>
+            <li class="nav-item"><a class="nav-link" href="javascript:document.getElementById('lockForm').submit()"><span><i class="fa fa-lock"></i> Lock</span></a></li>
         </ul>
     }
     using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
     {
         @Html.AntiForgeryToken()
         <ul class="nav navbar-nav navbar-right">
-            <li class="nav-item"><a class="nav-link" href="javascript:document.getElementById('logoutForm').submit()"><span>Log off</span></a></li>
+            <li class="nav-item"><a class="nav-link" href="javascript:document.getElementById('logoutForm').submit()"><span>Log off <i class="fa fa-sign-out"></i></span></a></li>
         </ul>
     }
 }
 else
 {
     <ul class="nav navbar-nav navbar-right">
-        <li class="nav-item">@Html.ActionLink("Register", "Register", "Account", new { Area = "" }, new { @class = "nav-link" })</li>
-        <li class="nav-item">@Html.ActionLink("Log in", "Login", "Account", new { Area = "" }, new { @class = "nav-link" })</li>
+        <li class="nav-item">
+            <a class="nav-link" href="@Url.Action("Register", "Account", new { Area = "" })">
+                <i class="fa fa-user-plus"></i>
+                Register
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="@Url.Action("Login", "Account", new { Area = "" })">
+                <i class="fa fa-sign-in"></i>
+                Log in
+            </a>
+        </li>
     </ul>
 }

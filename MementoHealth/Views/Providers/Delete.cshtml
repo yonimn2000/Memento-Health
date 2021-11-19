@@ -1,7 +1,7 @@
 ﻿@model MementoHealth.Entities.Provider
 
 @{
-    ViewBag.Title = "Delete";    
+    ViewBag.Title = "Delete";
 }
 
 <div class="row d-flex justify-content-center">
@@ -46,10 +46,11 @@
                             @Html.AntiForgeryToken()
 
                             <div class="form-actions no-color my-4" style="text-align: center">
-                                <input type="submit" value="Delete" class="btn btn-danger w-100" />
-
+                                <button type="submit" class="btn btn-danger w-100"><i class="fa fa-trash-o"></i> Delete</button>
                             </div>
-                            <div style="text-align: center">@Html.ActionLink("Back to Provider List", "Index")</div>
+                            <div style="text-align: center">
+                                <a href="@Url.Action("Index")"><i class="fa fa-chevron-circle-left"></i> Back to Provider List</a>
+                            </div>
                         }
                     </section>
                 </div>

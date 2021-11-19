@@ -76,12 +76,14 @@ textarea {
     }
 }
 
-@media only screen and (max-width: 575px) {
+@media only screen and (max-width: 1200px) {
     #logo-img {
         content: url('../Images/Mobile Memento Health-logo.svg');
         top: -1px;
     }
+}
 
+@media only screen and (max-width: 575px) {
     .body-content {
         min-height: calc(100vh - 190px) !important;
     }
@@ -162,9 +164,9 @@ a, input.btn.btn-link {
         text-decoration: underline;
     }
 
-    div.shadow.bg-light {
-        margin-top: 7vh;
-    }
+div.shadow.bg-light {
+    margin-top: 7vh;
+}
 
 /****** The following are for the selected point on the picture answer ******/
 
