@@ -1,7 +1,7 @@
 ﻿@model MementoHealth.Entities.Patient
 
 @{
-    ViewBag.Title = "Edit Patient";   
+    ViewBag.Title = "Edit Patient";
 }
 
 <div class="row d-flex justify-content-center">
@@ -51,7 +51,7 @@
                                 </div>
                             </div>
                             <p>
-                                @Html.ActionLink("Back to Patient List", "Index")
+                                <a href="@Url.Action("Index")"><i class="fa fa-chevron-circle-left"></i> Back to Patient List</a>
                             </p>
                         }
                     </section>
@@ -61,6 +61,7 @@
     </div>
 </div>
 
-@section Scripts {
+@section Scripts
+{
     @Scripts.Render("~/bundles/jqueryval")
 }
