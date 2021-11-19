@@ -37,13 +37,13 @@
                                 (
                                 @if (patient.Submissions.Count > 0)
                                 {
-                                    <a class="text-info" href="@Url.Action("Patient", new { id = patient.PatientId })">
+                                    <a class="text-info" href="@Url.Action("Patient", "Submissions", new { id = patient.PatientId })">
                                         <i class="fa fa-eye"></i>
                                         View
                                     </a>
                                     <span>|</span>
                                 }
-                                <a class="text-success" href="@Url.Action("Start", new { id = patient.PatientId })">
+                                <a class="text-success" href="@Url.Action("Start", "Submissions", new { id = patient.PatientId })">
                                     <i class="fa fa-plus-circle"></i>
                                     New
                                 </a>
