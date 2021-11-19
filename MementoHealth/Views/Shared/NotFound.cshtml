@@ -14,10 +14,11 @@
 
 <h1 class="text-danger">Page Not Found :(</h1>
 
-<p><b>Could not find the page:</b> <a href="@ViewBag.RequestedUrl">@ViewBag.RequestedUrl</a></p>
+<p><b>Could not find the page:</b> <i>@ViewBag.RequestedUrl</i></p>
+<p>Go back to the <a href="/">home page</a>.</p>
 @if (ViewBag.ReferrerUrl != null)
 {
-    <p>Go back to the <a href="@ViewBag.ReferrerUrl">previous page</a>.</p>
+    <p>Or go back to the <a href="@ViewBag.ReferrerUrl">previous page</a>.</p>
 }
 
 @* Error page must be longer than 512 bytes for IE and Chrome to show it. So add padding in case we're short. *@
