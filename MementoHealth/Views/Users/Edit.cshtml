@@ -1,7 +1,7 @@
 ﻿@model MementoHealth.Models.EditUserViewModel
 
 @{
-    ViewBag.Title = "Edit";    
+    ViewBag.Title = "Edit";
 }
 
 <div class="row d-flex justify-content-center">
@@ -56,11 +56,11 @@
                             </div>
                             <div class="form-group">
                                 <div class="col-md-auto my-4" style="text-align: center; padding-top: 5px">
-                                    <input type="submit" value="Save" class="btn btn-primary w-100" />
+                                    <button type="submit" class="btn btn-primary w-100"><i class="fa fa-floppy-o"></i> Save</button>
                                 </div>
                             </div>
                             <p>
-                                @Html.ActionLink("Back to User List", "Index")
+                                <a href="@Url.Action("Index")"><i class="fa fa-chevron-circle-left"></i> Back to User List</a>
                             </p>
                         }
                     </section>

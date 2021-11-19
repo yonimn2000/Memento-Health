@@ -1,13 +1,13 @@
-﻿@model IEnumerable<MementoHealth.Models.UserViewModel>
+﻿@model IEnumerable<UserViewModel>
 
 @{
     ViewBag.Title = "User Manager";
 }
 
 <div class="text-center">
-    <div class="h2 page-title font-weight-bold">@ViewBag.Title</div>
+    <div class="h2 page-title font-weight-bold"><i class="fa fa-user-md"></i>&nbsp;@ViewBag.Title</div>
     <div class="text-secondary">
-        @Html.ActionLink(" Create New User", "Create", "Users", null, new { @class = "fa fa-user-plus text-dark" })
+        <a href="@Url.Action("Create", "Users")"><i class="fa fa-user-plus"></i> Create New User</a>
     </div>
     <hr />
 </div>
@@ -23,12 +23,12 @@
             <table class="table table-bordered table-striped">
                 <thead>
                     <tr>
-                        <th>Full Name</th>
-                        <th>Email</th>
-                        <th>Phone</th>
-                        <th>Role</th>
-                        <th>Status</th>
-                        <th>Actions</th>
+                        <th><i class="fa fa-sort-alpha-asc"></i> Full Name</th>
+                        <th><i class="fa fa-envelope"></i> Email</th>
+                        <th><i class="fa fa-phone"></i> Phone</th>
+                        <th><i class="fa fa-users"></i> Role</th>
+                        <th><i class="fa fa-lock"></i> Status</th>
+                        <th><i class="fa fa-bolt"></i> Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -43,28 +43,35 @@
                             <td>
                                 @if (User.Identity.Name.ToLower().Equals(item.Email.ToLower()))
                                 {
-                                    <text>@Html.ActionLink("Manage current user", "Index", "Manage")</text>
+                                    <a title="Manage current user" href="@Url.Action("Index", "Manage")">
+                                        <i class="fa fa-lg fa-pencil"></i>
+                                    </a>
                                 }
                                 else
                                 { // Hide actions for the current user.
-                                    <text>
-                                        @Html.ActionLink("Edit", "Edit", new { id = item.Id })
-                                        @if (!item.EmailConfirmed)
-                                        {
-                                            <text>|</text> using (Html.BeginForm("ResendEmailConfirmation", "Users", new { id = item.Id }, FormMethod.Post))
-                                            {
-                                                @Html.AntiForgeryToken()
-                                                <a href="#" onclick="this.closest('form').submit();return false;">Resend Email Confirmation</a>
-                                            }
-                                        }
-                                        <text>|</text>
-                                        @using (Html.BeginForm("LockUnlock", "Users", new { id = item.Id, lockOut = !item.LockedOut }))
+                                    <a title="Edit" href="@Url.Action("Edit", "Edit", new { id = item.Id })">
+                                        <i class="fa fa-lg fa-pencil"></i>
+                                    </a>
+                                    if (!item.EmailConfirmed)
+                                    {
+                                        <text>|</text> using (Html.BeginForm("ResendEmailConfirmation", "Users", new { id = item.Id }, FormMethod.Post))
                                         {
                                             @Html.AntiForgeryToken()
-                                            <a href="#" onclick="this.closest('form').submit();return false;">@(item.LockedOut ? "Unlock" : "Lock")</a>
+                                            <a href="#" onclick="this.closest('form').submit();return false;">[Resend Email Confirmation]</a>
                                         }
-                                        | @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-                                    </text>
+                                    }
+                                    <text>|</text>
+                                    using (Html.BeginForm("LockUnlock", "Users", new { id = item.Id, lockOut = !item.LockedOut }))
+                                    {
+                                        @Html.AntiForgeryToken()
+                                        <a title="@(item.LockedOut ? "Unlock" : "Lock")" href="#" onclick="this.closest('form').submit();return false;">
+                                            <i class="fa fa-lg fa-@(item.LockedOut ? "unlock" : "lock")"></i>
+                                        </a>
+                                    }
+                                    <span>|</span>
+                                    <a class="text-danger" title="Delete" href="@Url.Action("Delete", "Delete", new { id = item.Id })">
+                                        <i class="fa fa-lg fa-trash"></i>
+                                    </a>
                                 }
                             </td>
                         </tr>
@@ -74,6 +81,7 @@
         </div>
     </div>
 </div>
+
 @section styles {
 
     <style>
