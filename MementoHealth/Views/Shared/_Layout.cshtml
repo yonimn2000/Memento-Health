@@ -11,7 +11,7 @@
     <link rel="shortcut icon" type="image/ico" href="~/Images/Logo.png ">
     <link rel="manifest" href="~/manifest.json">
     <title>@ViewBag.Title - Memento Health</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="~/Content/jquery.stickytable.min.css">
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
@@ -36,26 +36,66 @@
                         {
                             if (User.IsInRole(Role.SysAdmin))
                             {
-                                <li class="nav-item">@Html.ActionLink("Providers", "Index", "Providers", new { Area = "" }, new { @class = "nav-link" })</li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="@Url.Action("Index", "Providers", new { Area = "" })">
+                                        <i class="fa fa-building"></i>
+                                        Providers
+                                    </a>
+                                </li>
                             }
 
                             if (User.IsInRole(Role.SysAdmin) || User.IsInRole(Role.ProviderAdmin))
                             {
-                                <li class="nav-item">@Html.ActionLink("Users", "Index", "Users", new { Area = "" }, new { @class = "nav-link" })</li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="@Url.Action("Index", "Users", new { Area = "" })">
+                                        <i class="fa fa-user-md"></i>
+                                        Users
+                                    </a>
+                                </li>
                             }
 
                             if (User.IsInRole(Role.ProviderAdmin) || User.IsInRole(Role.Doctor) || User.IsInRole(Role.Assistant))
                             {
-                                <li class="nav-item">@Html.ActionLink("Forms", "Index", "Forms", new { Area = "" }, new { @class = "nav-link" })</li>
-                                <li class="nav-item">@Html.ActionLink("Patients", "Index", "Patients", new { Area = "" }, new { @class = "nav-link" })</li>
-                                <li class="nav-item">@Html.ActionLink("Submissions", "Index", "Submissions", new { Area = "" }, new { @class = "nav-link" })</li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="@Url.Action("Index", "Forms", new { Area = "" })">
+                                        <i class="fa fa-file-text"></i>
+                                        Forms
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="@Url.Action("Index", "Patients", new { Area = "" })">
+                                        <i class="fa fa-users"></i>
+                                        Patients
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="@Url.Action("Index", "Submissions", new { Area = "" })">
+                                        <i class="fa fa-check-square-o"></i>
+                                        Submissions
+                                    </a>
+                                </li>
                             }
                         }
                         else
                         {
-                            <li class="nav-item">@Html.ActionLink("Home", "Index", "Home", new { Area = "" }, new { @class = "nav-link" })</li>
-                            <li class="nav-item">@Html.ActionLink("About", "About", "Home", new { Area = "" }, new { @class = "nav-link" })</li>
-                            <li class="nav-item">@Html.ActionLink("Contact", "Contact", "Home", new { Area = "" }, new { @class = "nav-link" })</li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="@Url.Action("Index", "Home", new { Area = "" })">
+                                    <i class="fa fa-home"></i>
+                                    Home
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="@Url.Action("About", "Home", new { Area = "" })">
+                                    <i class="fa fa-info-circle"></i>
+                                    About
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="@Url.Action("Contact", "Home", new { Area = "" })">
+                                    <i class="fa fa-address-book"></i>
+                                    Contact
+                                </a>
+                            </li>
                         }
                     </ul>
                     @Html.Partial("_LoginPartial")
@@ -64,7 +104,12 @@
                 {
                     string returnUrl = ViewBag.PatientId == null ? Url.Action("Index", "Submissions") : Url.Action("Patient", "Submissions", new { id = ViewBag.PatientId });
                     <ul class="navbar-nav ml-auto">
-                        <li class="nav-item">@Html.ActionLink("Unlock", "PinUnlock", "Account", new { returnUrl, Area = "" }, new { @class = "nav-link" })</li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("PinUnlock", "Account", new { returnUrl, Area = "" })">
+                                <i class="fa fa-unlock"></i>
+                                Unlock
+                            </a>
+                        </li>
                     </ul>
                 }
             </div>
