@@ -5,6 +5,7 @@ using MementoHealth.Filters;
 using MementoHealth.Models;
 using Microsoft.AspNet.Identity;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
@@ -271,6 +272,34 @@ namespace MementoHealth.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
             return View(submission);
+        }
+
+        // GET: Submissions/History/5
+        public ActionResult History(int id) // Since ID
+        {
+            FormSubmission submission = FindSubmission_Restricted(id);
+
+            if (submission == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            IList<FormSubmission> submissions = Db.FormSubmissions
+                .Where(s => s.PatientId == submission.PatientId && s.FormId == submission.FormId)
+                .OrderByDescending(s => s.SubmissionStartDate).ToList()
+                .Where(s => s.SubmissionStartDate <= submission.SubmissionStartDate).ToList();
+
+            SubmissionHistoryViewModel model = new SubmissionHistoryViewModel
+            {
+                Patient = submission.Patient,
+                Form = submission.Form,
+                SubmissionDates = submissions.Select(s => s.SubmissionStartDate).ToList(),
+                QuestionJsonAnswers = submission.Form.Questions.ToDictionary(q => q, q => new List<string>())
+            };
+
+            foreach (FormSubmission formSubmission in submissions)
+                foreach (FormQuestionAnswer answer in formSubmission.GetAllQuestionAnswers())
+                    model.QuestionJsonAnswers[answer.Question].Add(answer.JsonData);
+
+            return View(model);
         }
 
         // GET: Submissions/Delete/5

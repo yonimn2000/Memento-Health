@@ -18,7 +18,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var answer in Model.GetAnswers())
+                    @foreach (var answer in Model.GetAnsweredQuestionAnswers())
                     {
                         <tr>
                             <td>@answer.Question.Question</td>

@@ -50,7 +50,7 @@ namespace MementoHealth.Entities
             }
         }
 
-        public int GetNumberOfAnsweredQuestions(int toQuestionId) => GetAnswers(toQuestionId).Count; // Get current answer graph depth.
+        public int GetNumberOfAnsweredQuestions(int toQuestionId) => GetAnsweredQuestionAnswers(toQuestionId).Count; // Get current answer graph depth.
 
         public int GetNumberOfRemainingQuestions(FormQuestion fromQuestion) // Calculate the depth of the graph from a question.
         {
@@ -67,10 +67,10 @@ namespace MementoHealth.Entities
             if (Answers.Count == 0)
                 return Form.GetFirstQuestion();
 
-            return GetAnswers().LastOrDefault()?.GetNextQuestion();
+            return GetAnsweredQuestionAnswers().LastOrDefault()?.GetNextQuestion();
         }
 
-        public IList<FormQuestionAnswer> GetAnswers(int toQuestionId = -1)
+        public IList<FormQuestionAnswer> GetAnsweredQuestionAnswers(int toQuestionId = -1)
         {
             IList<FormQuestionAnswer> answers = new List<FormQuestionAnswer>();
 
@@ -96,6 +96,21 @@ namespace MementoHealth.Entities
             return answers;
         }
 
+        public IList<FormQuestionAnswer> GetAllQuestionAnswers()
+        {
+            IDictionary<FormQuestion, FormQuestionAnswer> answers =
+                Form.Questions.ToDictionary(q => q, q => new FormQuestionAnswer
+                {
+                    Question = q,
+                    JsonData = ""
+                });
+
+            foreach (FormQuestionAnswer answer in GetAnsweredQuestionAnswers())
+                answers[answer.Question] = answer;
+
+            return answers.Values.OrderBy(a => a.Question.Number).ToList();
+        }
+
         private static FormQuestionAnswer FindQuestionInDict(Dictionary<FormQuestion, FormQuestionAnswer> answers, FormQuestion question)
         {
             return question == null ? null : answers.TryGetValue(question, out FormQuestionAnswer answer) ? answer : default;
@@ -107,7 +122,7 @@ namespace MementoHealth.Entities
         // Get the previous question for a specific question.
         public FormQuestion GetPreviousQuestion(int questionId)
         {
-            IList<FormQuestionAnswer> answers = GetAnswers();
+            IList<FormQuestionAnswer> answers = GetAnsweredQuestionAnswers();
             int answerIndex = -1;
             for (int i = 0; i < answers.Count; i++)
                 if (answers[i].QuestionId == questionId)
