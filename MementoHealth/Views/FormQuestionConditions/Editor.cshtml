@@ -59,7 +59,7 @@
                                 </div>
                             </div>
                             <p class="text-center">
-                                @Html.ActionLink("Back to Condition List", "Index", new { id = Model.QuestionId })
+                                <a href="@Url.Action("Index", new { id = Model.QuestionId })"><i class="fa fa-chevron-circle-left"></i> Back to Condition List</a>
                             </p>
                         }
                     </section>
