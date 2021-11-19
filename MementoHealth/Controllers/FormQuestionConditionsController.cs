@@ -63,6 +63,8 @@ namespace MementoHealth.Controllers
             if (question == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
+            questionCondition.Question = question;
+
             // Check for duplicate conditions. Fixme: Needs more checks.
             if (Db.FormQuestionConditions.Any(c => c.JsonData.Equals(questionCondition.JsonData)
                 && c.QuestionId == question.QuestionId && c.ConditionId != questionCondition.ConditionId))
