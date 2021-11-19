@@ -46,13 +46,13 @@
                                 <table class="col-md-auto table table-bordered table-striped table-sm">
                                     <thead>
                                         <tr>
-                                            <th>Full Name</th>
-                                            <th>Email</th>
-                                            <th>Phone</th>
+                                            <th><i class="fa fa-sort-alpha-asc"></i> Full Name</th>
+                                            <th><i class="fa fa-envelope"></i> Email</th>
+                                            <th><i class="fa fa-phone"></i> Phone</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach (var item in Model.Staff.Where(s => s.Roles.Any(r => r.Role.Name.Equals(Role.ProviderAdmin))).ToList())
+                                        @foreach (var item in Model.Staff.Where(s => s.Roles.Any(r => r.Role.Name.Equals(Role.ProviderAdmin))).OrderBy(s => s.FullName).ToList())
                                         {
                                             <tr>
                                                 <td>@item.FullName</td>
@@ -66,18 +66,21 @@
                         </div>
 
                         <p class="mt-4">
-                            @if (User.IsInRole(Role.SysAdmin) || User.IsInRole(Role.ProviderAdmin))
-                            {
-                                @Html.ActionLink("Edit", "Edit", new { id = Model.ProviderId })
-                                <span>|</span>
-                            }
                             @if (User.IsInRole(Role.SysAdmin))
                             {
-                                @Html.ActionLink("Back to Provider List", "Index")
+                                <a href="@Url.Action("Index")"><i class="fa fa-chevron-circle-left"></i> Back to Provider List</a>
                             }
                             else
                             {
-                                @Html.ActionLink("Back to Manage", "Index", "Manage")
+                                <a href="@Url.Action("Index", "Manage")"><i class="fa fa-chevron-circle-left"></i> Back to Manage</a>
+                            }
+                            @if (User.IsInRole(Role.SysAdmin) || User.IsInRole(Role.ProviderAdmin))
+                            {
+                                <span>|</span>
+                                <a title="Edit" href="@Url.Action("Edit", new { id = Model.ProviderId })">
+                                    <i class="fa fa-pencil"></i>
+                                    Edit
+                                </a>
                             }
                         </p>
 
