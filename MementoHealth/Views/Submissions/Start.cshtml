@@ -1,4 +1,4 @@
-﻿@model MementoHealth.Models.ChooseFormViewModel
+﻿@model ChooseFormViewModel
 @{
     ViewBag.Title = "Start Patient Submission";
 }
@@ -36,7 +36,7 @@
                             </div>
 
                             <p>
-                                @Html.ActionLink("Back to Patient Submission List", "Patient", new { id = Model.PatientId })
+                                <a href="@Url.Action("Patient", new { id = Model.PatientId })"><i class="fa fa-chevron-circle-left"></i> Back to Patient Submission List</a>
                             </p>
                         }
                     </section>

@@ -1,4 +1,4 @@
-﻿@model MementoHealth.Entities.FormSubmission
+﻿@model FormSubmission
 @{
     ViewBag.Title = "Review Submission";
     ViewBag.ShowChangeAnswerLinks = true;
@@ -27,7 +27,10 @@
     {
         @Html.AntiForgeryToken()
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <input type="submit" value="Submit" class="btn btn-lg btn-primary w-100" />
+        <button type="submit" class="btn btn-lg btn-primary">
+            Submit
+            <i class="fa fa-lg fa-paper-plane"></i>
+        </button>
     }
 </div>
 
