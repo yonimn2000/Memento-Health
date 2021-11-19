@@ -139,7 +139,7 @@ footer {
 
 .table-striped > tbody > tr:nth-child(odd) > td,
 .table-striped > tbody > tr:nth-child(odd) > th {
-    background-color: rgb(84 102 175 / 0.10);
+    background-color: hsl(228 20% 90%);
 }
 
 a, input.btn.btn-link {

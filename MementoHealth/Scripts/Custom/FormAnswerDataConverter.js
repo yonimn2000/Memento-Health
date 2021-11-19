@@ -27,6 +27,7 @@ $(() => {
                             selectedPoint = jsonAnsewer.answer;
                             drawSelectedPointOnImage();
                         }
+                        $(document).trigger("stickyTable");
                     })));
                 break;
         }

@@ -268,6 +268,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\jquery.selectareas.css" />
+    <Content Include="Content\jquery.stickytable.min.css" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Images\camron.png" />
@@ -313,6 +314,7 @@
     <Content Include="Scripts\jquery-3.6.0.slim.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.selectareas.min.js" />
+    <Content Include="Scripts\jquery.stickytable.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -477,6 +479,7 @@
     <Content Include="Views\Patients\ImportResults.cshtml" />
     <Content Include="Views\Providers\Stats.cshtml" />
     <Content Include="Views\Submissions\Clone.cshtml" />
+    <Content Include="Views\Submissions\History.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
