@@ -5,15 +5,13 @@
 }
 
 <div class="text-center">
-    <div class="h2 page-title font-weight-bold">@ViewBag.Title</div>
-    <div class="text-secondary">
-        @if (User.IsInRole(Role.ProviderAdmin))
-        {
-            <p>
-                @Html.ActionLink(" Create New Form", "Create", null, new { @class = "fa fa-plus-square text-dark" })
-            </p>
-        }
-    </div>
+    <div class="h2 page-title font-weight-bold"><i class="fa fa-file-text"></i>&nbsp;@ViewBag.Title</div>
+    @if (User.IsInRole(Role.ProviderAdmin))
+    {
+        <div class="text-secondary">
+            <a href="@Url.Action("Create")"><i class="fa fa-plus-square"></i> Create New Form</a>
+        </div>
+    }
     <hr />
 </div>
 
@@ -29,12 +27,21 @@
                 <table class="table table-bordered table-striped">
                     <thead>
                         <tr>
-                            <th>@Html.DisplayNameFor(model => model.Name)</th>
-                            <th>@Html.DisplayNameFor(model => model.NumberOfQuestions)</th>
-                            <th>@Html.DisplayNameFor(model => model.NumberOfSubmissions)</th>
+                            <th>
+                                <i class="fa fa-sort-alpha-asc"></i>
+                                @Html.DisplayNameFor(model => model.Name)
+                            </th>
+                            <th>
+                                <i class="fa fa-question-circle-o"></i>
+                                @Html.DisplayNameFor(model => model.NumberOfQuestions)
+                            </th>
+                            <th>
+                                <i class="fa fa-check-square-o"></i>
+                                @Html.DisplayNameFor(model => model.NumberOfSubmissions)
+                            </th>
                             @if (User.IsInRole(Role.ProviderAdmin))
                             {
-                                <th>Actions</th>
+                                <th><i class="fa fa-bolt"></i> Actions</th>
                             }
                         </tr>
                     </thead>
@@ -50,11 +57,17 @@
                                         <span>(</span>
                                         if (form.NumberOfQuestions == 0)
                                         {
-                                            @Html.ActionLink("Add", "Add", "FormQuestions", new { id = form.FormId }, null)
+                                            <a class="text-success" href="@Url.Action("Add", "FormQuestions", new { id = form.FormId })">
+                                                <i class="fa fa-plus-circle"></i>
+                                                Add
+                                            </a>
                                         }
                                         else
                                         {
-                                            @Html.ActionLink("View", "Index", "FormQuestions", new { id = form.FormId }, null)
+                                            <a class="text-info" href="@Url.Action("Index", "FormQuestions", new { id = form.FormId })">
+                                                <i class="fa fa-eye"></i>
+                                                View
+                                            </a>
                                         }
                                         <span>)</span>
                                     }
@@ -63,7 +76,10 @@
                                         if (form.NumberOfQuestions > 0)
                                         {
                                             <span>(</span>
-                                            @Html.ActionLink("View", "Index", "FormQuestions", new { id = form.FormId }, null)
+                                            <a class="text-info" href="@Url.Action("Index", "FormQuestions", new { id = form.FormId })">
+                                                <i class="fa fa-eye"></i>
+                                                View
+                                            </a>
                                             <span>)</span>
                                         }
                                     }
@@ -72,29 +88,43 @@
                                     @Html.DisplayFor(modelItem => form.NumberOfSubmissions)
                                     @if (form.NumberOfSubmissions > 0)
                                     {
-                                        <text>
-                                            (@Html.ActionLink("View", "Form", "Submissions", new { id = form.FormId }, null))
-                                        </text>
+                                        <span>(</span>
+                                        <a class="text-info" href="@Url.Action("Form", "Submissions", new { id = form.FormId })">
+                                            <i class="fa fa-eye"></i>
+                                            View
+                                        </a>
+                                        <span>)</span>
                                     }
                                 </td>
                                 @if (User.IsInRole(Role.ProviderAdmin))
                                 {
                                     <td>
-                                        <text>
-                                            @if (form.IsPublished && form.NumberOfSubmissions == 0)
-                                            {
-                                                @Html.ActionLink("Unpublish", "Unpublish", new { id = form.FormId })
-                                                <text>|</text>
-                                            }
-                                            else if (!form.IsPublished && form.NumberOfQuestions > 0)
-                                            {
-                                                @Html.ActionLink("Publish", "Publish", new { id = form.FormId })
-                                                <text>|</text>
-                                            }
-                                            @Html.ActionLink("Clone", "Clone", new { id = form.FormId }) |
-                                            @Html.ActionLink("Edit Name", "Edit", new { id = form.FormId }) |
-                                            @Html.ActionLink("Delete", "Delete", new { id = form.FormId })
-                                        </text>
+                                        @if (form.IsPublished && form.NumberOfSubmissions == 0)
+                                        {
+                                            <a title="Unpublish" href="@Url.Action("Unpublish",new { id = form.FormId })">
+                                                <span class="fa-stack">
+                                                    <i class="fa fa-share-alt fa-stack-1x"></i>
+                                                    <i class="fa fa-ban fa-stack-2x text-danger"></i>
+                                                </span>
+                                            </a>
+                                            <span>|</span>
+                                        }
+                                        else if (!form.IsPublished && form.NumberOfQuestions > 0)
+                                        {
+                                            <a title="Publish" href="@Url.Action("Publish",new { id = form.FormId })">
+                                                <i class="fa fa-lg fa-share-alt"></i>
+                                            </a>
+                                            <span>|</span>
+                                        }
+                                        <a title="Edit name" href="@Url.Action("Edit",new { id = form.FormId })">
+                                            <i class="fa fa-lg fa-pencil"></i>
+                                        </a> |
+                                        <a title="Clone" href="@Url.Action("Clone",new { id = form.FormId })">
+                                            <i class="fa fa-lg fa-clone"></i>
+                                        </a> |
+                                        <a title="Delete" class="text-danger" href="@Url.Action("Delete",new { id = form.FormId })">
+                                            <i class="fa fa-lg fa-trash"></i>
+                                        </a>
                                     </td>
                                 }
                             </tr>

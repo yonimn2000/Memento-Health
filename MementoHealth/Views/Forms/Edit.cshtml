@@ -1,7 +1,7 @@
 ﻿@model MementoHealth.Models.EditFormViewModel
 
 @{
-    ViewBag.Title = "Edit Form";    
+    ViewBag.Title = "Edit Form";
 }
 
 <div class="row d-flex justify-content-center">
@@ -34,7 +34,7 @@
                                 </div>
                             </div>
                             <p>
-                                @Html.ActionLink("Back to Form List", "Index")
+                                <a href="@Url.Action("Index")"><i class="fa fa-chevron-circle-left"></i> Back to Form List</a>
                             </p>
                         }
                     </section>
