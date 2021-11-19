@@ -20,7 +20,7 @@
             <table class="table table-bordered table-striped">
                 <thead>
                     <tr class="sticky-header">
-                        <th class="sticky-cell">Question</th>
+                        <th class="sticky-cell">Questions</th>
                         @for (int i = 0; i < Model.SubmissionDates.Count; i++)
                         {
                             <th class="@(i == 0 ? "sticky-cell" : "")">@Model.SubmissionDates[i]</th>
@@ -38,7 +38,7 @@
                                 string stickyClass = columnCounter++ == 0 ? "sticky-cell" : "";
                                 if (string.IsNullOrWhiteSpace(jsonData))
                                 {
-                                    <td class="@stickyClass">Unreached</td>
+                                    <td class="@stickyClass">[Unreached]</td>
                                 }
                                 else
                                 {
