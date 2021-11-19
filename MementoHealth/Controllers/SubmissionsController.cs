@@ -292,7 +292,7 @@ namespace MementoHealth.Controllers
                 Patient = submission.Patient,
                 Form = submission.Form,
                 SubmissionDates = submissions.Select(s => s.SubmissionStartDate).ToList(),
-                QuestionJsonAnswers = submission.Form.Questions.ToDictionary(q => q, q => new List<string>())
+                QuestionJsonAnswers = submission.Form.Questions.OrderBy(q => q.Number).ToDictionary(q => q, q => new List<string>())
             };
 
             foreach (FormSubmission formSubmission in submissions)
