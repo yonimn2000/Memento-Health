@@ -1,7 +1,7 @@
 ﻿@model MementoHealth.Entities.Provider
 
 @{
-    ViewBag.Title = "Edit Provider";   
+    ViewBag.Title = "Edit Provider";
 }
 
 <div class="row d-flex justify-content-center">
@@ -60,7 +60,14 @@
                                 </div>
                             </div>
                             <p>
-                                @Html.ActionLink("Back to Provider List", "Index")
+                                @if (User.IsInRole(Role.SysAdmin))
+                                {
+                                    @Html.ActionLink("Back to Provider List", "Index")
+                                }
+                                else
+                                {
+                                    @Html.ActionLink("Back to Details", "Details")
+                                }
                             </p>
                         }
                     </section>

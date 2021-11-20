@@ -29,8 +29,12 @@ namespace MementoHealth.Entities
         public virtual ICollection<FormQuestionAnswer> Answers { get; set; }
 
         [NotMapped]
-        [DisplayName("Is Complete")]
-        public bool IsComplete => GetNextQuestion() == null;
+        [DisplayName("Answered All Questions")]
+        public bool AnsweredAllQuestions => GetNextQuestion() == null;
+
+        [NotMapped]
+        [DisplayName("Submitted")]
+        public bool WasSubmitted => SubmissionEndDate != null;
 
         [NotMapped]
         [DisplayName("Time to Complete")]
@@ -46,7 +50,7 @@ namespace MementoHealth.Entities
             }
         }
 
-        public int GetNumberOfAnsweredQuestions() => GetAnswers().Count; // Get current answer graph depth.
+        public int GetNumberOfAnsweredQuestions(int toQuestionId) => GetAnswers(toQuestionId).Count; // Get current answer graph depth.
 
         public int GetNumberOfRemainingQuestions(FormQuestion fromQuestion) // Calculate the depth of the graph from a question.
         {
@@ -66,7 +70,7 @@ namespace MementoHealth.Entities
             return GetAnswers().LastOrDefault()?.GetNextQuestion();
         }
 
-        public IList<FormQuestionAnswer> GetAnswers()
+        public IList<FormQuestionAnswer> GetAnswers(int toQuestionId = -1)
         {
             IList<FormQuestionAnswer> answers = new List<FormQuestionAnswer>();
 
@@ -81,6 +85,10 @@ namespace MementoHealth.Entities
             while (answerWalker != null)
             {
                 answers.Add(answerWalker);
+
+                if (answerWalker.QuestionId == toQuestionId)
+                    break;
+
                 FormQuestion nextQuestion = answerWalker.GetNextQuestion();
                 answerWalker = FindQuestionInDict(answersDict, nextQuestion);
             }
@@ -112,6 +120,16 @@ namespace MementoHealth.Entities
                 return null;
 
             return answers[answerIndex - 1].Question;
+        }
+
+        public FormSubmission Clone()
+        {
+            return new FormSubmission
+            {
+                FormId = FormId,
+                PatientId = PatientId,
+                Answers = Answers.Select(a => a.Clone()).ToList()
+            };
         }
     }
 }
