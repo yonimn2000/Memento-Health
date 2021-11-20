@@ -5,6 +5,7 @@
     ViewBag.UseFullScreenWidth = true;
 }
 
-<h2>@ViewBag.Title</h2>
-<hr />
+<div class="h2 page-title font-weight-bold text-center pb-4">@ViewBag.Title</div>
+
+
 @Html.Partial("_SubmissionsTablePartial", Model)

@@ -1,4 +1,4 @@
-﻿@model MementoHealth.Models.AnswerViewModel
+﻿@model AnswerViewModel
 @{
     ViewBag.Title = "Answer";
     ViewBag.PatientId = Model.Patient.PatientId;
@@ -11,62 +11,116 @@
     }
     else if (Model.NumberOfRemainingQuestions == 2)
     {
-        remainingQuestionsText = "One more question or less remain.";
+        remainingQuestionsText = "One more question or fewer remain.";
     }
     else
     {
-        remainingQuestionsText = Model.NumberOfRemainingQuestions + " questions or less remain.";
+        remainingQuestionsText = Model.NumberOfRemainingQuestions + " questions or fewer remain.";
     }
 }
 
-@Html.Partial("_PatientDetailsPartial", Model.Patient)
-
-<h1>Answer the question below:</h1>
-<hr />
-
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    @Html.HiddenFor(m => m.SubmissionId)
-    @Html.HiddenFor(m => m.Question.JsonData)
-    @Html.HiddenFor(m => m.QuestionId)
-    @Html.HiddenFor(m => m.JsonData)
-    @Html.HiddenFor(m => m.NextAction)
-
-    <h2>@Model.Question.Question</h2>
-
-    <input class="form-control" id="textbox" style="display:none;" autocomplete="off">
-    <div class="form-check" id="radiobuttons" style="display:none;"></div>
-    <div class="form-check" id="checkboxes" style="display:none;"></div>
-    <div id="img-wrapper">
-        <img id="image" class="img-fluid" style="display:none;" onclick="imgClicked(event)" />
-    </div>
-
-    if (Model.Question.IsRequired)
+<div class="shadow bg-light container pb-3" style="border-radius: 12px">
+    @using (Html.BeginForm())
     {
-        <div class="text-danger">Answer is required.</div>
+        @Html.AntiForgeryToken()
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(m => m.SubmissionId)
+        @Html.HiddenFor(m => m.Question.JsonData)
+        @Html.HiddenFor(m => m.QuestionId)
+        @Html.HiddenFor(m => m.JsonData)
+        @Html.HiddenFor(m => m.NextAction)
+
+        <div class="text-center py-3">@Html.Partial("_PatientDetailsPartial", Model.Patient)</div>
+        <div class="progress ml-3 mr-3" style="height: 36px;">
+            <div class="progress-bar" role="progressbar" style="width: @Model.GetProgress()%; background-color:#5466af"><b>@Model.GetProgress()%</b></div>
+        </div>
+        <div class="text-center mt-2 mb-1">@remainingQuestionsText</div>
+        <hr />
+
+        <h2 class="pl-3">@Model.Question.Question</h2>
+
+        if (Model.Question.IsRequired)
+        {
+            <div class="text-danger pb-3 ml-3">Answer is required.</div>
+        }
+
+        <div class="row vw-100" style="display: flex">
+            <input class="form-control" id="textbox" style="display:none; margin-left: 30px" autocomplete="off" oninput="onInput()">
+            <div class="form-check pl-3 ml-5" id="radiobuttons" style="display: none; font-size: x-large"></div>
+            <div class="form-check pl-3 ml-5" id="checkboxes" style="display: none; font-size: x-large"></div>
+            <div id="img-wrapper">
+                <img id="image" class="img-fluid" style="display:none;" onclick="imgClicked(event)" />
+            </div>
+        </div>
+
+        <div class="row mt-5 mx-1">
+            <div class="col-3 text-left">
+                <button style="display:none;" type="button" id="clear-button" class="btn btn-lg btn-danger" onclick="clearAnswer()">
+                    <i class="fa fa-lg fa-eraser"></i>
+                    Clear answer
+                </button>
+            </div>
+            <div class="col-6 text-center">
+                <div class="btn-group" role="group" aria-label="Basic example">
+                    @if (Model.Question.Number != 1)
+                    {
+                        <button type="button" id="previous-button" class="btn btn-lg btn-outline-primary" onclick="submitClicked('previous')">
+                            <i class="fa fa-lg fa-chevron-left"></i>
+                            Previous question
+                        </button>
+                    }
+                    <button type="button" id="next-button" class="btn btn-lg btn-primary" onclick="submitClicked('next')">
+                        @(isLast ? "Review answers" : "Next question")
+                        <i class="fa fa-lg fa-@(isLast ? "list" : "chevron-right")"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="col-3 text-right">
+                @if (!isLast && Model.AnsweredAllQuestions)
+                {
+                    <button type="button" id="review-button" class="btn btn-lg btn-success" onclick="submitClicked('review')">
+                        Review all
+                        <i class="fa fa-lg fa-list"></i>
+                    </button>
+                }
+            </div>
+        </div>
     }
+</div>
 
-    <div class="my-3 text-right">
-        @if (Model.Question.Number != 1)
-        {
-            <button type="button" id="previous-button" class="btn btn-outline-primary" onclick="submitClicked('previous')">Previous</button>
+@section styles
+{
+    <style>
+        input[type=checkbox], input[type=radio] {
+            transform: scale(2.5);
+            margin-top: 12px;
         }
-        <button type="button" id="next-button" class="btn btn-primary" onclick="submitClicked('next')">@(isLast ? "Review" : "Next")</button>
-        @if (!isLast && Model.AnsweredAllQuestions)
-        {
-            <button type="button" id="review-button" class="btn btn-info" onclick="submitClicked('review')">Review</button>
+
+        @@media only screen and (max-width: 575px) {
+
+            #previous-button {
+                font-size: 15px !important;
+                padding: 5px 2px;
+            }
+
+            #next-button {
+                font-size: 15px !important;
+                padding: 5px 2px;
+            }
+
+            #review-button {
+                margin-right: -17px !important;
+                font-size: 15px !important;
+                padding: 5px 2px;
+            }
+
+            #clear-button {
+                font-size: 15px !important;
+                padding: 5px 2px;
+            }
         }
-    </div>
-
-    <button type="button" class="btn btn-sm btn-danger" onclick="clearAnswer()">Clear answer</button>
-
-    <div>@remainingQuestionsText</div>
-    <div class="progress" style="height: 36px;">
-        <div class="progress-bar" role="progressbar" style="width: @Model.GetProgress()%"><b>@Model.GetProgress()%</b></div>
-    </div>
+    </style>
 }
 
 @section scripts
@@ -103,10 +157,10 @@
                                 id: 'checkbox-' + i,
                                 class: 'form-check-input',
                                 value: label
-                            })).append(
+                            }).on('click', onInput)).append(
                             $('<label>').prop({
                                 for: 'checkbox-' + i,
-                                class: 'form-check-label'
+                                class: 'form-check-label mb-3 ml-4'
                             }).html(" " + label)
                             ).append($('<br>'));
                     });
@@ -126,10 +180,10 @@
                                 name: 'radiobuttons',
                                 class: 'form-check-input',
                                 value: label
-                            })).append(
+                            }).on('click', onInput)).append(
                                 $('<label>').prop({
                                     for: 'radio-' + i,
-                                    class: 'form-check-label'
+                                    class: 'form-check-label mb-3 ml-3'
                                 }).html(" " + label)
                             ).append($('<br>'));
                     });
@@ -149,7 +203,34 @@
                         });
                     break;
             }
+            onInput();
+
+            $(window).keydown(function (event) {
+                if (event.keyCode == 13) {
+                    event.preventDefault();
+                    return false;
+                }
+            });
         });
+
+        let onInput = () => {
+            let showClear = false;
+            showClear = $("#textbox").val().length != 0 || lastImageClick.x;
+
+            $("#checkboxes input").each(function () {
+                if ($(this).prop('checked')) {
+                    showClear = true;
+                }
+            });
+            $("#radiobuttons input").each(function () {
+                if ($(this).prop('checked')) {
+                    showClear = true;
+                }
+            });
+
+            if (showClear)
+                $("#clear-button").show();
+        };
 
         let clearAnswer = () => {
             $("#textbox").val("");
@@ -161,7 +242,8 @@
             });
             lastImageClick = {};
             $('.img-point').remove();
-        }
+            $("#clear-button").hide();
+        };
 
         let doit;
         window.onresize = () => {
@@ -177,7 +259,7 @@
             lastImageClick.x = x / $("#image").width();
             lastImageClick.y = y / $("#image").height();
             drawPointOnImage();
-        }
+        };
 
         let drawPointOnImage = () => {
             if (lastImageClick.x) {
@@ -193,6 +275,7 @@
                 });
                 point.appendTo(img);
             }
+            onInput();
         }
 
         let submitClicked = async (nextAction) => {

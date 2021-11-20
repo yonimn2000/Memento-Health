@@ -162,11 +162,16 @@ namespace MementoHealth.Controllers
         [Authorize(Roles = Role.ProviderAdmin)]
         public ActionResult CloneConfirmed(int id)
         {
-            throw new NotImplementedException();
-            /*Form form = FindForm_Restricted(id);
-            // TODO: Implement
-            db.SaveChanges();
-            return RedirectToAction("Index");*/
+            Form form = FindForm_Restricted(id);
+
+            if (form == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            Form newForm = Db.Forms.Add(form.Clone());
+            newForm.Name += " " + DateTime.Now.ToString("yy.MM.dd_HH.mm.ss");
+            Db.SaveChanges();
+
+            return RedirectToAction("Edit", new { id = newForm.FormId });
         }
 
         // GET: Forms/Publish/5
@@ -184,7 +189,7 @@ namespace MementoHealth.Controllers
         public ActionResult PublishConfirmed(int id)
         {
             Form form = FindForm_Restricted(id);
-            if(form.Questions.Count > 0)
+            if (form.Questions.Count > 0)
             {
                 form.IsPublished = true;
                 Db.SaveChanges();

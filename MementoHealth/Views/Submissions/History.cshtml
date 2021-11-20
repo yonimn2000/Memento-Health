@@ -1,0 +1,64 @@
+﻿@model SubmissionHistoryViewModel
+@{
+    ViewBag.Title = "Submission History";
+}
+
+<div class="text-center">
+    <div class="h2 page-title font-weight-bold">@ViewBag.Title</div>
+    <div class="text-secondary">
+        <div style="font-size: x-large" class="mb-2"><b>Form: </b>@Model.Form.Name</div>
+        @Html.Partial("_PatientDetailsPartial", Model.Patient)
+        <div class="pt-2">
+            <a href="@Url.Action("Patient", new { id = Model.Patient.PatientId })"><i class="fa fa-chevron-circle-left"></i> Back to Patient Submission List</a>
+        </div>
+        <a href="@Url.Action("Index")"><i class="fa fa-chevron-circle-left"></i> Back to Full Submission List</a>
+    </div>
+    <hr />
+</div>
+
+<div class="container" style="overflow-y: auto; white-space: nowrap; min-width: 94.5%">
+    <div class="card shadow">
+        <div class="sticky-table sticky-ltr-cells">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr class="sticky-header">
+                        <th class="sticky-cell">Questions</th>
+                        @for (int i = 0; i < Model.SubmissionDates.Count; i++)
+                        {
+                            <th class="@(i == 0 ? "sticky-cell" : "")">@Model.SubmissionDates[i]</th>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var qa in Model.QuestionJsonAnswers)
+                    {
+                        int columnCounter = 0;
+                        <tr>
+                            <td class="sticky-cell">@qa.Key.Question</td>
+                            @foreach (string jsonData in qa.Value)
+                            {
+                                string stickyClass = columnCounter++ == 0 ? "sticky-cell" : "";
+                                if (string.IsNullOrWhiteSpace(jsonData))
+                                {
+                                    <td class="@stickyClass">[Unreached]</td>
+                                }
+                                else
+                                {
+                                    <td class="json-data @stickyClass"
+                                        data-question-type="@qa.Key.TypeString"
+                                        data-json-question="@qa.Key.JsonData"
+                                        data-json-answer="@jsonData"></td>
+                                }
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    @Scripts.Render("~/Scripts/Custom/FormAnswerDataConverter.js")
+}

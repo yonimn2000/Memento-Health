@@ -1,12 +1,13 @@
-﻿@model IEnumerable<MementoHealth.Entities.Provider>
+﻿@model IEnumerable<Provider>
 
 @{
     ViewBag.Title = "Providers";
 }
 
-<div class="box" style="text-align: center">
-    <div class="page-title font-weight-bold h2">@ViewBag.Title</div>
-    <div style="margin-top:-20px; margin-bottom: 20px">@Html.ActionLink(" View Stats", "Stats", null, new { @class = "text-dark" })</div>
+<div class="text-center">
+    <div class="h2 page-title font-weight-bold"><i class="fa fa-building"></i>&nbsp;@ViewBag.Title</div>
+    <a href="@Url.Action("Stats")"><i class="fa fa-bar-chart"></i> View Stats</a>
+    <hr />
 </div>
 
 <div class="container" style="overflow-y: auto; white-space: nowrap; min-width: 94.5%; text-align: center">
@@ -16,27 +17,34 @@
                 <thead>
                     <tr>
                         <th>
+                            <i class="fa fa-sort-alpha-asc"></i>
                             @Html.DisplayNameFor(model => model.Name)
                         </th>
                         <th>
+                            <i class="fa fa-phone"></i>
                             @Html.DisplayNameFor(model => model.Phone)
                         </th>
                         <th>
+                            <i class="fa fa-address-card"></i>
                             @Html.DisplayNameFor(model => model.Address)
                         </th>
                         <th>
+                            <i class="fa fa-envelope"></i>
                             @Html.DisplayNameFor(model => model.Email)
                         </th>
                         <th>
+                            <i class="fa fa-file-text"></i>
                             @Html.DisplayNameFor(model => model.Forms)
                         </th>
                         <th>
+                            <i class="fa fa-users"></i>
                             @Html.DisplayNameFor(model => model.Patients)
                         </th>
                         <th>
+                            <i class="fa fa-user-md"></i>
                             @Html.DisplayNameFor(model => model.Staff)
                         </th>
-                        <th>Actions</th>
+                        <th><i class="fa fa-bolt"></i> Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -65,9 +73,15 @@
                                 @item.Staff.Count
                             </td>
                             <td>
-                                @Html.ActionLink("Edit", "Edit", new { id = item.ProviderId }) |
-                                @Html.ActionLink("Details", "Details", new { id = item.ProviderId }) |
-                                @Html.ActionLink("Delete", "Delete", new { id = item.ProviderId })
+                                <a title="Edit" href="@Url.Action("Edit", new { id = item.ProviderId })">
+                                    <i class="fa fa-lg fa-pencil"></i>
+                                </a> |
+                                <a title="Details" href="@Url.Action("Details", new { id = item.ProviderId })">
+                                    <i class="fa fa-lg fa-info-circle"></i>
+                                </a> |
+                                <a title="Delete" class="text-danger" href="@Url.Action("Delete",new { id = item.ProviderId })">
+                                    <i class="fa fa-lg fa-trash"></i>
+                                </a>
                             </td>
                         </tr>
                     }
@@ -76,10 +90,3 @@
         </div>
     </div>
 </div>
-
-
-
-
-
-
-

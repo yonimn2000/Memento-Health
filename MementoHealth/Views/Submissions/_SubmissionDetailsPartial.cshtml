@@ -1,29 +1,47 @@
-﻿@model MementoHealth.Entities.FormSubmission
+﻿@model FormSubmission
 @{
     bool isPatientView = ViewBag.ShowChangeAnswerLinks != null && ViewBag.ShowChangeAnswerLinks == true;
 }
 
-<table class="table table-striped">
-    <tr>
-        <th>Question</th>
-        <th>@(isPatientView ? "Your" : "Patient") Answer</th>
-        @if (isPatientView)
-        {
-            <th></th>
-        }
-    </tr>
-    @foreach (var answer in Model.GetAnswers())
-    {
-        <tr>
-            <td>@answer.Question.Question</td>
-            <td class="json-data"
-                data-question-type="@answer.Question.TypeString"
-                data-json-question="@answer.Question.JsonData"
-                data-json-answer="@answer.JsonData"></td>
-            @if (isPatientView)
-            {
-                <td>@Html.ActionLink("Change answer", "Answer", new { id = Model.SubmissionId, questionId = answer.QuestionId })</td>
-            }
-        </tr>
-    }
-</table>
+<div class="container" style="overflow-y: auto; white-space: nowrap; min-width: 94.5%">
+    <div class="card shadow">
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th><i class="fa fa-question-circle"></i> Question</th>
+                        <th>
+                            <i class="fa fa-comment"></i>
+                            @(isPatientView ? "Your" : "Patient") Answer
+                        </th>
+                        @if (isPatientView)
+                        {
+                            <th><i class="fa fa-bolt"></i> Action</th>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var answer in Model.GetAnsweredQuestionAnswers())
+                    {
+                        <tr>
+                            <td>@answer.Question.Question</td>
+                            <td class="json-data"
+                                data-question-type="@answer.Question.TypeString"
+                                data-json-question="@answer.Question.JsonData"
+                                data-json-answer="@answer.JsonData"></td>
+                            @if (isPatientView)
+                            {
+                                <td>
+                                    <a title="Edit" href="@Url.Action("Answer", new { id = Model.SubmissionId, questionId = answer.QuestionId })">
+                                        <i class="fa fa-lg fa-pencil"></i>
+                                        Change answer
+                                    </a>
+                                </td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

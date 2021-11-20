@@ -8,8 +8,8 @@
 
 <div class="row d-flex justify-content-center">
     <div class="shadow bg-light text-center" style="border-radius: 12px">
-        <div class="page-title h2 font-weight-bold" style="padding-top: 25px;">@ViewBag.Title</div>
-        <div class="custom-form-div" style="margin-top: -50px; padding-bottom: 0px">
+        <div class="h2 text-center font-weight-bold" style="padding-top: 25px;">@ViewBag.Title</div><hr />
+        <div class="custom-form-div" style="padding-bottom: 0px; min-width: 300px">
 
             <div class="row">
                 <div class="col-md-auto">
@@ -37,8 +37,6 @@
                             <div class="form-check">
                                 <div class="col-md-auto my-3" style="text-align: left">
                                     @Html.CheckBoxFor(m => m.IsRequired, new { @class = "form-check-input col-md-auto" })
-
-
                                     @Html.LabelFor(m => m.IsRequired, new { @class = "form-check-label" })
                                 </div>
                             </div>
@@ -64,24 +62,26 @@
                                 <div id="multi-labels"></div>
                             </div>
 
-                            <div id="image-editor" class="custom-editor mb-3" style="display:none">
-                                <label for="file">Image</label>
+                            <div id="image-editor" class="custom-editor mb-3" style="display: none">
+                                <div class="ml-3 text-left">
+                                    <label for="file">Image</label>
+                                </div>
                                 <div class="col-md-auto my-3" style="text-align: left">
                                     <input id="img-selector" class="form-control-file" type="file" name="file" accept="image/*" onchange="imageSelected(event)" />
                                     <img id="selected-image" width="300px" />
-                                    </div>
                                 </div>
+                            </div>
 
-                                <div class="form-group">
-                                    <div class="col-md-auto my-4" style="text-align: center; padding-top: 5px">
-                                        <button type="button" id="create-button" class="btn btn-primary w-100" onclick="return createClicked();">@action</button>
-                                    </div>
+                            <div class="form-group">
+                                <div class="col-md-auto my-4" style="text-align: center; padding-top: 5px">
+                                    <button type="button" id="create-button" class="btn btn-primary w-100" onclick="return createClicked();">@action</button>
                                 </div>
-                                <p>
-                                    @Html.ActionLink("Back to Question List", "Index", new { id = Model.FormId })
-                                </p>
-                                }
-</section>
+                            </div>
+                            <p>
+                                <a href="@Url.Action("Index", new { id = Model.FormId })"><i class="fa fa-chevron-circle-left"></i> Back to Question List</a>
+                            </p>
+                        }
+                    </section>
                 </div>
             </div>
         </div>

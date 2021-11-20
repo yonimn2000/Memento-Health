@@ -1,7 +1,9 @@
 ﻿using MementoHealth.Entities;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace MementoHealth.Models
 {
@@ -36,5 +38,13 @@ namespace MementoHealth.Models
         public string JsonData { get; set; }
 
         public string NextAction { get; set; }
+    }
+
+    public class SubmissionHistoryViewModel
+    {
+        public Patient Patient { get; set; }
+        public Form Form { get; set; }
+        public IList<DateTime> SubmissionDates { get; set; }
+        public IDictionary<FormQuestion, List<string>> QuestionJsonAnswers { get; set; }
     }
 }

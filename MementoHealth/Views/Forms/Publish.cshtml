@@ -1,24 +1,25 @@
 ﻿@model MementoHealth.Models.FormViewModel
 
 @{
-    ViewBag.Title = "Publish Form";    
+    ViewBag.Title = "Publish Form";
 }
 
 <div class="row d-flex justify-content-center">
     <div class="shadow bg-light text-center" style="border-radius: 12px">
-        <div class="page-title h2 font-weight-bold" style="padding-top: 25px;">Publish this Form?</div>
+        <div class="h2 text-center font-weight-bold pt-4 pb-1">Publish this Form?</div>
         <div class="container">
             <ul class="text-danger text-left">
                 <li>You will not be able to edit the form after publishing it.</li>
                 <li>You will not be able to unpublish the form after a submission is started.</li>
             </ul>
         </div>
-        <div class="custom-form-div" style="margin-top: -50px; padding-bottom: 0px">
+        <hr />
+        <div class="custom-form-div" style="padding-bottom: 0px; min-width: 300px">
 
             <div class="row justify-content-center">
                 <div class="col-md-auto">
                     <section>
-                        <div class="form-group mt-2">
+                        <div class="form-group">
                             <div class="col-md-auto my-1 font-weight-bold" style="text-align: center">@Html.DisplayNameFor(model => model.Name)</div><hr style="margin: 0 0 0 0" />
                             <div class="col-md-auto my-1">@Html.DisplayFor(model => model.Name)</div>
                         </div>
@@ -39,7 +40,9 @@
                                 <input type="submit" value="Publish" class="btn btn-primary w-100" />
 
                             </div>
-                            <div style="text-align: center">@Html.ActionLink("Back to Form List", "Index")</div>
+                            <div style="text-align: center">
+                                <a href="@Url.Action("Index")"><i class="fa fa-chevron-circle-left"></i> Back to Form List</a>
+                            </div>
                         }
                     </section>
                 </div>

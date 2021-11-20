@@ -8,11 +8,11 @@
 
 <div class="row d-flex justify-content-center">
     <div class="shadow bg-light text-left" style="border-radius: 12px">
-        <div class="page-title h2 font-weight-bold" style="padding-top: 25px;">@ViewBag.Title</div>
-        <div class="h4 text-center" style="margin-top: -30px; margin-bottom: 20px">Question @Model.Question.Number: "@Model.Question.Question"</div>
-        <div class="custom-form-div" style="margin-top: -50px; padding-bottom: 0px">
+        <div class="h2 text-center font-weight-bold" style="padding-top: 25px;">@ViewBag.Title</div>
+        <div class="h4 text-secondary text-center">Question @Model.Question.Number: "@Model.Question.Question"</div><hr />
+        <div class="custom-form-div" style="padding-bottom: 0px; min-width: 300px">
 
-            <div class="row">
+            <div class="row justify-content-center">
                 <div class="col-md-auto">
                     <section>
                         @using (Html.BeginForm())
@@ -59,7 +59,7 @@
                                 </div>
                             </div>
                             <p class="text-center">
-                                @Html.ActionLink("Back to Condition List", "Index", new { id = Model.QuestionId })
+                                <a href="@Url.Action("Index", new { id = Model.QuestionId })"><i class="fa fa-chevron-circle-left"></i> Back to Condition List</a>
                             </p>
                         }
                     </section>

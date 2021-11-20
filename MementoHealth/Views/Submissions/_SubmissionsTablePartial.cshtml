@@ -1,5 +1,4 @@
-﻿@using MementoHealth.Entities
-@model IEnumerable<FormSubmission>
+﻿@model IEnumerable<FormSubmission>
 
 @{
     bool hidePatient = ViewBag.HidePatient != null && ViewBag.HidePatient == true;
@@ -9,58 +8,91 @@
 @if (Model.Count() == 0)
 {
     <span class="text-danger">No submissions yet...</span>
-    <div>@Html.ActionLink("View all patients", "Index", "Patients")</div>
-    <div>@Html.ActionLink("View all forms", "Index", "Forms")</div>
+    <div>
+        <a href="@Url.Action("Index", "Patients")"><i class="fa fa-users"></i> View all patients</a>
+    </div>
+    <div>
+        <a href="@Url.Action("Index", "Forms")"><i class="fa fa-file-text"></i> View all forms</a>
+    </div>
 }
 else
 {
-    <table class="table">
-        <tr>
-            <th>Date</th>
-            @if (!hidePatient)
-            {
-                <th>Patient</th>
-            }
-            @if (!hideForm)
-            {
-                <th>Form</th>
-            }
-            <th>Start</th>
-            <th>End</th>
-            <th>Time to Complete</th>
-            <th>Answered All Questions</th>
-            <th>Was Submitted</th>
-            <th>Actions</th>
-        </tr>
-        @foreach (FormSubmission submission in Model)
-        {
-            <tr>
-                <td>@submission.SubmissionStartDate</td>
-                @if (!hidePatient)
-                {
-                    <td>@submission.Patient.FullName</td>
-                }
-                @if (!hideForm)
-                {
-                    <td>@submission.Form.Name</td>
-                }
-                <td>@submission.SubmissionStartDate</td>
-                <td>@submission.SubmissionEndDate</td>
-                <td>@submission.TimeToComplete</td>
-                <td>@submission.AnsweredAllQuestions</td>
-                <td>@submission.WasSubmitted</td>
-                <td>
-                    @Html.ActionLink("View details", "Details", new { id = submission.SubmissionId }) |
-                    @Html.ActionLink("Clone", "Clone", new { id = submission.SubmissionId }) |
-                    @Html.ActionLink(submission.WasSubmitted ? "Edit" : "Continue", "Answer", new { id = submission.SubmissionId }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = submission.SubmissionId })
-                </td>
-            </tr>
-        }
-    </table>
+    <div class="container" style="overflow-y: auto; white-space: nowrap; min-width: 94.5%; text-align: center">
+        <div class="card shadow">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            @if (!hidePatient)
+                            {
+                                <th><i class="fa fa-user"></i> Patient</th>
+                            }
+                            @if (!hideForm)
+                            {
+                                <th><i class="fa fa-file-text"></i> Form</th>
+                            }
+                            <th><i class="fa fa-sign-in"></i> Start</th>
+                            <th><i class="fa fa-sign-out"></i> End</th>
+                            <th><i class="fa fa-clock-o"></i> Duration</th>
+                            <th><i class="fa fa-question-circle"></i> Complete</th>
+                            <th><i class="fa fa-paper-plane"></i> Submitted</th>
+                            <th><i class="fa fa-bolt"></i> Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (FormSubmission submission in Model)
+                        {
+                            <tr>
+                                @if (!hidePatient)
+                                {
+                                    <td>@submission.Patient.FullName</td>
+                                }
+                                @if (!hideForm)
+                                {
+                                    <td>@submission.Form.Name</td>
+                                }
+                                <td>@submission.SubmissionStartDate</td>
+                                <td>@submission.SubmissionEndDate</td>
+                                <td>@submission.TimeToComplete</td>
+                                <td>@submission.AnsweredAllQuestions</td>
+                                <td>@submission.WasSubmitted</td>
+                                <td>
+                                    <a class="text-info" title="View details" href="@Url.Action("Details", new { id = submission.SubmissionId })">
+                                        <i class="fa fa-lg fa-eye"></i>
+                                    </a> |
+                                    <a title="View history since this submission" href="@Url.Action("History", new { id = submission.SubmissionId })">
+                                        <i class="fa fa-lg fa-history"></i>
+                                    </a> |
+                                    <a title="Clone" href="@Url.Action("Clone", new { id = submission.SubmissionId })">
+                                        <i class="fa fa-lg fa-clone"></i>
+                                    </a> |
+                                    @if (submission.WasSubmitted)
+                                    {
+                                        <a title="Edit" href="@Url.Action("Answer", new { id = submission.SubmissionId })">
+                                            <i class="fa fa-lg fa-pencil"></i>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a class="text-warning" title="Continue" href="@Url.Action("Answer", new { id = submission.SubmissionId })">
+                                            <i class="fa fa-lg fa-step-forward"></i>
+                                        </a>
+                                    } |
+                                    <a class="text-danger" title="Delete" href="@Url.Action("Delete", new { id = submission.SubmissionId })">
+                                        <i class="fa fa-lg fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 }
 
-@section styles {
+@section styles
+{
     <style>
         form {
             display: inline-block;

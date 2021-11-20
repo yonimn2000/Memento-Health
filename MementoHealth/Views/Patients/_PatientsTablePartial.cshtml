@@ -6,11 +6,23 @@
             <table class="table table-bordered table-striped">
                 <thead>
                     <tr>
-                        <th>@Html.DisplayNameFor(model => model.FullName)</th>
-                        <th>@Html.DisplayNameFor(model => model.Birthday)</th>
-                        <th>@Html.DisplayNameFor(model => model.ExternalPatientId)</th>
-                        <th>@Html.DisplayNameFor(model => model.Submissions)</th>
-                        <th>Actions</th>
+                        <th>
+                            <i class="fa fa-sort-alpha-asc"></i>
+                            @Html.DisplayNameFor(model => model.FullName)
+                        </th>
+                        <th>
+                            <i class="fa fa-birthday-cake"></i>
+                            @Html.DisplayNameFor(model => model.Birthday)
+                        </th>
+                        <th>
+                            <i class="fa fa-id-card"></i>
+                            @Html.DisplayNameFor(model => model.ExternalPatientId)
+                        </th>
+                        <th>
+                            <i class="fa fa-check-square-o"></i>
+                            @Html.DisplayNameFor(model => model.Submissions)
+                        </th>
+                        <th><i class="fa fa-bolt"></i> Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -25,19 +37,25 @@
                                 (
                                 @if (patient.Submissions.Count > 0)
                                 {
-                                    @Html.ActionLink("View", "Patient", "Submissions", new { id = patient.PatientId }, null)
+                                    <a class="text-info" href="@Url.Action("Patient", "Submissions", new { id = patient.PatientId })">
+                                        <i class="fa fa-eye"></i>
+                                        View
+                                    </a>
                                     <span>|</span>
-                                    @Html.ActionLink("Start new", "Start", "Submissions", new { id = patient.PatientId }, null)
                                 }
-                                else
-                                {
-                                    @Html.ActionLink("Start new", "Start", "Submissions", new { id = patient.PatientId }, null)
-                                }
+                                <a class="text-success" href="@Url.Action("Start", "Submissions", new { id = patient.PatientId })">
+                                    <i class="fa fa-plus-circle"></i>
+                                    New
+                                </a>
                                 )
                             </td>
                             <td>
-                                @Html.ActionLink("Edit", "Edit", new { id = patient.PatientId }) |
-                                @Html.ActionLink("Delete", "Delete", new { id = patient.PatientId })
+                                <a title="Edit" href="@Url.Action("Edit", new { id = patient.PatientId })">
+                                    <i class="fa fa-lg fa-pencil"></i>
+                                </a> |
+                                <a title="Delete" class="text-danger" href="@Url.Action("Delete",new { id = patient.PatientId })">
+                                    <i class="fa fa-lg fa-trash"></i>
+                                </a>
                             </td>
                         </tr>
                     }
