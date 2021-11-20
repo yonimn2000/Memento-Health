@@ -118,15 +118,16 @@
     <div class="container-fluid body-content mt-3">
         @RenderBody()
     </div>
-    <hr />
-    <footer class="mx-3 d-block d-sm-flex">
-        @if (User.Identity.IsAuthenticated)
-        {
-            <div><b>Current user role:</b> @User.GetRole()</div>
-        }
-        <div class="ml-auto mt-2 mt-sm-0">&copy; @DateTime.Now.Year - Memento Health</div>
-    </footer>
-
+    <div id="completefooter">
+        <hr />
+        <footer class="mx-3 d-block d-sm-flex">
+            @if (User.Identity.IsAuthenticated)
+            {
+                <div><b>Current user role:</b> @User.GetRole()</div>
+            }
+            <div class="ml-auto mt-2 mt-sm-0">&copy; @DateTime.Now.Year - Memento Health</div>
+        </footer>
+    </div>
     <script>
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker

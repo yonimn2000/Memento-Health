@@ -1,5 +1,8 @@
 ﻿body {
-    padding-bottom: 20px;
+    background-color: #f9f9fd;
+    background-image: linear-gradient(30deg, #f2f2f2 12%, transparent 12.5%, transparent 87%, #f2f2f2 87.5%, #f2f2f2), linear-gradient(150deg, #f2f2f2 12%, transparent 12.5%, transparent 87%, #f2f2f2 87.5%, #f2f2f2), linear-gradient(30deg, #f2f2f2 12%, transparent 12.5%, transparent 87%, #f2f2f2 87.5%, #f2f2f2), linear-gradient(150deg, #f2f2f2 12%, transparent 12.5%, transparent 87%, #f2f2f2 87.5%, #f2f2f2), linear-gradient(60deg, #f2f2f277 25%, transparent 25.5%, transparent 75%, #f2f2f277 75%, #f2f2f277), linear-gradient(60deg, #f2f2f277 25%, transparent 25.5%, transparent 75%, #f2f2f277 75%, #f2f2f277);
+    background-size: 64px 112px;
+    background-position: 0 0, 0 0, 32px 56px, 32px 56px, 0 0, 32px 56px;
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -40,7 +43,7 @@ textarea {
         flex: 1 1;
         border-bottom: 1px solid;
         margin: auto;
-        color: #e5e5e5;
+        color: rgba(0, 0, 0, 0.3);
     }
 
     .page-title:before {
@@ -62,6 +65,19 @@ textarea {
     padding-left: 150px;
 }
 
+#completefooter {
+    background-color: #5065ad;
+}
+
+hr {
+    height: 1px;
+    background-color: rgba(0, 0, 0, 0.3);
+    border: none;
+}
+
+.card {
+    margin-top: 25px;
+}
 @media only screen and (max-width: 768px) {
     /* Mobile css */
     .custom-form-div {
@@ -119,6 +135,11 @@ textarea {
     .body-content {
         min-height: calc(100vh - 190px) !important;
     }
+
+    #completefooter {
+        background-color: #5065ad;
+        height: 85px;
+    }
 }
 
 @media (hover: none) {
@@ -138,6 +159,8 @@ textarea {
 footer {
     padding-left: 20px;
     padding-right: 20px;
+    height: 45px;
+    color: #fcfcfc;
 }
 
 .navbar-custom .navbar-nav .nav-link {
