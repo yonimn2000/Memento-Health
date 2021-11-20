@@ -76,6 +76,38 @@ textarea {
     }
 }
 
+@media (max-width: 992px) {
+    .navbar-collapse {
+        position: absolute;
+        top: 75px;
+        left: 0;
+        padding-left: 25px;
+        padding-right: 25px;
+        padding-bottom: 15px;
+        width: fit-content;
+        border-bottom-right-radius: 20px;
+        z-index: 2;
+    }
+
+        .navbar-collapse.collapsing {
+            height: auto;
+            -webkit-transition: left 0.3s ease;
+            -o-transition: left 0.3s ease;
+            -moz-transition: left 0.3s ease;
+            transition: left 0.3s ease;
+            left: -100%;
+        }
+
+        .navbar-collapse.show {
+            left: 0;
+            -webkit-transition: left 0.3s ease-in;
+            -o-transition: left 0.3s ease-in;
+            -moz-transition: left 0.3s ease-in;
+            transition: left 0.3s ease-in;
+        }
+
+}
+
 @media only screen and (max-width: 1200px) {
     #logo-img {
         content: url('../Images/Mobile Memento Health-logo.svg');
