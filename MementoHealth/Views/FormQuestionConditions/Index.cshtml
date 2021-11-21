@@ -4,90 +4,92 @@
     ViewBag.Title = "Question Conditions";
 }
 
-<div class="text-center">
-    <div class="h2 page-title font-weight-bold">@ViewBag.Title</div>
-    <div class="text-secondary">
-        <h5 style="margin-top: -7px">
-            <i class="fa fa-question-circle"></i>
-            <span class="font-weight-bolder">Question:</span> "@formQuestion.Question"
-        </h5>
-        <p>
-            <a href="@Url.Action("Index", "FormQuestions", new { id = formQuestion.FormId })"><i class="fa fa-chevron-circle-left"></i> Back to Form Questions</a>
-        </p>
-    </div>
-    <hr />
-</div>
-
-<div class="container" style="overflow-y: auto; white-space: nowrap; min-width: 94.5%; text-align: center">
-    <ul class="text-info text-left">
-        <li>Conditions will be tested during form submission in the order listed below.</li>
-        <li>The form will proceed to the next ordinal question if no conditions match.</li>
-    </ul>
-    <div class="card shadow">
-        <div class="table-responsive">
-            <table class="table table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th><i class="fa fa-hashtag"></i></th>
-                        <th><i class="fa fa-sitemap"></i> Condition</th>
-                        <th><i class="fa fa-bolt"></i> Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (FormQuestionCondition condition in Model)
-                    {
-                        <tr>
-                            <td>@condition.Number</td>
-                            <td>@condition.ToString(true)</td>
-                            <td>
-                                @if (condition.Number > 1)
-                                {
-                                    using (Html.BeginForm("MoveUp", "FormQuestionConditions", new { id = condition.ConditionId }, FormMethod.Post))
-                                    {
-                                        @Html.AntiForgeryToken()
-                                        <a href="#" onclick="this.closest('form').submit();return false;"><i class="fa fa-lg fa-arrow-up"></i></a>
-                                    }
-                                    <span>|</span>
-                                }
-
-                                @if (condition.Number < Model.Max(c => c.Number))
-                                {
-                                    using (Html.BeginForm("MoveDown", "FormQuestionConditions", new { id = condition.ConditionId }, FormMethod.Post))
-                                    {
-                                        @Html.AntiForgeryToken()
-                                        <a href="#" onclick="this.closest('form').submit();return false;"><i class="fa fa-lg fa-arrow-down"></i></a>
-                                    }
-                                    <span>|</span>
-                                }
-
-                                <a class="text-success" title="Insert after" href="@Url.Action("Insert", new { id = condition.ConditionId })">
-                                    <i class="fa fa-lg fa-plus"></i>
-                                </a> |
-                                <a title="Edit question" href="@Url.Action("Edit", new { id = condition.ConditionId })">
-                                    <i class="fa fa-lg fa-pencil"></i>
-                                </a> |
-                                <a class="text-danger" title="Delete" href="@Url.Action("Delete", new { id = condition.ConditionId })">
-                                    <i class="fa fa-lg fa-trash"></i>
-                                </a>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+<div class="titleCard container">
+    <div class="text-center p-3" style="background-color: #e0e2eb; position: center; border-radius: 20px 20px 0px 0px">
+        <div class="h2 page-title font-weight-bold">@ViewBag.Title</div>
+        <div class="text-secondary">
+            <div class="container text-center" style="width: fit-content">
+                <ul class="text-info text-left">
+                    <li>Conditions will be tested during form submission in the order listed below.</li>
+                    <li>The form will proceed to the next ordinal question if no conditions match.</li>
+                </ul>
+            </div>
+            <h5 style="margin-top: -7px">
+                <span class="font-weight-bolder">Question:</span> "@formQuestion.Question"
+            </h5>
+            <p style="margin-bottom: -3px">
+                <a href="@Url.Action("Index", "FormQuestions", new { id = formQuestion.FormId })"><i class="fa fa-chevron-circle-left"></i> Back to Form Questions</a>
+            </p>
         </div>
     </div>
 </div>
 
-@section scripts
-{
-    @Scripts.Render("~/bundles/jqueryval")
-}
+    <div class="container" style="overflow-y: auto; white-space: nowrap; min-width: 94.5%; text-align: center">
+        <div class="card shadow">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th><i class="fa fa-hashtag"></i></th>
+                            <th><i class="fa fa-sitemap"></i> Condition</th>
+                            <th><i class="fa fa-bolt"></i> Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (FormQuestionCondition condition in Model)
+                        {
+                            <tr>
+                                <td>@condition.Number</td>
+                                <td>@condition.ToString(true)</td>
+                                <td>
+                                    @if (condition.Number > 1)
+                                    {
+                                        using (Html.BeginForm("MoveUp", "FormQuestionConditions", new { id = condition.ConditionId }, FormMethod.Post))
+                                        {
+                                            @Html.AntiForgeryToken()
+                                            <a href="#" onclick="this.closest('form').submit();return false;"><i class="fa fa-lg fa-arrow-up"></i></a>
+                                        }
+                                        <span>|</span>
+                                    }
 
-@section styles
+                                    @if (condition.Number < Model.Max(c => c.Number))
+                                    {
+                                        using (Html.BeginForm("MoveDown", "FormQuestionConditions", new { id = condition.ConditionId }, FormMethod.Post))
+                                        {
+                                            @Html.AntiForgeryToken()
+                                            <a href="#" onclick="this.closest('form').submit();return false;"><i class="fa fa-lg fa-arrow-down"></i></a>
+                                        }
+                                        <span>|</span>
+                                    }
+
+                                    <a class="text-success" title="Insert after" href="@Url.Action("Insert", new { id = condition.ConditionId })">
+                                        <i class="fa fa-lg fa-plus"></i>
+                                    </a> |
+                                    <a title="Edit question" href="@Url.Action("Edit", new { id = condition.ConditionId })">
+                                        <i class="fa fa-lg fa-pencil"></i>
+                                    </a> |
+                                    <a class="text-danger" title="Delete" href="@Url.Action("Delete", new { id = condition.ConditionId })">
+                                        <i class="fa fa-lg fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    @section scripts
 {
-    <style>
-        form {
-            display: inline-block;
-        }
-    </style>
-}
+        @Scripts.Render("~/bundles/jqueryval")
+    }
+
+    @section styles
+{
+        <style>
+            form {
+                display: inline-block;
+            }
+        </style>
+    }

@@ -3,35 +3,36 @@
     ViewBag.Title = "Submission Details";
 }
 
-<div class="text-center">
-    <div class="h2 page-title font-weight-bold">@ViewBag.Title</div>
-    <div class="text-secondary">
-        @Html.Partial("_PatientDetailsPartial", Model.Patient)
-        <div class="pt-2">
-            <a href="@Url.Action("Patient", new { id = Model.PatientId })"><i class="fa fa-chevron-circle-left"></i> Back to Patient Submission List</a>
+<div class="titleCard container">
+    <div class="text-center p-3" style="background-color: #e0e2eb; position: center; border-radius: 20px 20px 0px 0px">
+        <div class="h2 page-title font-weight-bold">@ViewBag.Title</div>
+        <div class="text-secondary">
+            @Html.Partial("_PatientDetailsPartial", Model.Patient)
+            <div class="pt-2">
+                <b>Form: </b>@Model.Form.Name |
+                <b>Answered All Questions: </b>@Model.AnsweredAllQuestions |
+                <b>Start: </b>@Model.SubmissionStartDate
+                @if (Model.WasSubmitted)
+                {
+                    <span>|</span>
+                    <b>End: </b>@Model.SubmissionEndDate
+                    <span>|</span>
+                    <b>Time to Complete: </b>@Model.TimeToComplete
+                }
+            </div>
+            <div class="pt-2">
+                <span><i class="fa fa-chevron-circle-left"></i><b> Back to: </b></span>
+                <a href="@Url.Action("Patient", new { id = Model.PatientId })">Patient Submission List</a>
+                <span> | </span>
+                <a href="@Url.Action("Index")">Full Submission List</a>
+            </div>
         </div>
-        <a href="@Url.Action("Index")"><i class="fa fa-chevron-circle-left"></i> Back to Full Submission List</a>
-    </div>
-    <hr />
-</div>
-
-<div class="container text-center pt-3" style="min-width: 94.3%">
-    <div>
-        <b>Answered All Questions: </b>@Model.AnsweredAllQuestions |
-        <b>Start: </b>@Model.SubmissionStartDate
-        @if (Model.WasSubmitted)
-        {
-            <span>|</span>
-            <b>End: </b>@Model.SubmissionEndDate
-            <span>|</span>
-            <b>Time to Complete: </b>@Model.TimeToComplete
-        }
     </div>
 </div>
 
-@Html.Partial("_SubmissionDetailsPartial", Model)
+    @Html.Partial("_SubmissionDetailsPartial", Model)
 
-@section scripts
+    @section scripts
 {
-    @Scripts.Render("~/Scripts/Custom/FormAnswerDataConverter.js")
-}
+        @Scripts.Render("~/Scripts/Custom/FormAnswerDataConverter.js")
+    }

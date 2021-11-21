@@ -10,6 +10,13 @@
     padding-left: 15px;
     padding-right: 15px;
 }
+.titleCard {
+    margin-top: 30px !important;
+    min-width: 94.5%;
+    margin-bottom: -1px;
+    position: relative;
+    z-index: 1;
+}
 
 /* Override the default bootstrap behavior where horizontal description lists 
    will truncate terms that are too long to fit in the left column 
@@ -43,7 +50,7 @@ textarea {
         flex: 1 1;
         border-bottom: 1px solid;
         margin: auto;
-        color: rgba(0, 0, 0, 0.3);
+        color: #000000
     }
 
     .page-title:before {
@@ -69,15 +76,6 @@ textarea {
     background-color: #5065ad;
 }
 
-hr {
-    height: 1px;
-    background-color: rgba(0, 0, 0, 0.3);
-    border: none;
-}
-
-.card {
-    margin-top: 25px;
-}
 @media only screen and (max-width: 768px) {
     /* Mobile css */
     .custom-form-div {
@@ -96,30 +94,30 @@ hr {
     .navbar-collapse {
         position: absolute;
         top: 75px;
-        left: 0;
+        right: 0;
         padding-left: 25px;
         padding-right: 25px;
         padding-bottom: 15px;
         width: fit-content;
-        border-bottom-right-radius: 20px;
+        border-bottom-left-radius: 20px;
         z-index: 2;
     }
 
         .navbar-collapse.collapsing {
             height: auto;
-            -webkit-transition: left 0.3s ease;
-            -o-transition: left 0.3s ease;
-            -moz-transition: left 0.3s ease;
-            transition: left 0.3s ease;
-            left: -100%;
+            -webkit-transition: right 0.3s ease;
+            -o-transition: right 0.3s ease;
+            -moz-transition: right 0.3s ease;
+            transition: right 0.3s ease;
+            right: -100%;
         }
 
         .navbar-collapse.show {
-            left: 0;
-            -webkit-transition: left 0.3s ease-in;
-            -o-transition: left 0.3s ease-in;
-            -moz-transition: left 0.3s ease-in;
-            transition: left 0.3s ease-in;
+            right: 0;
+            -webkit-transition: right 0.3s ease-in;
+            -o-transition: right 0.3s ease-in;
+            -moz-transition: right 0.3s ease-in;
+            transition: right 0.3s ease-in;
         }
 
 }
@@ -152,6 +150,10 @@ hr {
     margin-bottom: 0;
 }
 
+.card, .table, .table-responsive {
+    border-radius: 0px 0px 20px 20px;
+}
+
 .body-content {
     min-height: calc(100vh - 170px);
 }
@@ -177,7 +179,7 @@ footer {
     border-color: #5466af;
 }
 
-    .btn-primary:hover {
+    .btn-primary:hover{
         background-color: #5466af !important;
         border-color: #5466af !important;
         background-image: linear-gradient(rgba(0, 0, 0, 0.1) 0 0);
@@ -193,6 +195,29 @@ footer {
         background-color: #5466af !important;
         border-color: #5466af !important;
     }
+
+.btn-outline-primary {
+    border-color: #5466af;
+    color: #5466af;
+}
+
+    .btn-outline-primary:hover {
+        border-color: #5466af !important;
+        background-color: #5466af !important;
+        background-image: linear-gradient(rgba(0, 0, 0, 0.1) 0 0);
+    }
+
+    .btn-outline-primary:focus {
+        background-color: #5466af !important;
+        border-color: #5466af !important;
+        background-image: linear-gradient(rgba(0, 0, 0, 0.4) 0 0);
+    }
+
+    .btn-outline-primary:active {
+        background-color: #5466af !important;
+        border-color: #5466af !important;
+    }
+
 
 .table-striped > tbody > tr:nth-child(odd) > td,
 .table-striped > tbody > tr:nth-child(odd) > th {
