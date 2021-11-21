@@ -19,7 +19,7 @@
     }
 }
 
-<div class="shadow bg-light container pb-3" style="border-radius: 12px">
+<div class="shadow bg-light container pb-5 pt-4 mb-5" style="border-radius: 12px">
     @using (Html.BeginForm())
     {
         @Html.AntiForgeryToken()
@@ -58,7 +58,7 @@
             <div class="col-3 text-left">
                 <button type="button" id="clear-button" class="btn btn-lg btn-danger" onclick="clearAnswer()">
                     <i class="fa fa-lg fa-eraser"></i>
-                    Clear answer
+                    Clear Answer
                 </button>
             </div>
             <div class="col-6 text-center">
@@ -67,20 +67,29 @@
                     {
                         <button type="button" id="previous-button" class="btn btn-lg btn-outline-primary" onclick="submitClicked('previous')">
                             <i class="fa fa-lg fa-chevron-left"></i>
-                            Previous question
+                            Previous Question
                         </button>
                     }
-                    <button type="button" id="next-button" class="btn btn-lg btn-primary" onclick="submitClicked('next')">
-                        @(isLast ? "Review answers" : "Next question")
-                        <i class="fa fa-lg fa-@(isLast ? "list" : "chevron-right")"></i>
-                    </button>
+                    @if (isLast)
+                    {
+                        <button type="button" id="next-button" class="btn btn-lg btn-success" onclick="submitClicked('next')">
+                            Review Answers
+                            <i class="fa fa-lg fa-@(isLast ? "list" : "chevron-right")"></i>
+                        </button>
+                    }
+                    else { 
+                <button type="button" id="next-button" class="btn btn-lg btn-primary" onclick="submitClicked('next')">
+                    Next Question
+                    <i class="fa fa-lg fa-@(isLast ? "list" : "chevron-right")"></i>
+                </button>
+                    }
                 </div>
             </div>
             <div class="col-3 text-right">
                 @if (!isLast && Model.AnsweredAllQuestions)
                 {
                     <button type="button" id="review-button" class="btn btn-lg btn-success" onclick="submitClicked('review')">
-                        Review all
+                        Review Answers
                         <i class="fa fa-lg fa-list"></i>
                     </button>
                 }
@@ -119,6 +128,10 @@
                 font-size: 15px !important;
                 padding: 5px 2px;
             }
+        }
+
+        div.shadow.bg-light {
+            margin-top: 3vh;
         }
     </style>
 }

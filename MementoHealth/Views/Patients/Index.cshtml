@@ -5,14 +5,15 @@
 }
 
 
-<div class="text-center">
-    <div class="h2 page-title font-weight-bold"><i class="fa fa-users"></i>&nbsp;@ViewBag.Title</div>
-    <div class="text-secondary">
-        <a href="@Url.Action("Create")"><i class="fa fa-user-plus"></i> Add</a> |
-        <a href="@Url.Action("Import")"><i class="fa fa-download"></i> Import</a> |
-        <a href="@Url.Action("Search")"><i class="fa fa-search"></i> Search</a>
+<div class="titleCard container">
+    <div class="text-center p-3" style="background-color: #e0e2eb; position: center; border-radius: 20px 20px 0px 0px">
+        <div class="h2 page-title font-weight-bold"><i class="fa fa-users"></i>&nbsp;@ViewBag.Title</div>
+        <div class="text-secondary">
+            <a href="@Url.Action("Create")"><i class="fa fa-user-plus"></i> Add</a> |
+            <a href="@Url.Action("Import")"><i class="fa fa-download"></i> Import</a> |
+            <a href="@Url.Action("Search")"><i class="fa fa-search"></i> Search</a>
+        </div>
     </div>
-    <hr />
 </div>
 
-@Html.Partial("_PatientsTablePartial", Model)
+    @Html.Partial("_PatientsTablePartial", Model)

@@ -4,14 +4,14 @@
     ViewBag.Title = "User Manager";
 }
 
-<div class="text-center">
-    <div class="h2 page-title font-weight-bold"><i class="fa fa-user-md"></i>&nbsp;@ViewBag.Title</div>
-    <div class="text-secondary">
-        <a href="@Url.Action("Create", "Users")"><i class="fa fa-user-plus"></i> Create New User</a>
+<div class="titleCard container">
+    <div class="text-center p-3" style="background-color: #e0e2eb; position: center; border-radius: 20px 20px 0px 0px">
+        <div class="h2 page-title font-weight-bold">@ViewBag.Title</div>
+        <div class="text-secondary">
+            <a  href="@Url.Action("Create", "Users")"><i class="fa fa-user-plus"></i> Create New User</a>
+        </div>
     </div>
-    <hr />
 </div>
-
 <div class="container" style="overflow-y: auto; white-space: nowrap; min-width: 94.5%; text-align: center">
     @if (TempData["StatusMessage"] != null)
     {
