@@ -12,9 +12,13 @@
         <h5 style="margin-top: -7px">
             Form Name: "@form.Name"
         </h5>
-        @if (!editsAllowed)
+        @if (form.Submissions.Any() && User.IsInRole(Role.ProviderAdmin))
         {
             <h5 class="text-danger" style="margin-bottom: 15px">Edits are not allowed as the form already has some submissions.</h5>
+        }
+        @if (!User.IsInRole(Role.ProviderAdmin))
+        {
+            <h5 class="text-info" style="margin-bottom: 15px">Only Provider Admins can modify forms.</h5>
         }
         <p>
             <a href="@Url.Action("Index", "Forms")"><i class="fa fa-chevron-circle-left"></i> Back to Forms</a>
