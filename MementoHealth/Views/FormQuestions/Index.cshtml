@@ -10,9 +10,13 @@
     <div class="text-center p-3" style="background-color: #e0e2eb; position: center; border-radius: 20px 20px 0px 0px">
         <div class="h2 page-title font-weight-bold">@ViewBag.Title</div>
         <div class="text-secondary">
-            @if (!editsAllowed)
+            @if (form.Submissions.Any() && User.IsInRole(Role.ProviderAdmin))
             {
-                <h5 class="text-danger" style="margin-top: -7px">Edits are not allowed as the form already has some submissions.</h5>
+                <h5 class="text-danger" style="margin-bottom: 15px">Edits are not allowed as the form already has some submissions.</h5>
+            }
+            @if (!User.IsInRole(Role.ProviderAdmin))
+            {
+                <h5 class="text-info" style="margin-bottom: 15px">Only Provider Admins can modify forms.</h5>
             }
             <h5 style="margin-bottom: 8px">
                 <b>Form:</b> "@form.Name"
