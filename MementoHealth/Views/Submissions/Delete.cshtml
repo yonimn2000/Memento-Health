@@ -48,11 +48,11 @@
                                 <input type="submit" value="Delete" class="btn btn-danger w-100" />
 
                             </div>
-                            <div style="text-align: center">
-                                <div class="pt-2">
-                                    <a href="@Url.Action("Patient", new { id = Model.PatientId })"><i class="fa fa-chevron-circle-left"></i> Back to Patient Submission List</a>
-                                </div>
-                                <a href="@Url.Action("Index")"><i class="fa fa-chevron-circle-left"></i> Back to Full Submission List</a>
+                            <div class="pt-2">
+                                <span style="color: #5065ad"><i class="fa fa-chevron-circle-left"></i><b> Back to: </b></span>
+                                <a href="@Url.Action("Patient", new { id = Model.PatientId })">Patient Submission List</a>
+                                <span> | </span>
+                                <a href="@Url.Action("Index")">Full Submission List</a>
                             </div>
                         }
                     </section>

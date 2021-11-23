@@ -11,7 +11,7 @@
     padding-right: 15px;
 }
 .titleCard {
-    margin-top: 30px !important;
+    padding-top: 35px;
     min-width: 94.5%;
     margin-bottom: -1px;
     position: relative;
@@ -50,7 +50,7 @@ textarea {
         flex: 1 1;
         border-bottom: 1px solid;
         margin: auto;
-        color: #000000
+        color: darkgrey;
     }
 
     .page-title:before {
@@ -70,10 +70,6 @@ textarea {
     padding-right: 150px;
     padding-bottom: 50px;
     padding-left: 150px;
-}
-
-#completefooter {
-    background-color: #5065ad;
 }
 
 @media only screen and (max-width: 768px) {
@@ -100,24 +96,24 @@ textarea {
         padding-bottom: 15px;
         width: fit-content;
         border-bottom-left-radius: 20px;
-        z-index: 2;
+        z-index: 100;
     }
 
         .navbar-collapse.collapsing {
             height: auto;
-            -webkit-transition: right 0.3s ease;
-            -o-transition: right 0.3s ease;
-            -moz-transition: right 0.3s ease;
-            transition: right 0.3s ease;
+            -webkit-transition: right 0.1s ease;
+            -o-transition: right 0.1s ease;
+            -moz-transition: right 0.1s ease;
+            transition: right 0.1s ease;
             right: -100%;
         }
 
         .navbar-collapse.show {
             right: 0;
-            -webkit-transition: right 0.3s ease-in;
-            -o-transition: right 0.3s ease-in;
-            -moz-transition: right 0.3s ease-in;
-            transition: right 0.3s ease-in;
+            -webkit-transition: right 0.1s ease-in;
+            -o-transition: right 0.1s ease-in;
+            -moz-transition: right 0.1s ease-in;
+            transition: right 0.1s ease-in;
         }
 
 }
@@ -131,12 +127,12 @@ textarea {
 
 @media only screen and (max-width: 575px) {
     .body-content {
-        min-height: calc(100vh - 190px) !important;
+        min-height: calc(100vh - 170px) !important;
     }
 
-    #completefooter {
-        background-color: #5065ad;
-        height: 85px;
+    footer {
+        height: 94px !important;
+        padding: 18px 20px 0px 20px !important;
     }
 }
 
@@ -155,14 +151,15 @@ textarea {
 }
 
 .body-content {
-    min-height: calc(100vh - 170px);
+    min-height: calc(100vh - 150px);
 }
 
 footer {
-    padding-left: 20px;
-    padding-right: 20px;
-    height: 45px;
+    width: 100%;
+    height: 74px;
     color: #fcfcfc;
+    background-color: #5065ad !important;
+    padding: 25px 20px 30px 20px;
 }
 
 .navbar-custom .navbar-nav .nav-link {
@@ -246,6 +243,7 @@ a, input.btn.btn-link {
 
 div.shadow.bg-light {
     margin-top: 7vh;
+    margin-bottom: 7vh;
 }
 
 /****** The following are for the selected point on the picture answer ******/

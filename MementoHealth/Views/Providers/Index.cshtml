@@ -11,83 +11,83 @@
     </div>
 </div>
 
-    <div class="container" style="overflow-y: auto; white-space: nowrap; min-width: 94.5%; text-align: center">
-        <div class="card shadow">
-            <div class="table-responsive">
-                <table class="table table-bordered table-striped">
-                    <thead>
+<div class="container" style="overflow-y: auto; white-space: nowrap; min-width: 94.5%; text-align: center">
+    <div class="card shadow">
+        <div class="sticky-table sticky-ltr-cells" style="border-radius: 0px 0px 20px 20px">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr class="sticky-header">
+                        <th class="sticky-cell">
+                            <i class="fa fa-sort-alpha-asc"></i>
+                            @Html.DisplayNameFor(model => model.Name)
+                        </th>
+                        <th class="sticky-cell">
+                            <i class="fa fa-phone"></i>
+                            @Html.DisplayNameFor(model => model.Phone)
+                        </th>
+                        <th class="sticky-cell">
+                            <i class="fa fa-address-card"></i>
+                            @Html.DisplayNameFor(model => model.Address)
+                        </th>
+                        <th class="sticky-cell">
+                            <i class="fa fa-envelope"></i>
+                            @Html.DisplayNameFor(model => model.Email)
+                        </th>
+                        <th class="sticky-cell">
+                            <i class="fa fa-file-text"></i>
+                            @Html.DisplayNameFor(model => model.Forms)
+                        </th>
+                        <th class="sticky-cell">
+                            <i class="fa fa-users"></i>
+                            @Html.DisplayNameFor(model => model.Patients)
+                        </th>
+                        <th class="sticky-cell">
+                            <i class="fa fa-user-md"></i>
+                            @Html.DisplayNameFor(model => model.Staff)
+                        </th>
+                        <th class="sticky-cell"><i class="fa fa-bolt"></i> Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
                         <tr>
-                            <th>
-                                <i class="fa fa-sort-alpha-asc"></i>
-                                @Html.DisplayNameFor(model => model.Name)
-                            </th>
-                            <th>
-                                <i class="fa fa-phone"></i>
-                                @Html.DisplayNameFor(model => model.Phone)
-                            </th>
-                            <th>
-                                <i class="fa fa-address-card"></i>
-                                @Html.DisplayNameFor(model => model.Address)
-                            </th>
-                            <th>
-                                <i class="fa fa-envelope"></i>
-                                @Html.DisplayNameFor(model => model.Email)
-                            </th>
-                            <th>
-                                <i class="fa fa-file-text"></i>
-                                @Html.DisplayNameFor(model => model.Forms)
-                            </th>
-                            <th>
-                                <i class="fa fa-users"></i>
-                                @Html.DisplayNameFor(model => model.Patients)
-                            </th>
-                            <th>
-                                <i class="fa fa-user-md"></i>
-                                @Html.DisplayNameFor(model => model.Staff)
-                            </th>
-                            <th><i class="fa fa-bolt"></i> Actions</th>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.Phone(item.Phone)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Address)
+                            </td>
+                            <td>
+                                @Html.Email(item.Email)
+                            </td>
+                            <td>
+                                @item.Forms.Count
+                            </td>
+                            <td>
+                                @item.Patients.Count
+                            </td>
+                            <td>
+                                @item.Staff.Count
+                            </td>
+                            <td>
+                                <a title="Edit" href="@Url.Action("Edit", new { id = item.ProviderId })">
+                                    <i class="fa fa-lg fa-pencil"></i>
+                                </a> |
+                                <a title="Details" href="@Url.Action("Details", new { id = item.ProviderId })">
+                                    <i class="fa fa-lg fa-info-circle"></i>
+                                </a> |
+                                <a title="Delete" class="text-danger" href="@Url.Action("Delete",new { id = item.ProviderId })">
+                                    <i class="fa fa-lg fa-trash"></i>
+                                </a>
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model)
-                        {
-                            <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Name)
-                                </td>
-                                <td>
-                                    @Html.Phone(item.Phone)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Address)
-                                </td>
-                                <td>
-                                    @Html.Email(item.Email)
-                                </td>
-                                <td>
-                                    @item.Forms.Count
-                                </td>
-                                <td>
-                                    @item.Patients.Count
-                                </td>
-                                <td>
-                                    @item.Staff.Count
-                                </td>
-                                <td>
-                                    <a title="Edit" href="@Url.Action("Edit", new { id = item.ProviderId })">
-                                        <i class="fa fa-lg fa-pencil"></i>
-                                    </a> |
-                                    <a title="Details" href="@Url.Action("Details", new { id = item.ProviderId })">
-                                        <i class="fa fa-lg fa-info-circle"></i>
-                                    </a> |
-                                    <a title="Delete" class="text-danger" href="@Url.Action("Delete",new { id = item.ProviderId })">
-                                        <i class="fa fa-lg fa-trash"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
+                    }
+                </tbody>
+            </table>
         </div>
     </div>
+</div>

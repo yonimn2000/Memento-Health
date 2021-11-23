@@ -5,18 +5,18 @@
 
 <div class="container" style="overflow-y: auto; white-space: nowrap; min-width: 94.5%">
     <div class="card shadow">
-        <div class="table-responsive">
+        <div class="sticky-table sticky-ltr-cells" style="border-radius: 0px 0px 20px 20px">
             <table class="table table-bordered table-striped">
                 <thead>
-                    <tr>
-                        <th><i class="fa fa-question-circle"></i> Question</th>
-                        <th>
+                    <tr class="sticky-header">
+                        <th class="sticky-cell"><i class="fa fa-question-circle"></i> Question</th>
+                        <th class="sticky-cell">
                             <i class="fa fa-comment"></i>
                             @(isPatientView ? "Your" : "Patient") Answer
                         </th>
                         @if (isPatientView)
                         {
-                            <th><i class="fa fa-bolt"></i> Action</th>
+                            <th class="sticky-cell"><i class="fa fa-bolt"></i> Action</th>
                         }
                     </tr>
                 </thead>
