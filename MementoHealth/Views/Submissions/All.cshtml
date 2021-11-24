@@ -5,7 +5,10 @@
     ViewBag.UseFullScreenWidth = true;
 }
 
-<div class="h2 page-title font-weight-bold text-center pb-4">@ViewBag.Title</div>
-
+<div class="titleCard container">
+    <div class="text-center p-3" style="background-color: #e0e2eb; position: center; border-radius: 20px 20px 0px 0px">
+        <div class="h2 page-title font-weight-bold text-center">@ViewBag.Title</div>
+    </div>
+</div>
 
 @Html.Partial("_SubmissionsTablePartial", Model)

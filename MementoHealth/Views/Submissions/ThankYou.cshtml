@@ -3,13 +3,24 @@
     ViewBag.Title = "Submitted";
     ViewBag.PatientId = Model.Patient.PatientId;
 }
-<div class="row d-flex justify-content-center" style="position: absolute; top: 35%; left: 50%; transform: translate(-50%, -50%)">
+<div class="row d-flex justify-content-center" style="padding-top: 35px">
     <div class="shadow bg-light" style="border-radius: 12px">
-        <div style="padding-top: 20px; text-align: center">@Html.Partial("_PatientDetailsPartial", Model.Patient)</div>
+        <div style="padding-top: 20px; text-align: center">
+            <div class="text-secondary">
+                <h5><b>Patient: </b> @Model.Patient.FullName |
+                <b>Birthday: </b> @Model.Patient.Birthday.ToShortDateString()
+                @if (!string.IsNullOrWhiteSpace(Model.Patient.ExternalPatientId))
+                {
+                    <text>|</text>
+                    <b>External ID: </b> @Model.Patient.ExternalPatientId
+                }
+                </h5>
+            </div>
+        </div>
         <div class="custom-form-div text-center" style="padding-top: 50px">
-                <i class="fa fa-check-circle-o text-success pb-3" style="font-size: 9em"></i>
-                <h5 class="pb-2">Done!</h5>
-                <h6 style="min-width: 250px">Please let the staff know you completed the form.</h6>
+                <i class="fa fa-check-circle-o text-success pb-3" style="font-size: 17em"></i>
+                <h1 class="pb-2">Done!</h1>
+                <h4 style="min-width: 250px">Please let the staff know you completed the form.</h4>
         </div>
     </div>
 </div>

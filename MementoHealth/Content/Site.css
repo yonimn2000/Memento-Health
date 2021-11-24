@@ -1,11 +1,22 @@
 ﻿body {
-    padding-bottom: 20px;
+    background-color: #f9f9fd;
+    background-image: linear-gradient(30deg, #f2f2f2 12%, transparent 12.5%, transparent 87%, #f2f2f2 87.5%, #f2f2f2), linear-gradient(150deg, #f2f2f2 12%, transparent 12.5%, transparent 87%, #f2f2f2 87.5%, #f2f2f2), linear-gradient(30deg, #f2f2f2 12%, transparent 12.5%, transparent 87%, #f2f2f2 87.5%, #f2f2f2), linear-gradient(150deg, #f2f2f2 12%, transparent 12.5%, transparent 87%, #f2f2f2 87.5%, #f2f2f2), linear-gradient(60deg, #f2f2f277 25%, transparent 25.5%, transparent 75%, #f2f2f277 75%, #f2f2f277), linear-gradient(60deg, #f2f2f277 25%, transparent 25.5%, transparent 75%, #f2f2f277 75%, #f2f2f277);
+    background-size: 64px 112px;
+    background-position: 0 0, 0 0, 32px 56px, 32px 56px, 0 0, 32px 56px;
 }
 
 /* Set padding to keep content from hitting the edges */
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
+}
+
+.titleCard {
+    padding-top: 35px;
+    min-width: 94.5%;
+    margin-bottom: -1px;
+    position: relative;
+    z-index: 1;
 }
 
 /* Override the default bootstrap behavior where horizontal description lists 
@@ -40,7 +51,7 @@ textarea {
         flex: 1 1;
         border-bottom: 1px solid;
         margin: auto;
-        color: #e5e5e5;
+        color: darkgrey;
     }
 
     .page-title:before {
@@ -76,6 +87,37 @@ textarea {
     }
 }
 
+@media (max-width: 992px) {
+    .navbar-collapse {
+        position: absolute;
+        top: 75px;
+        right: 0;
+        padding-left: 25px;
+        padding-right: 25px;
+        padding-bottom: 15px;
+        width: fit-content;
+        border-bottom-left-radius: 20px;
+        z-index: 100;
+    }
+
+        .navbar-collapse.collapsing {
+            height: auto;
+            -webkit-transition: opacity 0.2s ease-out;
+            -o-transition: opacity 0.2s ease-out;
+            -moz-transition: opacity 0.2s ease-out;
+            transition: opacity 0.2s ease-out;
+            opacity: 0;
+        }
+
+        .navbar-collapse.show {
+            opacity: 100%;
+            -webkit-transition: opacity 0.2s ease-out;
+            -o-transition: opacity 0.2s ease-out;
+            -moz-transition: opacity 0.2s ease-out;
+            transition: opacity 0.2s ease-out;
+        }
+}
+
 @media only screen and (max-width: 1200px) {
     #logo-img {
         content: url('../Images/Mobile Memento Health-logo.svg');
@@ -85,7 +127,12 @@ textarea {
 
 @media only screen and (max-width: 575px) {
     .body-content {
-        min-height: calc(100vh - 190px) !important;
+        min-height: calc(100vh - 205px) !important;
+    }
+
+    footer {
+        height: 94px !important;
+        padding: 18px 20px 0px 20px !important;
     }
 }
 
@@ -99,13 +146,21 @@ textarea {
     margin-bottom: 0;
 }
 
+.card, .table, .table-responsive {
+    border-radius: 0px 0px 20px 20px;
+}
+
 .body-content {
-    min-height: calc(100vh - 170px);
+    min-height: calc(100vh - 185px);
 }
 
 footer {
-    padding-left: 20px;
-    padding-right: 20px;
+    width: 100%;
+    height: 74px;
+    color: #fcfcfc;
+    background-color: #5065ad !important;
+    padding: 25px 20px 30px 20px;
+    margin-top: 35px;
 }
 
 .navbar-custom .navbar-nav .nav-link {
@@ -139,6 +194,29 @@ footer {
         border-color: #5466af !important;
     }
 
+.btn-outline-primary {
+    border-color: #5466af;
+    color: #5466af;
+}
+
+    .btn-outline-primary:hover {
+        border-color: #5466af !important;
+        background-color: #5466af !important;
+        background-image: linear-gradient(rgba(0, 0, 0, 0.1) 0 0);
+    }
+
+    .btn-outline-primary:focus {
+        background-color: #5466af !important;
+        border-color: #5466af !important;
+        background-image: linear-gradient(rgba(0, 0, 0, 0.4) 0 0);
+    }
+
+    .btn-outline-primary:active {
+        background-color: #5466af !important;
+        border-color: #5466af !important;
+    }
+
+
 .table-striped > tbody > tr:nth-child(odd) > td,
 .table-striped > tbody > tr:nth-child(odd) > th {
     background-color: hsl(228 20% 90%);
@@ -166,6 +244,7 @@ a, input.btn.btn-link {
 
 div.shadow.bg-light {
     margin-top: 7vh;
+    margin-bottom: 7vh;
 }
 
 /****** The following are for the selected point on the picture answer ******/

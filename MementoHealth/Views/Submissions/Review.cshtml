@@ -5,36 +5,35 @@
     ViewBag.PatientId = Model.Patient.PatientId;
 }
 
-<div class="text-center">
-    <div class="h2 page-title font-weight-bold">@ViewBag.Title</div>
-    <div class="text-secondary">
-        @Html.Partial("_PatientDetailsPartial", Model.Patient)
+<div class="titleCard container">
+    <div class="text-center p-3" style="background-color: #e0e2eb; position: center; border-radius: 20px 20px 0px 0px">
+        <div class="h2 page-title font-weight-bold">@ViewBag.Title</div>
+        <div class="text-secondary">
+            @Html.Partial("_PatientDetailsPartial", Model.Patient)
+        </div>
+        <div class="container text-center pt-3" style="min-width: 94.5%">
+            <h5 class="text-success">Form completed successfully. Please review your answers below and hit submit.</h5>
+            <div class="progress mb-3" style="height: 36px;">
+                <div class="progress-bar bg-success" role="progressbar" style="width: 100%"><b>100%</b></div>
+            </div>
+        </div>
     </div>
-    <hr />
 </div>
+    @Html.Partial("_SubmissionDetailsPartial", Model)
 
-<div class="container text-center pt-3" style="min-width: 94.5%">
-    <h5>Form completed successfully. Please review your answers below and hit submit.</h5>
-    <div class="progress mb-4" style="height: 36px;">
-        <div class="progress-bar bg-success" role="progressbar" style="width: 100%"><b>100%</b></div>
+    <div class="text-center pt-3">
+        @using (Html.BeginForm("Submit", "Submissions", new { id = Model.SubmissionId }, FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <button type="submit" class="btn btn-lg btn-primary">
+                Submit
+                <i class="fa fa-lg fa-paper-plane"></i>
+            </button>
+        }
     </div>
-</div>
 
-@Html.Partial("_SubmissionDetailsPartial", Model)
-
-<div class="text-center pt-3">
-    @using (Html.BeginForm("Submit", "Submissions", new { id = Model.SubmissionId }, FormMethod.Post))
-    {
-        @Html.AntiForgeryToken()
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <button type="submit" class="btn btn-lg btn-primary">
-            Submit
-            <i class="fa fa-lg fa-paper-plane"></i>
-        </button>
-    }
-</div>
-
-@section scripts
+    @section scripts
 {
-    @Scripts.Render("~/Scripts/Custom/FormAnswerDataConverter.js")
-}
+        @Scripts.Render("~/Scripts/Custom/FormAnswerDataConverter.js")
+    }

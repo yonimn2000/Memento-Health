@@ -28,7 +28,7 @@
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div id="navbarSupportedContent" class="navbar-collapse collapse">
+            <div id="navbarSupportedContent" class="navbar-collapse collapse" style="background-color: #5065ad">
                 @if (!isPinLock)
                 {
                     <ul class="navbar-nav mr-auto">
@@ -115,11 +115,11 @@
             </div>
         </div>
     </nav>
-    <div class="container-fluid body-content mt-3">
+    <div class="container-fluid body-content">
         @RenderBody()
     </div>
-    <hr />
-    <footer class="mx-3 d-block d-sm-flex">
+
+    <footer class="d-block d-sm-flex">
         @if (User.Identity.IsAuthenticated)
         {
             <div><b>Current user role:</b> @User.GetRole()</div>
