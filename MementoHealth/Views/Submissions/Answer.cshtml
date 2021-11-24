@@ -46,7 +46,7 @@
         }
 
         <div class="row vw-100" style="display: flex">
-            <input class="form-control" id="textbox" style="display:none; margin-left: 30px" autocomplete="off">
+            <input class="form-control" id="textbox" style="display:none; margin-left: 30px" autocomplete="off" oninput="onInput()">
             <div class="form-check pl-3 ml-5" id="radiobuttons" style="display: none; font-size: x-large"></div>
             <div class="form-check pl-3 ml-5" id="checkboxes" style="display: none; font-size: x-large"></div>
             <div id="img-wrapper">
@@ -56,7 +56,7 @@
 
         <div class="row mt-5 mx-1">
             <div class="col-3 text-left">
-                <button type="button" id="clear-button" class="btn btn-lg btn-danger" onclick="clearAnswer()">
+                <button style="display:none;" type="button" id="clear-button" class="btn btn-lg btn-danger" onclick="clearAnswer()">
                     <i class="fa fa-lg fa-eraser"></i>
                     Clear Answer
                 </button>
@@ -170,7 +170,7 @@
                                 id: 'checkbox-' + i,
                                 class: 'form-check-input',
                                 value: label
-                            })).append(
+                            }).on('click', onInput)).append(
                             $('<label>').prop({
                                 for: 'checkbox-' + i,
                                 class: 'form-check-label mb-3 ml-4'
@@ -193,7 +193,7 @@
                                 name: 'radiobuttons',
                                 class: 'form-check-input',
                                 value: label
-                            })).append(
+                            }).on('click', onInput)).append(
                                 $('<label>').prop({
                                     for: 'radio-' + i,
                                     class: 'form-check-label mb-3 ml-3'
@@ -216,7 +216,34 @@
                         });
                     break;
             }
+            onInput();
+
+            $(window).keydown(function (event) {
+                if (event.keyCode == 13) {
+                    event.preventDefault();
+                    return false;
+                }
+            });
         });
+
+        let onInput = () => {
+            let showClear = false;
+            showClear = $("#textbox").val().length != 0 || lastImageClick.x;
+
+            $("#checkboxes input").each(function () {
+                if ($(this).prop('checked')) {
+                    showClear = true;
+                }
+            });
+            $("#radiobuttons input").each(function () {
+                if ($(this).prop('checked')) {
+                    showClear = true;
+                }
+            });
+
+            if (showClear)
+                $("#clear-button").show();
+        };
 
         let clearAnswer = () => {
             $("#textbox").val("");
@@ -228,7 +255,8 @@
             });
             lastImageClick = {};
             $('.img-point').remove();
-        }
+            $("#clear-button").hide();
+        };
 
         let doit;
         window.onresize = () => {
@@ -244,7 +272,7 @@
             lastImageClick.x = x / $("#image").width();
             lastImageClick.y = y / $("#image").height();
             drawPointOnImage();
-        }
+        };
 
         let drawPointOnImage = () => {
             if (lastImageClick.x) {
@@ -260,6 +288,7 @@
                 });
                 point.appendTo(img);
             }
+            onInput();
         }
 
         let submitClicked = async (nextAction) => {
