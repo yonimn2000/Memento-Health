@@ -28,21 +28,21 @@
                 <table class="table table-bordered table-striped">
                     <thead>
                         <tr class="sticky-header">
-                            <th class="sticky-cell">
+                            <th >
                                 <i class="fa fa-sort-alpha-asc"></i>
                                 @Html.DisplayNameFor(model => model.Name)
                             </th>
-                            <th class="sticky-cell">
+                            <th >
                                 <i class="fa fa-question-circle-o"></i>
                                 @Html.DisplayNameFor(model => model.NumberOfQuestions)
                             </th>
-                            <th class="sticky-cell">
+                            <th>
                                 <i class="fa fa-check-square-o"></i>
                                 @Html.DisplayNameFor(model => model.NumberOfSubmissions)
                             </th>
                             @if (User.IsInRole(Role.ProviderAdmin))
                             {
-                                <th class="sticky-cell"><i class="fa fa-bolt"></i> Actions</th>
+                                <th ><i class="fa fa-bolt"></i> Actions</th>
                             }
                         </tr>
                     </thead>
