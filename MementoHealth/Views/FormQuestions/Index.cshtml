@@ -10,22 +10,20 @@
     <div class="text-center p-3" style="background-color: #e0e2eb; position: center; border-radius: 20px 20px 0px 0px">
         <div class="h2 page-title font-weight-bold">@ViewBag.Title</div>
         <div class="text-secondary">
-        @if (form.Submissions.Any() && User.IsInRole(Role.ProviderAdmin))
-        {
-            <h5 class="text-danger" style="margin-top: -7px">Edits are not allowed as the form already has some submissions.</h5>
-        }
-        @if (!User.IsInRole(Role.ProviderAdmin))
-        {
-            <h5 class="text-info" style="margin-top: -7px">Only Provider Admins can modify forms.</h5>
-        }
+            @if (form.Submissions.Any() && User.IsInRole(Role.ProviderAdmin))
+            {
+                <h5 class="text-danger" style="margin-top: -7px">Edits are not allowed as the form already has some submissions.</h5>
+            }
+            @if (!User.IsInRole(Role.ProviderAdmin))
+            {
+                <h5 class="text-info" style="margin-top: -7px">Only Provider Admins can modify forms.</h5>
+            }
             <h5 style="margin-bottom: 8px">
                 <b>Form:</b> "@form.Name"
             </h5>
             <p>
                 <a href="@Url.Action("Index", "Forms")"><i class="fa fa-chevron-circle-left"></i> Back to Forms</a>
             </p>
-
-
         </div>
     </div>
 </div>
@@ -141,24 +139,25 @@
     </div>
 </div>
 
-<div class="shadow bg-light container pb-5 pt-4 mb-5" style="border-radius: 12px; min-width: 93.5%">
+<div class="shadow bg-light container pb-4 pt-4 mb-5" style="border-radius: 12px; min-width: 93.5%">
     <div class="text-center">
-        <div id="canvas" class="w-100 pl-5 pr-5"></div>
-        <button id="redraw" onclick="redraw();" class="btn btn-sm btn-outline-info">
+        <h3>Question Flow Graphical Representation</h3>
+        <div id="canvas" class="w-100 pl-3 pr-3 mt-3"></div>
+        <button id="redraw" onclick="redraw();" class="btn btn-sm btn-outline-info mt-3">
             <i class="fa fa-refresh"></i>
             Redraw graph
         </button>
     </div>
-    </div>
+</div>
 
-    @section scripts
+@section scripts
 {
-        @Scripts.Render("~/bundles/jqueryval")
-        @Scripts.Render("~/Scripts/Custom/FormQuestionDataConverter.js")
-        @Scripts.Render("~/Scripts/raphael.min.js")
-        @Scripts.Render("~/Scripts/dracula.min.js")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Scripts/Custom/FormQuestionDataConverter.js")
+    @Scripts.Render("~/Scripts/raphael.min.js")
+    @Scripts.Render("~/Scripts/dracula.min.js")
 
-        <script>
+    <script>
         window.onload = function () {
             redrawGraph();
         };
@@ -221,15 +220,15 @@
             txt.innerHTML = html;
             return txt.value;
         }
-        </script>
-    }
+    </script>
+}
 
-    @section styles
+@section styles
 {
 
-        <style>
-            form {
-                display: inline-block;
-            }
-        </style>
-    }
+    <style>
+        form {
+            display: inline-block;
+        }
+    </style>
+}
