@@ -151,7 +151,7 @@ textarea {
 }
 
 .body-content {
-    min-height: calc(100vh - 150px);
+    min-height: calc(100vh - 185px);
 }
 
 footer {
@@ -160,6 +160,7 @@ footer {
     color: #fcfcfc;
     background-color: #5065ad !important;
     padding: 25px 20px 30px 20px;
+    margin-top: 35px;
 }
 
 .navbar-custom .navbar-nav .nav-link {
