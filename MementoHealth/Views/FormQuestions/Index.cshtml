@@ -10,14 +10,14 @@
     <div class="text-center p-3" style="background-color: #e0e2eb; position: center; border-radius: 20px 20px 0px 0px">
         <div class="h2 page-title font-weight-bold">@ViewBag.Title</div>
         <div class="text-secondary">
-            @if (form.Submissions.Any() && User.IsInRole(Role.ProviderAdmin))
-            {
-                <h5 class="text-danger" style="margin-bottom: 15px">Edits are not allowed as the form already has some submissions.</h5>
-            }
-            @if (!User.IsInRole(Role.ProviderAdmin))
-            {
-                <h5 class="text-info" style="margin-bottom: 15px">Only Provider Admins can modify forms.</h5>
-            }
+        @if (form.Submissions.Any() && User.IsInRole(Role.ProviderAdmin))
+        {
+            <h5 class="text-danger" style="margin-top: -7px">Edits are not allowed as the form already has some submissions.</h5>
+        }
+        @if (!User.IsInRole(Role.ProviderAdmin))
+        {
+            <h5 class="text-info" style="margin-top: -7px">Only Provider Admins can modify forms.</h5>
+        }
             <h5 style="margin-bottom: 8px">
                 <b>Form:</b> "@form.Name"
             </h5>
@@ -30,123 +30,125 @@
     </div>
 </div>
 
-    <div class="container" style="overflow-y: auto; white-space: nowrap; min-width: 94.5%; text-align: center">
-        <div class="card shadow">
-            <div class="table-responsive">
-                <table class="table table-bordered table-striped">
-                    <thead>
+<div class="container" style="overflow-y: auto; white-space: nowrap; min-width: 94.5%; text-align: center">
+    <div class="card shadow">
+        <div class="sticky-table sticky-ltr-cells" style="border-radius: 0px 0px 20px 20px">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr class="sticky-header">
+                        <th class="sticky-cell"><i class="fa fa-hashtag"></i></th>
+                        <th class="sticky-cell"><i class="fa fa-question-circle"></i> Question</th>
+                        <th class="sticky-cell"><i class="fa fa-asterisk"></i> Is Required</th>
+                        <th class="sticky-cell"><i class="fa fa-picture-o"></i> Type</th>
+                        <th class="sticky-cell"><i class="fa fa-database"></i> Data</th>
+                        <th class="sticky-cell"><i class="fa fa-sitemap"></i> Conditions</th>
+                        @if (editsAllowed)
+                        {
+                            <th class="sticky-cell"><i class="fa fa-bolt"></i> Actions</th>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (FormQuestion question in Model)
+                    {
                         <tr>
-                            <th><i class="fa fa-hashtag"></i></th>
-                            <th><i class="fa fa-question-circle"></i> Question</th>
-                            <th><i class="fa fa-asterisk"></i> Is Required</th>
-                            <th><i class="fa fa-picture-o"></i> Type</th>
-                            <th><i class="fa fa-database"></i> Data</th>
-                            <th><i class="fa fa-sitemap"></i> Conditions</th>
+                            <td>@question.Number</td>
+                            <td>@question.Question</td>
+                            <td>@question.IsRequired</td>
+                            <td>@question.TypeString</td>
+                            <td class="json-data" data-type="@question.TypeString" data-json="@question.JsonData"></td>
+                            <td>
+                                @if (question.Conditions.Count == 0)
+                                {
+                                    <div>If answer is anything, go to the next question.</div>
+                                    if (editsAllowed)
+                                    {
+                                        <a href="@Url.Action("Add", "FormQuestionConditions", new { id = question.QuestionId })">
+                                            <i class="fa fa-plus-circle"></i>
+                                            Add conditions
+                                        </a>
+                                    }
+                                }
+                                else if (question.Conditions.Count > 0)
+                                {
+                                    if (question.Conditions.Count == 1)
+                                    {
+                                        <div>@question.Conditions.Single()</div>
+                                    }
+                                    else
+                                    {
+                                        <ol class="pl-3 mb-0">
+                                            @foreach (var condition in question.Conditions)
+                                            {
+                                                <li>@condition</li>
+                                            }
+                                            <li>If answer is anything, go to the next question.</li>
+                                        </ol>
+                                    }
+                                    if (editsAllowed)
+                                    {
+                                        <a href="@Url.Action("Index", "FormQuestionConditions", new { id = question.QuestionId })">
+                                            <i class="fa fa-pencil"></i>
+                                            Edit conditions
+                                        </a>
+                                    }
+                                }
+                            </td>
                             @if (editsAllowed)
                             {
-                                <th><i class="fa fa-bolt"></i> Actions</th>
+                                <td>
+                                    @if (question.CanBeMovedUp)
+                                    {
+                                        using (Html.BeginForm("MoveUp", "FormQuestions", new { id = question.QuestionId }, FormMethod.Post))
+                                        {
+                                            @Html.AntiForgeryToken()
+                                            <a href="#" onclick="this.closest('form').submit();return false;"><i class="fa fa-lg fa-arrow-up"></i></a>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <span class="text-secondary" title="@question.GetCannotMoveUpReason()"><i class="fa fa-lg fa-arrow-up"></i></span>
+                                    } |
+
+                                    @if (question.CanBeMovedDown)
+                                    {
+                                        using (Html.BeginForm("MoveDown", "FormQuestions", new { id = question.QuestionId }, FormMethod.Post))
+                                        {
+                                            @Html.AntiForgeryToken()
+                                            <a href="#" onclick="this.closest('form').submit();return false;"><i class="fa fa-lg fa-arrow-down"></i></a>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <span class="text-secondary" title="@question.GetCannotMoveDownReason()"><i class="fa fa-lg fa-arrow-down"></i></span>
+                                    } |
+                                    <a class="text-success" title="Insert after" href="@Url.Action("Insert", new { id = question.QuestionId })">
+                                        <i class="fa fa-lg fa-plus"></i>
+                                    </a> |
+                                    <a title="Edit question" href="@Url.Action("Edit", new { id = question.QuestionId })">
+                                        <i class="fa fa-lg fa-pencil"></i>
+                                    </a> |
+                                    <a class="text-danger" title="Delete" href="@Url.Action("Delete", new { id = question.QuestionId })">
+                                        <i class="fa fa-lg fa-trash"></i>
+                                    </a>
+                                </td>
                             }
                         </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (FormQuestion question in Model)
-                        {
-                            <tr>
-                                <td>@question.Number</td>
-                                <td>@question.Question</td>
-                                <td>@question.IsRequired</td>
-                                <td>@question.TypeString</td>
-                                <td class="json-data" data-type="@question.TypeString" data-json="@question.JsonData"></td>
-                                <td>
-                                    @if (question.Conditions.Count == 0)
-                                    {
-                                        <div>If answer is anything, go to the next question.</div>
-                                        if (editsAllowed)
-                                        {
-                                            <a href="@Url.Action("Add", "FormQuestionConditions", new { id = question.QuestionId })">
-                                                <i class="fa fa-plus-circle"></i>
-                                                Add conditions
-                                            </a>
-                                        }
-                                    }
-                                    else if (question.Conditions.Count > 0)
-                                    {
-                                        if (question.Conditions.Count == 1)
-                                        {
-                                            <div>@question.Conditions.Single()</div>
-                                        }
-                                        else
-                                        {
-                                            <ol class="pl-3 mb-0">
-                                                @foreach (var condition in question.Conditions)
-                                                {
-                                                    <li>@condition</li>
-                                                }
-                                                <li>If answer is anything, go to the next question.</li>
-                                            </ol>
-                                        }
-                                        if (editsAllowed)
-                                        {
-                                            <a href="@Url.Action("Index", "FormQuestionConditions", new { id = question.QuestionId })">
-                                                <i class="fa fa-pencil"></i>
-                                                Edit conditions
-                                            </a>
-                                        }
-                                    }
-                                </td>
-                                @if (editsAllowed)
-                                {
-                                    <td>
-                                        @if (question.CanBeMovedUp)
-                                        {
-                                            using (Html.BeginForm("MoveUp", "FormQuestions", new { id = question.QuestionId }, FormMethod.Post))
-                                            {
-                                                @Html.AntiForgeryToken()
-                                                <a href="#" onclick="this.closest('form').submit();return false;"><i class="fa fa-lg fa-arrow-up"></i></a>
-                                            }
-                                        }
-                                        else
-                                        {
-                                            <span class="text-secondary" title="@question.GetCannotMoveUpReason()"><i class="fa fa-lg fa-arrow-up"></i></span>
-                                        } |
-
-                                        @if (question.CanBeMovedDown)
-                                        {
-                                            using (Html.BeginForm("MoveDown", "FormQuestions", new { id = question.QuestionId }, FormMethod.Post))
-                                            {
-                                                @Html.AntiForgeryToken()
-                                                <a href="#" onclick="this.closest('form').submit();return false;"><i class="fa fa-lg fa-arrow-down"></i></a>
-                                            }
-                                        }
-                                        else
-                                        {
-                                            <span class="text-secondary" title="@question.GetCannotMoveDownReason()"><i class="fa fa-lg fa-arrow-down"></i></span>
-                                        } |
-                                        <a class="text-success" title="Insert after" href="@Url.Action("Insert", new { id = question.QuestionId })">
-                                            <i class="fa fa-lg fa-plus"></i>
-                                        </a> |
-                                        <a title="Edit question" href="@Url.Action("Edit", new { id = question.QuestionId })">
-                                            <i class="fa fa-lg fa-pencil"></i>
-                                        </a> |
-                                        <a class="text-danger" title="Delete" href="@Url.Action("Delete", new { id = question.QuestionId })">
-                                            <i class="fa fa-lg fa-trash"></i>
-                                        </a>
-                                    </td>
-                                }
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
+                    }
+                </tbody>
+            </table>
         </div>
     </div>
+</div>
 
+<div class="shadow bg-light container pb-5 pt-4 mb-5" style="border-radius: 12px; min-width: 93.5%">
     <div class="text-center">
-        <div id="canvas" class="w-100 pl-5 pr-5 pt-5"></div>
+        <div id="canvas" class="w-100 pl-5 pr-5"></div>
         <button id="redraw" onclick="redraw();" class="btn btn-sm btn-outline-info">
             <i class="fa fa-refresh"></i>
             Redraw graph
         </button>
+    </div>
     </div>
 
     @section scripts

@@ -24,61 +24,61 @@
     </div>
 </div>
 
-    <div class="container" style="overflow-y: auto; white-space: nowrap; min-width: 94.5%; text-align: center">
-        <div class="card shadow">
-            <div class="table-responsive">
-                <table class="table table-bordered table-striped">
-                    <thead>
+<div class="container" style="overflow-y: auto; white-space: nowrap; min-width: 94.5%; text-align: center">
+    <div class="card shadow">
+        <div class="sticky-table sticky-ltr-cells" style="border-radius: 0px 0px 20px 20px">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr class="sticky-header">
+                        <th class="sticky-cell"><i class="fa fa-hashtag"></i></th>
+                        <th class="sticky-cell"><i class="fa fa-sitemap"></i> Condition</th>
+                        <th class="sticky-cell"><i class="fa fa-bolt"></i> Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (FormQuestionCondition condition in Model)
+                    {
                         <tr>
-                            <th><i class="fa fa-hashtag"></i></th>
-                            <th><i class="fa fa-sitemap"></i> Condition</th>
-                            <th><i class="fa fa-bolt"></i> Actions</th>
+                            <td>@condition.Number</td>
+                            <td>@condition.ToString(true)</td>
+                            <td>
+                                @if (condition.Number > 1)
+                                {
+                                    using (Html.BeginForm("MoveUp", "FormQuestionConditions", new { id = condition.ConditionId }, FormMethod.Post))
+                                    {
+                                        @Html.AntiForgeryToken()
+                                        <a href="#" onclick="this.closest('form').submit();return false;"><i class="fa fa-lg fa-arrow-up"></i></a>
+                                    }
+                                    <span>|</span>
+                                }
+
+                                @if (condition.Number < Model.Max(c => c.Number))
+                                {
+                                    using (Html.BeginForm("MoveDown", "FormQuestionConditions", new { id = condition.ConditionId }, FormMethod.Post))
+                                    {
+                                        @Html.AntiForgeryToken()
+                                        <a href="#" onclick="this.closest('form').submit();return false;"><i class="fa fa-lg fa-arrow-down"></i></a>
+                                    }
+                                    <span>|</span>
+                                }
+
+                                <a class="text-success" title="Insert after" href="@Url.Action("Insert", new { id = condition.ConditionId })">
+                                    <i class="fa fa-lg fa-plus"></i>
+                                </a> |
+                                <a title="Edit question" href="@Url.Action("Edit", new { id = condition.ConditionId })">
+                                    <i class="fa fa-lg fa-pencil"></i>
+                                </a> |
+                                <a class="text-danger" title="Delete" href="@Url.Action("Delete", new { id = condition.ConditionId })">
+                                    <i class="fa fa-lg fa-trash"></i>
+                                </a>
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (FormQuestionCondition condition in Model)
-                        {
-                            <tr>
-                                <td>@condition.Number</td>
-                                <td>@condition.ToString(true)</td>
-                                <td>
-                                    @if (condition.Number > 1)
-                                    {
-                                        using (Html.BeginForm("MoveUp", "FormQuestionConditions", new { id = condition.ConditionId }, FormMethod.Post))
-                                        {
-                                            @Html.AntiForgeryToken()
-                                            <a href="#" onclick="this.closest('form').submit();return false;"><i class="fa fa-lg fa-arrow-up"></i></a>
-                                        }
-                                        <span>|</span>
-                                    }
-
-                                    @if (condition.Number < Model.Max(c => c.Number))
-                                    {
-                                        using (Html.BeginForm("MoveDown", "FormQuestionConditions", new { id = condition.ConditionId }, FormMethod.Post))
-                                        {
-                                            @Html.AntiForgeryToken()
-                                            <a href="#" onclick="this.closest('form').submit();return false;"><i class="fa fa-lg fa-arrow-down"></i></a>
-                                        }
-                                        <span>|</span>
-                                    }
-
-                                    <a class="text-success" title="Insert after" href="@Url.Action("Insert", new { id = condition.ConditionId })">
-                                        <i class="fa fa-lg fa-plus"></i>
-                                    </a> |
-                                    <a title="Edit question" href="@Url.Action("Edit", new { id = condition.ConditionId })">
-                                        <i class="fa fa-lg fa-pencil"></i>
-                                    </a> |
-                                    <a class="text-danger" title="Delete" href="@Url.Action("Delete", new { id = condition.ConditionId })">
-                                        <i class="fa fa-lg fa-trash"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
+                    }
+                </tbody>
+            </table>
         </div>
     </div>
+</div>
 
     @section scripts
 {

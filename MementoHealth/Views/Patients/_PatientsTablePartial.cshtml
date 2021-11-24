@@ -2,27 +2,27 @@
 
 <div class="container" style="overflow-y: auto; white-space: nowrap; min-width: 94.5%; text-align: center">
     <div class="card shadow">
-        <div class="table-responsive">
+        <div class="sticky-table sticky-ltr-cells" style="border-radius: 0px 0px 20px 20px">
             <table class="table table-bordered table-striped">
                 <thead>
-                    <tr>
-                        <th>
+                    <tr class="sticky-header">
+                        <th class="sticky-cell">
                             <i class="fa fa-sort-alpha-asc"></i>
                             @Html.DisplayNameFor(model => model.FullName)
                         </th>
-                        <th>
+                        <th class="sticky-cell">
                             <i class="fa fa-birthday-cake"></i>
                             @Html.DisplayNameFor(model => model.Birthday)
                         </th>
-                        <th>
+                        <th class="sticky-cell">
                             <i class="fa fa-id-card"></i>
                             @Html.DisplayNameFor(model => model.ExternalPatientId)
                         </th>
-                        <th>
+                        <th class="sticky-cell">
                             <i class="fa fa-check-square-o"></i>
                             @Html.DisplayNameFor(model => model.Submissions)
                         </th>
-                        <th><i class="fa fa-bolt"></i> Actions</th>
+                        <th class="sticky-cell"><i class="fa fa-bolt"></i> Actions</th>
                     </tr>
                 </thead>
                 <tbody>

@@ -42,28 +42,28 @@
                         </div>
                         <div class="form-group mt-4">
                             <div class="col-md-auto my-1 font-weight-bold" style="text-align: center">Admins</div>
-                            <div class="table-responsive" style="max-width: 85vw; white-space:nowrap; overflow: auto">
+                            <div class="sticky-table sticky-ltr-cells" style="max-width: 85vw; white-space: nowrap; overflow: auto; border-radius: 0px 0px 20px 20px">
                                 <table class="col-md-auto table table-bordered table-striped table-sm">
-                                    <thead>
-                                        <tr>
-                                            <th><i class="fa fa-sort-alpha-asc"></i> Full Name</th>
-                                            <th><i class="fa fa-envelope"></i> Email</th>
-                                            <th><i class="fa fa-phone"></i> Phone</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach (var item in Model.Staff.Where(s => s.Roles.Any(r => r.Role.Name.Equals(Role.ProviderAdmin))).OrderBy(s => s.FullName).ToList())
-                                        {
-                                            <tr>
-                                                <td>@item.FullName</td>
-                                                <td>@Html.Email(item.Email)</td>
-                                                <td>@Html.Phone(item.PhoneNumber)</td>
-                                            </tr>
-                                        }
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                                            <thead>
+                                                <tr>
+                                                    <th><i class="fa fa-sort-alpha-asc"></i> Full Name</th>
+                                                    <th><i class="fa fa-envelope"></i> Email</th>
+                                                    <th><i class="fa fa-phone"></i> Phone</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var item in Model.Staff.Where(s => s.Roles.Any(r => r.Role.Name.Equals(Role.ProviderAdmin))).OrderBy(s => s.FullName).ToList())
+                                                {
+                                                    <tr>
+                                                        <td>@item.FullName</td>
+                                                        <td>@Html.Email(item.Email)</td>
+                                                        <td>@Html.Phone(item.PhoneNumber)</td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+</div>
 
                         <p class="mt-4">
                             @if (User.IsInRole(Role.SysAdmin))

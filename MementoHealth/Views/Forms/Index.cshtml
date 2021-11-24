@@ -16,123 +16,120 @@
     </div>
 </div>
 
-    <div class="container" style="overflow-y: auto; white-space: nowrap; min-width: 94.5%; text-align: center">
-        @if (Model == null)
-        {
-            <span class="text-danger">No forms yet...</span>
-        }
-        else
-        {
-            <div class="card shadow">
-                <div class="table-responsive">
-                    <table class="table table-bordered table-striped">
-                        <thead>
-                            <tr>
-                                <th>
-                                    <i class="fa fa-sort-alpha-asc"></i>
-                                    @Html.DisplayNameFor(model => model.Name)
-                                </th>
-                                <th>
-                                    <i class="fa fa-question-circle-o"></i>
-                                    @Html.DisplayNameFor(model => model.NumberOfQuestions)
-                                </th>
-                                <th>
-                                    <i class="fa fa-check-square-o"></i>
-                                    @Html.DisplayNameFor(model => model.NumberOfSubmissions)
-                                </th>
-                                @if (User.IsInRole(Role.ProviderAdmin))
-                                {
-                                    <th><i class="fa fa-bolt"></i> Actions</th>
-                                }
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var form in Model)
+<div class="container" style="overflow-y: auto; white-space: nowrap; min-width: 94.5%; text-align: center">
+    @if (Model == null)
+    {
+        <span class="text-danger">No forms yet...</span>
+    }
+    else
+    {
+        <div class="card shadow">
+            <div class="sticky-table sticky-ltr-cells" style="border-radius: 0px 0px 20px 20px">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr class="sticky-header">
+                            <th class="sticky-cell">
+                                <i class="fa fa-sort-alpha-asc"></i>
+                                @Html.DisplayNameFor(model => model.Name)
+                            </th>
+                            <th class="sticky-cell">
+                                <i class="fa fa-question-circle-o"></i>
+                                @Html.DisplayNameFor(model => model.NumberOfQuestions)
+                            </th>
+                            <th class="sticky-cell">
+                                <i class="fa fa-check-square-o"></i>
+                                @Html.DisplayNameFor(model => model.NumberOfSubmissions)
+                            </th>
+                            @if (User.IsInRole(Role.ProviderAdmin))
                             {
-                                <tr>
-                                    <td>@Html.DisplayFor(modelItem => form.Name)</td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => form.NumberOfQuestions)
-                                        @if (User.IsInRole(Role.ProviderAdmin))
+                                <th class="sticky-cell"><i class="fa fa-bolt"></i> Actions</th>
+                            }
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var form in Model)
+                        {
+                            <tr>
+                                <td>@Html.DisplayFor(modelItem => form.Name)</td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => form.NumberOfQuestions)
+                                    @if (User.IsInRole(Role.ProviderAdmin))
+                                    {
+                                        <span>(</span>
+                                        if (form.NumberOfQuestions == 0)
                                         {
-                                            <span>(</span>
-                                            if (form.NumberOfQuestions == 0)
-                                            {
-                                                <a class="text-success" href="@Url.Action("Add", "FormQuestions", new { id = form.FormId })">
-                                                    <i class="fa fa-plus-circle"></i>
-                                                    Add
-                                                </a>
-                                            }
-                                            else
-                                            {
-                                                <a class="text-info" href="@Url.Action("Index", "FormQuestions", new { id = form.FormId })">
-                                                    <i class="fa fa-eye"></i>
-                                                    View
-                                                </a>
-                                            }
-                                            <span>)</span>
+                                            <a class="text-success" href="@Url.Action("Add", "FormQuestions", new { id = form.FormId })">
+                                                <i class="fa fa-plus-circle"></i>
+                                                Add
+                                            </a>
                                         }
                                         else
                                         {
-                                            if (form.NumberOfQuestions > 0)
-                                            {
-                                                <span>(</span>
-                                                <a class="text-info" href="@Url.Action("Index", "FormQuestions", new { id = form.FormId })">
-                                                    <i class="fa fa-eye"></i>
-                                                    View
-                                                </a>
-                                                <span>)</span>
-                                            }
+                                            <a class="text-info" href="@Url.Action("Index", "FormQuestions", new { id = form.FormId })">
+                                                <i class="fa fa-eye"></i>
+                                                View
+                                            </a>
                                         }
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => form.NumberOfSubmissions)
-                                        @if (form.NumberOfSubmissions > 0)
+                                        <span>)</span>
+                                    }
+                                    else
+                                    {
+                                        if (form.NumberOfQuestions > 0)
                                         {
                                             <span>(</span>
-                                            <a class="text-info" href="@Url.Action("Form", "Submissions", new { id = form.FormId })">
+                                            <a class="text-info" href="@Url.Action("Index", "FormQuestions", new { id = form.FormId })">
                                                 <i class="fa fa-eye"></i>
                                                 View
                                             </a>
                                             <span>)</span>
                                         }
-                                    </td>
-                                    @if (User.IsInRole(Role.ProviderAdmin))
-                                    {
-                                        <td>
-                                            @if (form.IsPublished && form.NumberOfSubmissions == 0)
-                                            {
-                                                <a title="Unpublish" href="@Url.Action("Unpublish",new { id = form.FormId })">
-                                                    <span class="fa-stack">
-                                                        <i class="fa fa-share-alt fa-stack-1x"></i>
-                                                        <i class="fa fa-ban fa-stack-2x text-danger"></i>
-                                                    </span>
-                                                </a>
-                                                <span>|</span>
-                                            }
-                                            else if (!form.IsPublished && form.NumberOfQuestions > 0)
-                                            {
-                                                <a title="Publish" href="@Url.Action("Publish",new { id = form.FormId })">
-                                                    <i class="fa fa-lg fa-share-alt"></i>
-                                                </a>
-                                                <span>|</span>
-                                            }
-                                            <a title="Edit name" href="@Url.Action("Edit",new { id = form.FormId })">
-                                                <i class="fa fa-lg fa-pencil"></i>
-                                            </a> |
-                                            <a title="Clone" href="@Url.Action("Clone",new { id = form.FormId })">
-                                                <i class="fa fa-lg fa-clone"></i>
-                                            </a> |
-                                            <a title="Delete" class="text-danger" href="@Url.Action("Delete",new { id = form.FormId })">
-                                                <i class="fa fa-lg fa-trash"></i>
-                                            </a>
-                                        </td>
                                     }
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => form.NumberOfSubmissions)
+                                    @if (form.NumberOfSubmissions > 0)
+                                    {
+                                        <span>(</span>
+                                        <a class="text-info" href="@Url.Action("Form", "Submissions", new { id = form.FormId })">
+                                            <i class="fa fa-eye"></i>
+                                            View
+                                        </a>
+                                        <span>)</span>
+                                    }
+                                </td>
+                                @if (User.IsInRole(Role.ProviderAdmin))
+                                {
+                                    <td>
+                                        @if (form.IsPublished && form.NumberOfSubmissions == 0)
+                                        {
+                                            <a title="Unpublish" href="@Url.Action("Unpublish",new { id = form.FormId })">
+                                                <i class="fa fa-lg fa-chain-broken"></i>
+                                            </a>
+                                            <span>|</span>
+                                        }
+                                        else if (!form.IsPublished && form.NumberOfQuestions > 0)
+                                        {
+                                            <a title="Publish" href="@Url.Action("Publish",new { id = form.FormId })">
+                                                <i class="fa fa-lg fa-link"></i>
+                                            </a>
+                                            <span>|</span>
+                                        }
+                                        <a title="Edit name" href="@Url.Action("Edit",new { id = form.FormId })">
+                                            <i class="fa fa-lg fa-pencil"></i>
+                                        </a> |
+                                        <a title="Clone" href="@Url.Action("Clone",new { id = form.FormId })">
+                                            <i class="fa fa-lg fa-clone"></i>
+                                        </a> |
+                                        <a title="Delete" class="text-danger" href="@Url.Action("Delete",new { id = form.FormId })">
+                                            <i class="fa fa-lg fa-trash"></i>
+                                        </a>
+                                    </td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
             </div>
-        }
-    </div>
+        </div>
+    }
+</div>
