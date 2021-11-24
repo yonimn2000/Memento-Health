@@ -9,14 +9,14 @@
             <table class="table table-bordered table-striped">
                 <thead>
                     <tr class="sticky-header">
-                        <th class="sticky-cell"><i class="fa fa-question-circle"></i> Question</th>
-                        <th class="sticky-cell">
+                        <th><i class="fa fa-question-circle"></i> Question</th>
+                        <th>
                             <i class="fa fa-comment"></i>
                             @(isPatientView ? "Your" : "Patient") Answer
                         </th>
                         @if (isPatientView)
                         {
-                            <th class="sticky-cell"><i class="fa fa-bolt"></i> Action</th>
+                            <th><i class="fa fa-bolt"></i> Action</th>
                         }
                     </tr>
                 </thead>
