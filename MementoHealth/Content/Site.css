@@ -247,6 +247,10 @@ div.shadow.bg-light {
     margin-bottom: 7vh;
 }
 
+div.card.shadow {
+    margin-bottom: 24px;
+}
+
 /****** The following are for the selected point on the picture answer ******/
 
 #img-wrapper {
