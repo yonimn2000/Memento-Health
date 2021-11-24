@@ -10,6 +10,7 @@
     padding-left: 15px;
     padding-right: 15px;
 }
+
 .titleCard {
     padding-top: 35px;
     min-width: 94.5%;
@@ -101,21 +102,20 @@ textarea {
 
         .navbar-collapse.collapsing {
             height: auto;
-            -webkit-transition: right 0.1s ease;
-            -o-transition: right 0.1s ease;
-            -moz-transition: right 0.1s ease;
-            transition: right 0.1s ease;
-            right: -100%;
+            -webkit-transition: opacity 0.2s ease-out;
+            -o-transition: opacity 0.2s ease-out;
+            -moz-transition: opacity 0.2s ease-out;
+            transition: opacity 0.2s ease-out;
+            opacity: 0;
         }
 
         .navbar-collapse.show {
-            right: 0;
-            -webkit-transition: right 0.1s ease-in;
-            -o-transition: right 0.1s ease-in;
-            -moz-transition: right 0.1s ease-in;
-            transition: right 0.1s ease-in;
+            opacity: 100%;
+            -webkit-transition: opacity 0.2s ease-out;
+            -o-transition: opacity 0.2s ease-out;
+            -moz-transition: opacity 0.2s ease-out;
+            transition: opacity 0.2s ease-out;
         }
-
 }
 
 @media only screen and (max-width: 1200px) {
@@ -176,7 +176,7 @@ footer {
     border-color: #5466af;
 }
 
-    .btn-primary:hover{
+    .btn-primary:hover {
         background-color: #5466af !important;
         border-color: #5466af !important;
         background-image: linear-gradient(rgba(0, 0, 0, 0.1) 0 0);
