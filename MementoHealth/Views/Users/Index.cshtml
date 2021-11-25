@@ -8,16 +8,15 @@
     <div class="text-center p-3" style="background-color: #e0e2eb; position: center; border-radius: 20px 20px 0px 0px">
         <div class="h2 page-title font-weight-bold"><i class="fa fa-user-md"></i>&nbsp;@ViewBag.Title</div>
         <div class="text-secondary">
-            <a  href="@Url.Action("Create", "Users")"><i class="fa fa-user-plus"></i> Create New User</a>
+            <a href="@Url.Action("Create", "Users")"><i class="fa fa-user-plus"></i> Create New User</a>
         </div>
+        @if (TempData["StatusMessage"] != null)
+        {
+            <p class="text-info">@TempData["StatusMessage"]</p>
+        }
     </div>
 </div>
 <div class="container" style="overflow-y: auto; white-space: nowrap; min-width: 94.5%; text-align: center">
-    @if (TempData["StatusMessage"] != null)
-    {
-        <p class="text-info">@TempData["StatusMessage"]</p>
-    }
-
     <div class="card shadow">
         <div class="sticky-table sticky-ltr-cells" style="border-radius: 0px 0px 20px 20px">
             <table class="table table-bordered table-striped">
