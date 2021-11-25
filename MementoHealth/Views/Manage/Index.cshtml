@@ -16,12 +16,12 @@
                             <div class="col-md-auto my-1">@Model.Role</div>
                         </div>
                         <div class="form-group mt-4">
-                            <div class="col-md-auto my-1 font-weight-bold" style="text-align: center">Full Name</div><hr style="margin: 0 0 0 0" />
-                            <div class="col-md-auto my-1">@Model.FullName (@Html.ActionLink("Change", "ChangeFullName"))</div>
-                        </div>
-                        <div class="form-group mt-4">
                             <div class="col-md-auto my-1 font-weight-bold" style="text-align: center">Current Email</div><hr style="margin: 0 0 0 0" />
                             <div class="col-md-auto my-1">@Html.Email(Model.Email)</div>
+                        </div>
+                        <div class="form-group mt-4">
+                            <div class="col-md-auto my-1 font-weight-bold" style="text-align: center">Full Name</div><hr style="margin: 0 0 0 0" />
+                            <div class="col-md-auto my-1">@Model.FullName (@Html.ActionLink("Change", "ChangeFullName"))</div>
                         </div>
                         <div class="form-group mt-4">
                             <div class="col-md-auto my-1 font-weight-bold" style="text-align: center">Phone Number</div><hr style="margin: 0 0 0 0" />
