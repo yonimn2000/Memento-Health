@@ -114,7 +114,7 @@
                     $("#textbox").attr('type', 'date').val(new Date().toISOString().split('T')[0]).show();
                     break;
                 case '@QuestionType.Checkboxes.ToString()':
-                    options.push('consists of', 'does not consist of');
+                    options.push('consists of', 'does not consist of', 'has', 'does not have');
                     $('#checkboxes').show();
                     $.each(questionData.labels, function (i, label) {
                         $('#checkboxes').append(
