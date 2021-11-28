@@ -44,7 +44,7 @@ namespace MementoHealth.Models
     {
         public Patient Patient { get; set; }
         public Form Form { get; set; }
-        public IList<DateTime> SubmissionDates { get; set; }
+        public IList<FormSubmission> Submissions { get; set; }
         public IDictionary<FormQuestion, List<string>> QuestionJsonAnswers { get; set; }
     }
 }
