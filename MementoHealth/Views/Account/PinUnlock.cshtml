@@ -30,11 +30,16 @@
                             </div>
                         </div>
                     }
-                    @Html.ActionLink("Forgot your PIN?", "ChangePin", "Manage", new { returnUrl = Model.ReturnUrl }, new { @class="mb-2"})
+                    @Html.ActionLink("Forgot your PIN?", "ChangePin", "Manage", new { returnUrl = Model.ReturnUrl }, new { @class = "mb-2" })
+                    <div class="mt-2">
+                        @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <a href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
+                        }
+                    </div>
                 </section>
             </div>
         </div>
     </div>
-
-
 </div>

@@ -63,26 +63,19 @@
                                     {
                                         <a href="@Url.Action("Add", "FormQuestionConditions", new { id = question.QuestionId })">
                                             <i class="fa fa-plus-circle"></i>
-                                            Add conditions
+                                            Add condition
                                         </a>
                                     }
                                 }
                                 else if (question.Conditions.Count > 0)
                                 {
-                                    if (question.Conditions.Count == 1)
-                                    {
-                                        <div>@question.Conditions.Single()</div>
-                                    }
-                                    else
-                                    {
-                                        <ol class="pl-3 mb-0">
-                                            @foreach (var condition in question.Conditions)
-                                            {
-                                                <li>@condition</li>
-                                            }
-                                            <li>If answer is anything, go to the next question.</li>
-                                        </ol>
-                                    }
+                                    <ol class="pl-3 mb-0">
+                                        @foreach (var condition in question.Conditions)
+                                        {
+                                            <li>@condition</li>
+                                        }
+                                        <li>If answer is anything, go to the next question.</li>
+                                    </ol>
                                     if (editsAllowed)
                                     {
                                         <a href="@Url.Action("Index", "FormQuestionConditions", new { id = question.QuestionId })">

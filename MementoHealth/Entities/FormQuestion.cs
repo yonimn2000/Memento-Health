@@ -53,8 +53,8 @@ namespace MementoHealth.Entities
             ICollection<FormQuestion> questions = new HashSet<FormQuestion>();
             foreach (FormQuestionCondition condition in Conditions)
                 questions.Add(condition.GoToQuestion);
-            if (!Conditions.Any(c => c.ToString().Contains("end of form")))
-                questions.Add(NextOrdinalQuestion);
+            /*if (!Conditions.Any(c => c.ToString().Contains("end of form")))*/
+            questions.Add(NextOrdinalQuestion);
             return questions;
         }
 

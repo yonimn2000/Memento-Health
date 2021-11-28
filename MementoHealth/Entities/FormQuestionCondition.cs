@@ -58,7 +58,10 @@ namespace MementoHealth.Entities
                         stringBuilder.Append(jsonData.date);
                         break;
                     case QuestionType.Checkboxes:
-                        stringBuilder.Append($"'{string.Join("' and '", jsonData.checkboxes as DynamicJsonArray)}'");
+                        if (option.Equals("has") || option.Equals("does not have"))
+                            stringBuilder.Append($"'{string.Join("' or '", jsonData.checkboxes as DynamicJsonArray)}'");
+                        else
+                            stringBuilder.Append($"'{string.Join("' and '", jsonData.checkboxes as DynamicJsonArray)}'");
                         break;
                     case QuestionType.Radiobuttons:
                         stringBuilder.Append($"'{jsonData.radiobutton}'");
@@ -163,6 +166,8 @@ namespace MementoHealth.Entities
                         {
                             case "consists of": return answers.Length == conditionAnswers.Length && answers.Intersect(conditionAnswers).Count() == answers.Length;
                             case "does not consist of": return answers.Length != conditionAnswers.Length || answers.Intersect(conditionAnswers).Count() != answers.Length;
+                            case "has": return answers.Intersect(conditionAnswers).Count() > 0;
+                            case "does not have": return answers.Intersect(conditionAnswers).Count() == 0;
                         }
                     }
                     break;
