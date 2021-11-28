@@ -37,6 +37,7 @@ window.onresize = () => {
         $(".answer-image").each(function (index) {
             let jsonAnswer = $(this).parent().parent().data("json-answer");
             drawPointOnImage(jsonAnswer.answer, index);
+            $(document).trigger("stickyTable");
         });
     }, 100);
 };
