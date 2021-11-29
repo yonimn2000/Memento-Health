@@ -271,6 +271,7 @@
     <Content Include="Content\jquery.stickytable.min.css" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Images\about_image.png" />
     <Content Include="Images\clientA.jpg" />
     <Content Include="Images\clientB.jpg" />
     <Content Include="Images\Memento Health-logo.svg" />
