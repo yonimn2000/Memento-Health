@@ -1,24 +1,98 @@
 ﻿@{
-    ViewBag.Title = "About";    
+    ViewBag.Title = "About";
 }
 
-<h1>About Memento Health</h1>
 
-<p>
-    Memento Health was created as a new, user-friendly way for healthcare providers to create, edit, and distribute patient forms. Using our service, you'll be able to create forms for your patients
-    that are easy to read and understand, as well as simple for your staff to use. The memento team consists of:
-    Sarmad Barya, William Buerkle, Camron Farida, Yonatan Mankovich, Mahmudur Rahman, and Tristan Swick
-</p>
-<u><h2>What we're about</h2> </u>
-<h4>Fully customizable forms</h4>
-<p>
-    We believe that taking the best care of your patients starts with them. That's why Memento Health boasts the latest and greatest in customizable forms for patient information, so you and those under your care can start on the right foot every time.
-</p>
-<h4 class="mt-3">Completely modular</h4>
-<p>
-    Need something changed? With Memento Forms, it's as easy as logging in, making the change, and saving. Just like that, you'll be able to add or remove whatever information you'd like to get from your patients.
-</p>
-<h4 class="mt-3">Flow charts</h4>
-<p>
-    To help the form creation process, Memento Health includes a flow chart of the logical path from your questionnaires! No more wondering how one question leads to another!
-</p>
+
+<div class="container" style="padding-top: 75px">
+    <div class="about-section text-center" style="background-color: #5765ad; border-radius: 20px; box-shadow: 0 0 20px 0px rgba(0,0,0,0.2)">
+        <div class="inner-container" style="border-radius: 20px; box-shadow: 0 0 20px 0px rgba(0,0,0,0.2)">
+            <p class="text">
+                <h1>About Memento Health</h1>
+            <p>
+                Memento Health was created as a new, user-friendly way for healthcare providers to create, edit, and distribute patient forms. Using our service, you'll be able to create forms for your patients
+                that are easy to read and understand, as well as simple for your staff to use. The memento team consists of:
+                Sarmad Barya, William Buerkle, Camron Farida, Yonatan Mankovich, Mahmudur Rahman, and Tristan Swick
+            </p>
+            <u><h2 class="pt-4 pb-5">What we're about</h2> </u>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="features-column">
+
+                        <h4>Fully Customizable Forms</h4>
+                        <p>
+                            We believe that taking the best care of your patients starts with them. That's why Memento Health boasts the latest and greatest in customizable forms for patient information, so you and those under your care can start on the right foot every time.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="features-column">
+                
+                        <h4>Completely Modular</h4>
+                        <p>
+                            Need something changed? With Memento Forms, it's as easy as logging in, making the change, and saving. Just like that, you'll be able to add or remove whatever information you'd like to get from your patients.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="features-column">
+     
+                        <h4>Flow Charts</h4>
+                        <p>
+                            To help the form creation process, Memento Health includes a flow chart of the logical path from your questionnaires! No more wondering how one question leads to another!
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+@section styles {
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f1f1f1;
+        }
+
+        .about-section {
+            background: url('../../Images/about_image.png'), no-repeat bottom left;
+            background-color: #fdfdfd;
+            overflow: hidden;
+            background-size: 100%;
+            padding: 100px 40px;
+        }
+
+        .inner-container {
+            width: 100%;
+            background-color: #fdfdfd;
+            align-items: center;
+            padding: 60px;
+        }
+
+            .inner-container h1 {
+                margin-bottom: 30px;
+                font-size: 30px;
+                font-weight: 900;
+            }
+
+        .text {
+            font-size: 13px;
+            color: #545454;
+            line-height: 30px;
+            text-align: justify;
+            margin-bottom: 40px;
+        }
+    </style>
+} 
