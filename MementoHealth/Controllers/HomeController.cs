@@ -11,19 +11,12 @@ namespace MementoHealth.Controllers
                 return RedirectToAction("Index", "Providers");
             if (User.IsInRole(Role.ProviderAdmin))
                 return RedirectToAction("Index", "Forms");
-            if (User.IsInRole(Role.Doctor))
+            if (User.IsInRole(Role.Doctor) || User.IsInRole(Role.Assistant))
                 return RedirectToAction("Index", "Patients");
-            if (User.IsInRole(Role.Assistant))
-                return RedirectToAction("Index", "Forms");
             return View();
         }
 
         public ActionResult About()
-        {
-            return View();
-        }
-
-        public ActionResult Contact()
         {
             return View();
         }

@@ -1,33 +1,29 @@
-﻿let selectedPoint;
-
-$(() => {
-    $(".json-data").each(function () {
+﻿$(() => {
+    $(".json-data").each(function (index) {
         let jsonQuestion = $(this).data("json-question");
-        let jsonAnsewer = $(this).data("json-answer");
+        let jsonAnswer = $(this).data("json-answer");
         switch ($(this).data("question-type")) {
             case 'Text':
             case 'Number':
             case 'Date':
             case 'Radiobuttons':
-                $(this).text(jsonAnsewer.answer.length == 0 ? "[Blank]" : jsonAnsewer.answer);
+                $(this).text(jsonAnswer.answer.length == 0 ? "[Blank]" : jsonAnswer.answer);
                 break;
 
             case 'Checkboxes':
-                $(this).text(jsonAnsewer.answer.length == 0 ? "[Blank]" : jsonAnsewer.answer.join(", "));
+                $(this).text(jsonAnswer.answer.length == 0 ? "[Blank]" : jsonAnswer.answer.join(", "));
                 break;
 
             case 'Image':
-                $(this).append($('<div>').prop({ id: 'img-wrapper' })
+                $(this).append($('<div>').prop({ id: 'img-wrapper-' + index })
+                    .css("position", "relative")
                     .append($('<img>').prop({
-                        id: 'image',
-                        class: 'img-fluid',
+                        class: 'img-fluid answer-image',
                         src: jsonQuestion.image.url
                     }).on('load', () => {
-                        if (jsonAnsewer.answer) {
-                            selectedPoint = jsonAnsewer.answer;
-                            drawSelectedPointOnImage();
-                        }
                         $(document).trigger("stickyTable");
+                        if (jsonAnswer.answer)
+                            drawPointOnImage(jsonAnswer.answer, index);
                     })));
                 break;
         }
@@ -36,24 +32,30 @@ $(() => {
 
 let doit;
 window.onresize = () => {
-    if (selectedPoint) {
-        clearTimeout(doit);
-        doit = setTimeout(drawSelectedPointOnImage, 100);
-    }
+    clearTimeout(doit);
+    doit = setTimeout(() => {
+        $(".answer-image").each(function (index) {
+            let jsonAnswer = $(this).parent().parent().data("json-answer");
+            drawPointOnImage(jsonAnswer.answer, index);
+            $(document).trigger("stickyTable");
+        });
+    }, 100);
 };
 
-let drawSelectedPointOnImage = () => {
-    if (selectedPoint.x) {
-        $('.img-point').remove();
-        let img = $('#img-wrapper');
-        let point = $('<div class="img-point"></div>');
+let drawPointOnImage = (point, index) => {
+    if (point.x && index >= 0) {
+        let imgWrapperSelector = '#img-wrapper-' + index;
+        $(imgWrapperSelector + ' .img-point').remove();
 
-        let x = selectedPoint.x * $("#image").width();
-        let y = selectedPoint.y * $("#image").height();
-        point.css({
+        let img = $(imgWrapperSelector);
+        let x = point.x * $(imgWrapperSelector + ' img').width();
+        let y = point.y * $(imgWrapperSelector + ' img').height();
+
+        let pointDiv = $('<div class="img-point"></div>');
+        pointDiv.css({
             left: x + "px",
             top: y + "px"
         });
-        point.appendTo(img);
+        pointDiv.appendTo(img);
     }
 }

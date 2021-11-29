@@ -360,7 +360,7 @@ namespace MementoHealth.Controllers
         {
             Session.Abandon();
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Login");
         }
 
         protected override void Dispose(bool disposing)

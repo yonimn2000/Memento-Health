@@ -268,7 +268,7 @@ namespace MementoHealth.Controllers
                     return View(model);
                 }
 
-                model.Results = foundPatients;
+                model.Results = foundPatients.OrderBy(p => p.FullName).ToList();
                 return View("Search", model);
             }
 
