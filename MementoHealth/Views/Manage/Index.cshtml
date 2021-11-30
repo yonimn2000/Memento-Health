@@ -1,6 +1,6 @@
 ﻿@model MementoHealth.Models.IndexViewModel
 @{
-    ViewBag.Title = "Manage";
+    ViewBag.Title = "Manage My Account";
 }
 
 <div class="row d-flex justify-content-center">
@@ -16,12 +16,12 @@
                             <div class="col-md-auto my-1">@Model.Role</div>
                         </div>
                         <div class="form-group mt-4">
-                            <div class="col-md-auto my-1 font-weight-bold" style="text-align: center">Full Name</div><hr style="margin: 0 0 0 0" />
-                            <div class="col-md-auto my-1">@Model.FullName (@Html.ActionLink("Change", "ChangeFullName"))</div>
-                        </div>
-                        <div class="form-group mt-4">
                             <div class="col-md-auto my-1 font-weight-bold" style="text-align: center">Current Email</div><hr style="margin: 0 0 0 0" />
                             <div class="col-md-auto my-1">@Html.Email(Model.Email)</div>
+                        </div>
+                        <div class="form-group mt-4">
+                            <div class="col-md-auto my-1 font-weight-bold" style="text-align: center">Full Name</div><hr style="margin: 0 0 0 0" />
+                            <div class="col-md-auto my-1">@Model.FullName (@Html.ActionLink("Change", "ChangeFullName"))</div>
                         </div>
                         <div class="form-group mt-4">
                             <div class="col-md-auto my-1 font-weight-bold" style="text-align: center">Phone Number</div><hr style="margin: 0 0 0 0" />
@@ -41,7 +41,7 @@
                             </div>
                         </div>
                         <div class="form-group mt-4">
-                            <div class="col-md-auto my-1 font-weight-bold" style="text-align: center">Pin Code</div><hr style="margin: 0 0 0 0" />
+                            <div class="col-md-auto my-1 font-weight-bold" style="text-align: center">PIN Code</div><hr style="margin: 0 0 0 0" />
                             <div class="col-md-auto my-1">@Html.ActionLink("Change your PIN code", "ChangePin")</div>
                         </div>
                         <div class="form-group mt-4">

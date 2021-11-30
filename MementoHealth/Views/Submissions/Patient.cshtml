@@ -4,22 +4,23 @@
     ViewBag.Title = "Submissions by " + patient.FullName;
     ViewBag.HidePatient = true;
 }
-<div class="text-center">
-    <div class="h2 page-title font-weight-bold">@ViewBag.Title</div>
-    <div class="text-secondary">
-        <div class="mb-2">
-            @Html.Partial("_PatientDetailsPartial", Model.First().Patient)
+<div class="titleCard container">
+    <div class="text-center p-3" style="background-color: #e0e2eb; position: center; border-radius: 20px 20px 0px 0px">
+        <div class="h2 page-title font-weight-bold">@ViewBag.Title</div>
+        <div class="text-secondary">
+            <div class="mb-2">
+                @Html.Partial("_PatientDetailsPartial", Model.First().Patient)
+            </div>
+            <a href="@Url.Action("Index", "Patients")">
+                <i class="fa fa-chevron-circle-left"></i>
+                Back to Patients
+            </a> |
+            <a class="text-success" href="@Url.Action("Start", new { id = patient.PatientId })">
+                <i class="fa fa-plus-circle"></i>
+                Start new
+            </a>
         </div>
-        <a href="@Url.Action("Index", "Patients")">
-            <i class="fa fa-chevron-circle-left"></i>
-            Back to Patients
-        </a> |
-        <a class="text-success" href="@Url.Action("Start", new { id = patient.PatientId })">
-            <i class="fa fa-plus-circle"></i>
-            Start new
-        </a>
     </div>
-    <hr />
 </div>
 
 @Html.Partial("_SubmissionsTablePartial", Model)

@@ -4,15 +4,16 @@
     ViewBag.Title = "Forms";
 }
 
-<div class="text-center">
-    <div class="h2 page-title font-weight-bold"><i class="fa fa-file-text"></i>&nbsp;@ViewBag.Title</div>
-    @if (User.IsInRole(Role.ProviderAdmin))
-    {
-        <div class="text-secondary">
-            <a href="@Url.Action("Create")"><i class="fa fa-plus-square"></i> Create New Form</a>
-        </div>
-    }
-    <hr />
+<div class="titleCard container">
+    <div class="text-center p-3" style="background-color: #e0e2eb; position: center; border-radius: 20px 20px 0px 0px">
+        <div class="h2 page-title font-weight-bold"><i class="fa fa-file-text"></i>&nbsp;@ViewBag.Title</div>
+        @if (User.IsInRole(Role.ProviderAdmin))
+        {
+            <div class="text-secondary">
+                <a href="@Url.Action("Create")"><i class="fa fa-plus-square"></i> Create New Form</a>
+            </div>
+        }
+    </div>
 </div>
 
 <div class="container" style="overflow-y: auto; white-space: nowrap; min-width: 94.5%; text-align: center">
@@ -23,15 +24,15 @@
     else
     {
         <div class="card shadow">
-            <div class="table-responsive">
+            <div class="sticky-table sticky-ltr-cells" style="border-radius: 0px 0px 20px 20px">
                 <table class="table table-bordered table-striped">
                     <thead>
-                        <tr>
-                            <th>
+                        <tr class="sticky-header">
+                            <th >
                                 <i class="fa fa-sort-alpha-asc"></i>
                                 @Html.DisplayNameFor(model => model.Name)
                             </th>
-                            <th>
+                            <th >
                                 <i class="fa fa-question-circle-o"></i>
                                 @Html.DisplayNameFor(model => model.NumberOfQuestions)
                             </th>
@@ -41,7 +42,7 @@
                             </th>
                             @if (User.IsInRole(Role.ProviderAdmin))
                             {
-                                <th><i class="fa fa-bolt"></i> Actions</th>
+                                <th ><i class="fa fa-bolt"></i> Actions</th>
                             }
                         </tr>
                     </thead>
@@ -102,17 +103,14 @@
                                         @if (form.IsPublished && form.NumberOfSubmissions == 0)
                                         {
                                             <a title="Unpublish" href="@Url.Action("Unpublish",new { id = form.FormId })">
-                                                <span class="fa-stack">
-                                                    <i class="fa fa-share-alt fa-stack-1x"></i>
-                                                    <i class="fa fa-ban fa-stack-2x text-danger"></i>
-                                                </span>
+                                                <i class="fa fa-lg fa-chain-broken"></i>
                                             </a>
                                             <span>|</span>
                                         }
                                         else if (!form.IsPublished && form.NumberOfQuestions > 0)
                                         {
                                             <a title="Publish" href="@Url.Action("Publish",new { id = form.FormId })">
-                                                <i class="fa fa-lg fa-share-alt"></i>
+                                                <i class="fa fa-lg fa-link"></i>
                                             </a>
                                             <span>|</span>
                                         }

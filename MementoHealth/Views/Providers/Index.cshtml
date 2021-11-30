@@ -4,18 +4,19 @@
     ViewBag.Title = "Providers";
 }
 
-<div class="text-center">
-    <div class="h2 page-title font-weight-bold"><i class="fa fa-building"></i>&nbsp;@ViewBag.Title</div>
-    <a href="@Url.Action("Stats")"><i class="fa fa-bar-chart"></i> View Stats</a>
-    <hr />
+<div class="titleCard container">
+    <div class="text-center p-3" style="background-color: #e0e2eb; position: center; border-radius: 20px 20px 0px 0px">
+        <div class="h2 page-title font-weight-bold"><i class="fa fa-building"></i>&nbsp;@ViewBag.Title</div>
+        <a href="@Url.Action("Stats")"><i class="fa fa-bar-chart"></i> View Stats</a>
+    </div>
 </div>
 
 <div class="container" style="overflow-y: auto; white-space: nowrap; min-width: 94.5%; text-align: center">
     <div class="card shadow">
-        <div class="table-responsive">
+        <div class="sticky-table sticky-ltr-cells" style="border-radius: 0px 0px 20px 20px">
             <table class="table table-bordered table-striped">
                 <thead>
-                    <tr>
+                    <tr class="sticky-header">
                         <th>
                             <i class="fa fa-sort-alpha-asc"></i>
                             @Html.DisplayNameFor(model => model.Name)

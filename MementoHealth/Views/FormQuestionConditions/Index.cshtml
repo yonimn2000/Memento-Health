@@ -4,30 +4,32 @@
     ViewBag.Title = "Question Conditions";
 }
 
-<div class="text-center">
-    <div class="h2 page-title font-weight-bold">@ViewBag.Title</div>
-    <div class="text-secondary">
-        <h5 style="margin-top: -7px">
-            <i class="fa fa-question-circle"></i>
-            <span class="font-weight-bolder">Question:</span> "@formQuestion.Question"
-        </h5>
-        <p>
-            <a href="@Url.Action("Index", "FormQuestions", new { id = formQuestion.FormId })"><i class="fa fa-chevron-circle-left"></i> Back to Form Questions</a>
-        </p>
+<div class="titleCard container">
+    <div class="text-center p-3" style="background-color: #e0e2eb; position: center; border-radius: 20px 20px 0px 0px">
+        <div class="h2 page-title font-weight-bold">@ViewBag.Title</div>
+        <div class="text-secondary">
+            <div class="container text-center" style="width: fit-content">
+                <ul class="text-info text-left">
+                    <li>Conditions will be tested during form submission in the order listed below.</li>
+                    <li>The form will proceed to the next ordinal question if no conditions match.</li>
+                </ul>
+            </div>
+            <h5 style="margin-top: -7px">
+                <span class="font-weight-bolder">Question:</span> "@formQuestion.Question"
+            </h5>
+            <p style="margin-bottom: -3px">
+                <a href="@Url.Action("Index", "FormQuestions", new { id = formQuestion.FormId })"><i class="fa fa-chevron-circle-left"></i> Back to Form Questions</a>
+            </p>
+        </div>
     </div>
-    <hr />
 </div>
 
 <div class="container" style="overflow-y: auto; white-space: nowrap; min-width: 94.5%; text-align: center">
-    <ul class="text-info text-left">
-        <li>Conditions will be tested during form submission in the order listed below.</li>
-        <li>The form will proceed to the next ordinal question if no conditions match.</li>
-    </ul>
     <div class="card shadow">
-        <div class="table-responsive">
+        <div class="sticky-table sticky-ltr-cells" style="border-radius: 0px 0px 20px 20px">
             <table class="table table-bordered table-striped">
                 <thead>
-                    <tr>
+                    <tr class="sticky-header">
                         <th><i class="fa fa-hashtag"></i></th>
                         <th><i class="fa fa-sitemap"></i> Condition</th>
                         <th><i class="fa fa-bolt"></i> Actions</th>
@@ -78,16 +80,16 @@
     </div>
 </div>
 
-@section scripts
+    @section scripts
 {
-    @Scripts.Render("~/bundles/jqueryval")
-}
+        @Scripts.Render("~/bundles/jqueryval")
+    }
 
-@section styles
+    @section styles
 {
-    <style>
-        form {
-            display: inline-block;
-        }
-    </style>
-}
+        <style>
+            form {
+                display: inline-block;
+            }
+        </style>
+    }
