@@ -19,38 +19,30 @@
                     {
                         <div class="text-danger">An error has occurred.</div>
                     }
-
-                    @if (Model.ErrorLines.Count > 0)
+                <div class="list-group">
+                    @if (Model.ImportedLines.Count > 0)
                     {
-                        <div class="border border-danger">
-                            <b class="text-danger pl-2 pr-2">@CountToString(Model.ErrorLines.Count, "line is", "lines are") invalid</b>
-                            <pre><code>@string.Join("\n", Model.ErrorLines)</code></pre>
-                        </div>
+                        <a class="list-group-item list-group-item-success font-weight-bold" style="pointer-events: none">@CountToString(Model.ImportedLines.Count, "patient", "patients") imported successfully</a>
+                        <a class="list-group-item list-group-item-action  text-left"><pre><code>@string.Join("\n\n", Model.ImportedLines)</code></pre></a>
                     }
 
                     @if (Model.UpdatedLines.Count > 0)
                     {
-                        <div class="border border-warning">
-                            <b class="text-warning pl-2 pr-2">@CountToString(Model.UpdatedLines.Count, "patient", "patients") updated successfully</b>
-                            <pre><code>@string.Join("\n", Model.UpdatedLines)</code></pre>
-                        </div>
+                        <a class="list-group-item list-group-item-warning font-weight-bold" style="pointer-events: none">@CountToString(Model.UpdatedLines.Count, "patient", "patients") updated successfully</a>
+                        <a class="list-group-item list-group-item-action  text-left"><pre><code>@string.Join("\n\n", Model.UpdatedLines)</code></pre></a>
                     }
 
-                    @if (Model.ImportedLines.Count > 0)
+                    @if (Model.ErrorLines.Count > 0)
                     {
-                        <div class="border border-success">
-                            <b class="text-success pl-2 pr-2">@CountToString(Model.ImportedLines.Count, "patient", "patients") imported successfully</b>
-                            <pre><code>@string.Join("\n", Model.ImportedLines)</code></pre>
-                        </div>
+                        <a class="list-group-item list-group-item-danger font-weight-bold" style="pointer-events: none">@CountToString(Model.ErrorLines.Count, "line is", "lines are") invalid</a>
+                        <a class="list-group-item list-group-item-action  text-left"><pre><code>@string.Join("\n\n", Model.ErrorLines)</code></pre></a>
                     }
 
                     @if (Model.ExistingLines.Count > 0)
                     {
-                        <div class="border border-info pl-2 pr-2">
-                            <b class="text-info">@CountToString(Model.ExistingLines.Count, "patient", "patients") already exist</b>
-                        </div>
+                        <a class="list-group-item list-group-item-info font-weight-bold" style="pointer-events: none">@CountToString(Model.ExistingLines.Count, "patient", "patients") already existed</a>
                     }
-
+                </div>
                     <p class="pt-3">
                         <a href="@Url.Action("Index")"><i class="fa fa-chevron-circle-left"></i> Back to Patient List</a>
                     </p>
