@@ -30,8 +30,8 @@
                                 <div class="col-md-auto" style="text-align: left; padding: 0 0 0 0">
                                     @Html.LabelFor(m => m.Question, new { @class = "control-label col-md-auto" })
                                 </div>
-                                <div class="col-md-auto">
-                                    @Html.TextAreaFor(m => m.Question, new { @class = "form-control", rows = 5})
+                                <div class="col-md-auto" style="min-width: 700px">
+                                    @Html.TextAreaFor(m => m.Question, new { @style = "min-width: 100% ", rows = 7})
                                 </div>
                             </div>
                             <div class="form-check">
@@ -51,23 +51,21 @@
                                                 "Value",
                                                 "Text"
                                     ),
-    new { onchange = "answerTypeSelected()", @class = "form-control mb-3" }
+    new { onchange = "answerTypeSelected()", @class = "form-control mb-3", @style = "min-width: 100%" }
 )
                                 </div>
                             </div>
-                            <div id="multi-editor" class="custom-editor mb-3" style="display:none">
-                                <div class="mb-2">Labels</div>
-                                <input class="btn btn-sm btn-outline-success" type="button" id="add-label-btn" value="Add label" onclick="addMultiLabel()" />
-                                <input class="btn btn-sm btn-outline-danger" type="button" id="remove-label-btn" style="display:none" value="Remove last" onclick="removeLastMultiLabel()" />
-                                <div id="multi-labels"></div>
-                            </div>
-
-                            <div id="image-editor" class="custom-editor mb-3" style="display: none">
-                                <div class="ml-3 text-left">
-                                    <label for="file">Image</label>
+                            <div class="container w-100">
+                                <div id="multi-editor" class="custom-editor mb-3" style="display:none">
+                                    <div class="mb-2">Labels</div>
+                                    <input class="btn btn-sm btn-outline-success" type="button" id="add-label-btn" value="Add label" onclick="addMultiLabel()" />
+                                    <input class="btn btn-sm btn-outline-danger" type="button" id="remove-label-btn" style="display:none" value="Remove last" onclick="removeLastMultiLabel()" />
+                                    <div id="multi-labels"></div>
                                 </div>
-                                <div class="col-md-auto my-3" style="text-align: left">
-                                    <input id="img-selector" class="form-control-file" type="file" name="file" accept="image/*" onchange="imageSelected(event)" />
+                            </div>
+                            <div id="image-editor" class="custom-editor mb-5" style="display: none">
+                                <div class="col-md-auto pt-5" style="text-align: center">
+                                    <input id="img-selector" class="form-control-file m-auto pb-3" type="file" name="file" accept="image/*" onchange="imageSelected(event)" />
                                     <img id="selected-image" width="300px" />
                                 </div>
                             </div>
@@ -111,7 +109,7 @@
         })
 
         let addMultiLabel = (val = "") => {
-            let newElement = `<input type='text' class='form-control mt-1' value='${val}' />`
+            let newElement = `<input type='text' class='form-control mt-1' style='min-width: 100%' value='${val}' />`
             $("#multi-labels").append(newElement);
             if ($("#multi-labels").children().length > 1)
                 $("#remove-label-btn").show();
