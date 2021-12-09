@@ -23,19 +23,19 @@
                     @if (Model.ImportedLines.Count > 0)
                     {
                         <a class="list-group-item list-group-item-success font-weight-bold" style="pointer-events: none">@CountToString(Model.ImportedLines.Count, "patient", "patients") imported successfully</a>
-                        <a class="list-group-item list-group-item-action  text-left"><pre><code>@string.Join("\n\n", Model.ImportedLines)</code></pre></a>
+                        <a class="list-group-item list-group-item-action  text-left" style="pointer-events: none"><pre><code>@string.Join("\n\n", Model.ImportedLines)</code></pre></a>
                     }
 
                     @if (Model.UpdatedLines.Count > 0)
                     {
                         <a class="list-group-item list-group-item-warning font-weight-bold" style="pointer-events: none">@CountToString(Model.UpdatedLines.Count, "patient", "patients") updated successfully</a>
-                        <a class="list-group-item list-group-item-action  text-left"><pre><code>@string.Join("\n\n", Model.UpdatedLines)</code></pre></a>
+                        <a class="list-group-item list-group-item-action  text-left" style="pointer-events: none"><pre><code>@string.Join("\n\n", Model.UpdatedLines)</code></pre></a>
                     }
 
                     @if (Model.ErrorLines.Count > 0)
                     {
                         <a class="list-group-item list-group-item-danger font-weight-bold" style="pointer-events: none">@CountToString(Model.ErrorLines.Count, "line is", "lines are") invalid</a>
-                        <a class="list-group-item list-group-item-action  text-left"><pre><code>@string.Join("\n\n", Model.ErrorLines)</code></pre></a>
+                        <a class="list-group-item list-group-item-action  text-left" style="pointer-events: none"><pre><code>@string.Join("\n\n", Model.ErrorLines)</code></pre></a>
                     }
 
                     @if (Model.ExistingLines.Count > 0)
