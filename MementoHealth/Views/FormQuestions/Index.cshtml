@@ -154,7 +154,6 @@
         window.onload = function () {
             redrawGraph();
         };
-
         let redrawGraph = () => {
             let g = new Graph();
             @foreach (FormQuestion question in Model)
@@ -166,7 +165,6 @@
                 {
                     string toQuestionStr = edge.Question?.Question.Truncate(charLimit) ?? "End";
                     string label = "";
-
                     if (edge.Condition == null)
                     {
                         label = question.Conditions.Count == 0 ? "Next" : "Else";
@@ -179,35 +177,29 @@
                         }
                         label += edge.Condition.ToString(justCondition: true);
                     }
-
                     <text>
                         g.addEdge('@questionStr', '@toQuestionStr', { directed: true, label: decodeHtml('@label') });
                     </text>
                 }
             }
-
             /* layout the graph using the Spring layout implementation */
             var layouter = new Graph.Layout.Spring(g);
             layouter.layout();
-
             /* draw the graph using the RaphaelJS draw implementation */
             $('#canvas').empty();
             var width = $('#canvas').width() - 20;
             var renderer = new Graph.Renderer.Raphael('canvas', g, width, 500);
             renderer.draw();
-
             redraw = function () {
                 layouter.layout();
                 renderer.draw();
             };
         }
-
         let doit;
         window.onresize = () => {
             clearTimeout(doit);
             doit = setTimeout(redrawGraph, 100);
         };
-
         let decodeHtml = (html) => {
             var txt = document.createElement("textarea");
             txt.innerHTML = html;
@@ -215,10 +207,8 @@
         }
     </script>
 }
-
 @section styles
 {
-
     <style>
         form {
             display: inline-block;
