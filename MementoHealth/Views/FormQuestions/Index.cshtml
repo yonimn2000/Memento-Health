@@ -4,6 +4,7 @@
     Form form = Model.First().Form;
     bool editsAllowed = !form.Submissions.Any() && User.IsInRole(Role.ProviderAdmin);
     ViewBag.Title = "Form Questions";
+    int charLimit = 30;
 }
 
 <div class="titleCard container">
@@ -156,9 +157,12 @@
         };
         let redrawGraph = () => {
             let g = new Graph();
+            @if (Model.Any())
+            {
+                <text>g.addEdge('Start', '@Model.First(q => q.Number == 1).Question.Truncate(charLimit)', { directed: true });</text>
+            }
             @foreach (FormQuestion question in Model)
             {
-                int charLimit = 30;
                 string questionStr = question.Question.Truncate(charLimit);
                 <text>g.addNode('@questionStr');</text>
                 foreach (var edge in question.GetGraphEdges())
