@@ -1,4 +1,4 @@
-# <img src="media/Logo.png" width="20"/> Memento Health - A Patient Check-in System
+# <img src="media/Logo.png" width="24"/> Memento Health - A Patient Check-in System
 
 *Oakland University - CSI 4999 - Senior Project - Fall 2021*
 
