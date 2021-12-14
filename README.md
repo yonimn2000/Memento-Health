@@ -63,6 +63,13 @@ Our task for this project was to construct a working patient check-in system. Th
 Built using C# on ASP.NET MVC, Razor Pages, Entity Framework, SQL Server, HTML, CSS, JavaScript, jQuery, and Bootstrap.
 
 
+## How to Run Project
+
+1. Install Visual Studio with ASP.NET.
+2. Clone the project to your computer.
+3. Open and run the project in Visual Studio.
+
+
 ## Poster
 
 ![](media/Poster.png)
