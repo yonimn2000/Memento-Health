@@ -2,6 +2,10 @@
 
 *Oakland University - CSI 4999 - Senior Project - Fall 2021*
 
+🏆 **Winning project** 🏆
+
+[Final presentation and demo video of Memento Health](https://youtu.be/jQk9UGuZV1I)
+
 ## Team Members
 
 ### **Yonatan Mankovich** ([yonimn2000](https://github.com/yonimn2000))
